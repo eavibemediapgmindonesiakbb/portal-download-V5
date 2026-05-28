@@ -16,39 +16,23 @@ function doGet(e) {
     htmlOutput = HtmlService.createTemplateFromFile('index').evaluate().setTitle('Portal PGM Indonesia KBB');
   }
   return htmlOutput
- .addMetaTag('viewport', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
- .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+.addMetaTag('viewport', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+.setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
+// FIX: Include yang bener buat clasp
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
 function loginUser(nik, password) {
   try {
+    console.log('Login:', nik);
     const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
-    const data = sheet.getDataRange().getValues();
-    for (let i = 1; i < data.length; i++) {
-      const rowNik = data[i][0]? data[i][0].toString().trim() : ''; // A
-      const rowPass = data[i][15]? data[i][15].toString().trim() : ''; // P
-      const rowRole = data[i][14]? data[i][14].toString().trim() : 'user'; // O
-      if (rowNik === nik.toString().trim() && rowPass === password.toString().trim()) {
-        return { success: true, nik: rowNik, role: rowRole.toLowerCase() };
-      }
-    }
-    return { success: false, message: 'NIK atau Password salah' };
-  } catch (err) {
-    return { success: false, message: 'Error server: ' + err.message };
-  }
-}
-function loginUser(nik, password) {
-  try {
-    console.log('Login attempt:', nik); // Buat cek di log
-    const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
-    if (!sheet) throw new Error('Sheet tidak ditemukan');
+    if (!sheet) throw new Error('Sheet "data base kumpul" tidak ditemukan');
 
     const data = sheet.getDataRange().getValues();
-    console.log('Total rows:', data.length);
+    console.log('Rows:', data.length);
 
     for (let i = 1; i < data.length; i++) {
       const rowNik = data[i][0]? data[i][0].toString().trim() : '';
@@ -56,17 +40,18 @@ function loginUser(nik, password) {
       const rowRole = data[i][14]? data[i][14].toString().trim() : 'user';
 
       if (rowNik === nik.toString().trim() && rowPass === password.toString().trim()) {
-        console.log('Login success:', rowNik);
+        console.log('Login OK');
         return { success: true, nik: rowNik, role: rowRole.toLowerCase() };
       }
     }
-    console.log('Login failed: NIK/Pass tidak cocok');
+    console.log('Login FAIL');
     return { success: false, message: 'NIK atau Password salah' };
   } catch (err) {
-    console.error('loginUser error:', err.message);
-    return { success: false, message: 'Error server: ' + err.message };
+    console.error('Error:', err.message);
+    throw new Error('Error server: ' + err.message);
   }
 }
+
 function getUserData(nik) {
   try {
     const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
@@ -74,67 +59,17 @@ function getUserData(nik) {
     for (let i = 1; i < data.length; i++) {
       if (data[i][0] && data[i][0].toString().trim() === nik.toString().trim()) {
         return {
-          nik: data[i][0], // A
-          foto: data[i][1] || 'https://via.placeholder.com/50', // B
-          nama: data[i][2] || '-', // C
-          noKta: data[i][3] || '-', // D
-          wilayah: data[i][5] || '-', // F
-          tahunGabung: data[i][6] || '-', // G
-          statusAktif: data[i][7] || '-', // H
-          bayar: data[i][11] || '', // L
-          statusValidasi: data[i][12] || '', // M
-          linkSertifikat: data[i][13] || '', // N
-          formBayar: FORM_UPLOAD_URL,
-          formDaftar: FORM_DAFTAR_URL,
-          formDonasi: FORM_DONASI_URL,
-          waAdmin: WA_ADMIN
+          nik: data[i][0], foto: data[i][1] || 'https://via.placeholder.com/50',
+          nama: data[i][2] || '-', noKta: data[i][3] || '-', wilayah: data[i][5] || '-',
+          tahunGabung: data[i][6] || '-', statusAktif: data[i][7] || '-',
+          bayar: data[i][11] || '', statusValidasi: data[i][12] || '',
+          linkSertifikat: data[i][13] || '', formBayar: FORM_UPLOAD_URL,
+          formDaftar: FORM_DAFTAR_URL, formDonasi: FORM_DONASI_URL, waAdmin: WA_ADMIN
         };
       }
     }
     return null;
   } catch (err) {
     throw new Error('Gagal ambil data: ' + err.message);
-  }
-}
-
-function updatePembayaran(e) {
-  try {
-    const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
-    const data = sheet.getDataRange().getValues();
-    const nikForm = e.namedValues['NIK']? e.namedValues['NIK'][0].toString().trim() : '';
-    if (!nikForm) return;
-    for (let i = 1; i < data.length; i++) {
-      if (data[i][0] && data[i][0].toString().trim() === nikForm) {
-        sheet.getRange(i + 1, 12).setValue('sudah'); // L
-        sheet.getRange(i + 1, 13).setValue('menunggu validasi'); // M
-        break;
-      }
-    }
-  } catch (err) {
-    console.error('updatePembayaran error: ' + err.message);
-  }
-}
-
-function generateLinkPDF() {
-  try {
-    const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
-    const data = sheet.getDataRange().getValues();
-    const folder = DriveApp.getFolderById(FOLDER_SERTIFIKAT_ID);
-    for (let i = 1; i < data.length; i++) {
-      const status = data[i][12]? data[i][12].toString().toLowerCase().trim() : ''; // M
-      const nik = data[i][0]? data[i][0].toString().trim() : ''; // A
-      const linkKosong =!data[i][13] || data[i][13].toString().trim() === ''; // N
-      if (status === 'valid' && linkKosong && nik) {
-        const files = folder.getFilesByName(nik + '.pdf');
-        if (files.hasNext()) {
-          const file = files.next();
-          file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-          const url = file.getUrl();
-          sheet.getRange(i + 1, 14).setValue(url); // N
-        }
-      }
-    }
-  } catch (err) {
-    console.error('generateLinkPDF error: ' + err.message);
   }
 }
