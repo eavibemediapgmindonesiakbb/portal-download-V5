@@ -1,3 +1,4 @@
+
 <script>
 window.onload = () => {
   setTimeout(() => {
@@ -23,7 +24,7 @@ function handleLogin() {
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
 
   google.script.run
- .withSuccessHandler(res => {
+.withSuccessHandler(res => {
       btn.disabled = false;
       btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk';
       if(res.success) {
@@ -34,14 +35,14 @@ function handleLogin() {
         err.style.display = 'block';
       }
     })
- .withFailureHandler(error => {
+.withFailureHandler(error => {
       btn.disabled = false;
       btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk';
       err.innerText = 'Error: ' + error.message;
       err.style.display = 'block';
       console.error('Login Error:', error);
     })
- .loginUser(nik, pass);
+.loginUser(nik, pass);
 }
 
 function lupaPass() {
