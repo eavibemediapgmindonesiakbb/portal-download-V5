@@ -1,66 +1,170 @@
-window.onload = () => {
-  // SPLASH 2 DETIK LANGSUNG HILANG
-  if(document.getElementById('splash')) {
-    setTimeout(() => {
-      document.getElementById('splash').style.opacity = '0';
-      document.getElementById('splash').style.transition = '0.3s';
-      setTimeout(() => {
-        document.getElementById('splash').style.display = 'none';
-        document.getElementById('loginPage').style.display = 'block';
-      }, 300);
-    }, 2000);
+// ===== KONFIGURASI =====
+const SS_ID = '18XyDsxNaO9UCokjxUUf8V5kMv8SRZAXnDNA1o9cNZ_M';
+const SHEET_NAME = 'data base kumpul';
+const FOLDER_SERTIFIKAT_ID = '1pKiqCRRgGZd7gkf0ZeDBjUZjZAaBOUri';
+const FORM_UPLOAD_URL = 'https://forms.gle/linkFormUploadBuktiBayar'; // Ganti kalau udah ada form
+// =======================
+
+/**
+ * ROUTING HALAMAN
+ * @param {Object} e - Event parameter dari Apps Script
+ */
+function doGet(e) {
+  let htmlOutput;
+
+  if (e.parameter.page === 'dashboard') {
+    htmlOutput = HtmlService.createTemplateFromFile('dashboard')
+    .evaluate()
+    .setTitle('Dashboard PGM KBB');
+  } else {
+    htmlOutput = HtmlService.createTemplateFromFile('index')
+    .evaluate()
+    .setTitle('Portal PGM Indonesia KBB');
   }
 
-  // DASHBOARD
-  if(window.location.href.includes('dashboard')) {
-    const nik = sessionStorage.getItem('nik');
-    if(!nik) window.location.href = 'index.html';
-    else loadDashboard(nik);
-  }
-
-  // PWA
-  if('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
-  }
+  return htmlOutput
+  .addMetaTag('viewport', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+  .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
-// Sisanya sama kayak kode sebelumnya...
-function handleLogin() {
-  const nik = document.getElementById('nik').value;
-  const pass = document.getElementById('password').value;
-  
-  if(!nik || !pass) {
-    alert('NIK dan Password wajib diisi');
-    return;
-  }
+/**
+ * Include HTML file lain ke dalam template
+ * @param {string} filename - Nama file tanpa.html
+ */
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
 
-  document.querySelector('.btn-primary').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
+/**
+ * LOGIN USER
+ * Cek NIK + PASSWORD + ROLE dari sheet
+ * Kolom A = NIK, P = password, O = role
+ * @param {string} nik
+ * @param {string} password
+ * @returns {Object} {success: boolean, nik, role, message}
+ */
+function loginUser(nik, password) {
+  try {
+    const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
+    const data = sheet.getDataRange().getValues();
 
-  google.script.run.withSuccessHandler(res => {
-    if(res.success) {
-      sessionStorage.setItem('nik', res.nik);
-      if(res.role === 'admin') {
-        alert('Dashboard Admin belum dibuat di versi ini');
-        document.querySelector('.btn-primary').innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk';
-      } else {
-        // Ini yang bener buat Apps Script
-        google.script.run.withSuccessHandler(html => {
-          document.open();
-          document.write(html);
-          document.close();
-        }).getDashboardPage();
+    for (let i = 1; i < data.length; i++) {
+      const rowNik = data[i][0]? data[i][0].toString().trim() : ''; // A
+      const rowPass = data[i][15]? data[i][15].toString().trim() : ''; // P
+      const rowRole = data[i][14]? data[i][14].toString().trim() : 'user'; // O
+
+      if (rowNik === nik.toString().trim() && rowPass === password.toString().trim()) {
+        return {
+          success: true,
+          nik: rowNik,
+          role: rowRole.toLowerCase()
+        };
       }
-    } else {
-      alert(res.message);
-      document.querySelector('.btn-primary').innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk';
     }
-  }).withFailureHandler(err => {
-    alert('Error: ' + err.message);
-    document.querySelector('.btn-primary').innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk';
-  }).loginUser(nik, pass);
+    return { success: false, message: 'NIK atau Password salah' };
+  } catch (err) {
+    return { success: false, message: 'Error server: ' + err.message };
+  }
 }
 
-// Tambah fungsi ini di Code.gs
-function getDashboardPage() {
-  return HtmlService.createTemplateFromFile('dashboard').evaluate().getContent();
+/**
+ * AMBIL DATA USER untuk dashboard
+ * A=NIK, B=FOTO, C=NAMA, D=NO_KTA, F=WILAYAH_PC, G=TAHUN_GABUNG, H=STATUS_KEAKTIFAN
+ * L=Bayar, M=Status, N=Link Sertifikat
+ * @param {string} nik
+ * @returns {Object|null}
+ */
+function getUserData(nik) {
+  try {
+    const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
+    const data = sheet.getDataRange().getValues();
+
+    for (let i = 1; i < data.length; i++) {
+      if (data[i][0] && data[i][0].toString().trim() === nik.toString().trim()) {
+        return {
+          nik: data[i][0], // A
+          foto: data[i][1] || 'https://via.placeholder.com/50', // B
+          nama: data[i][2] || '-', // C
+          noKta: data[i][3] || '-', // D
+          wilayah: data[i][5] || '-', // F
+          tahunGabung: data[i][6] || '-', // G
+          statusAktif: data[i][7] || '-', // H
+          bayar: data[i][11] || '', // L
+          statusValidasi: data[i][12] || '', // M
+          linkSertifikat: data[i][13] || '', // N
+          formBayar: FORM_UPLOAD_URL
+        };
+      }
+    }
+    return null;
+  } catch (err) {
+    throw new Error('Gagal ambil data: ' + err.message);
+  }
+}
+
+/**
+ * TRIGGER: Update otomatis saat Google Form upload bukti disubmit
+ * Field NIK di Form harus namanya "NIK"
+ * @param {Object} e - Form submit event
+ */
+function updatePembayaran(e) {
+  try {
+    const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
+    const data = sheet.getDataRange().getValues();
+    const nikForm = e.namedValues['NIK']? e.namedValues['NIK'][0].toString().trim() : '';
+
+    if (!nikForm) return;
+
+    for (let i = 1; i < data.length; i++) {
+      if (data[i][0] && data[i][0].toString().trim() === nikForm) {
+        sheet.getRange(i + 1, 12).setValue('sudah'); // L = Bayar
+        sheet.getRange(i + 1, 13).setValue('menunggu validasi'); // M = Status
+        break;
+      }
+    }
+  } catch (err) {
+    console.error('updatePembayaran error: ' + err.message);
+  }
+}
+
+/**
+ * GENERATE LINK PDF sertifikat
+ * Cari file NIK.pdf di Drive terus isi kolom N kalau status = valid
+ * Jalanin manual atau bikin trigger onEdit kolom M
+ */
+function generateLinkPDF() {
+  try {
+    const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
+    const data = sheet.getDataRange().getValues();
+    const folder = DriveApp.getFolderById(FOLDER_SERTIFIKAT_ID);
+
+    for (let i = 1; i < data.length; i++) {
+      const status = data[i][12]? data[i][12].toString().toLowerCase().trim() : ''; // M
+      const nik = data[i][0]? data[i][0].toString().trim() : ''; // A
+      const linkKosong =!data[i][13] || data[i][13].toString().trim() === ''; // N
+
+      if (status === 'valid' && linkKosong && nik) {
+        const files = folder.getFilesByName(nik + '.pdf');
+        if (files.hasNext()) {
+          const file = files.next();
+          file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+          const url = file.getUrl();
+          sheet.getRange(i + 1, 14).setValue(url); // N
+        }
+      }
+    }
+  } catch (err) {
+    console.error('generateLinkPDF error: ' + err.message);
+  }
+}
+
+// ===== FUNGSI TEST - Hapus kalau udah production =====
+function testLogin() {
+  const hasil = loginUser('32171107048', '830018');
+  Logger.log(hasil);
+}
+
+function testGetData() {
+  const hasil = getUserData('32171107048');
+  Logger.log(hasil);
 }
