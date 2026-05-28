@@ -1,108 +1,144 @@
-const SS_ID = '18XyDsxNaO9UCokjxUUf8V5kMv8SRZAXnDNA1o9cNZ_M'; // Ganti
-const SHEET_NAME = 'data base kumpul';
-const FOLDER_SERTIFIKAT_ID = '1pKiqCRRgGZd7gkf0ZeDBjUZjZAaBOUri';
-const FORM_UPLOAD_URL = 'https://forms.gle/linkFormUploadBuktiBayar';
+// ===== KONFIGURASI - GANTI INI =====
+const SS_ID = '18XyDsxNaO9UCokjxUUf8V5kMv8SRZAXnDNA1o9cNZ_M'; // ID dari URL spreadsheet
+const SHEET_NAME = 'data base kumpul'; // Nama sheet persis
+const FOLDER_SERTIFIKAT_ID = '1pKiqCRRgGZd7gkf0ZeDBjUZjZAaBOUri'; // ID folder Drive isinya NIK.pdf
+const FORM_UPLOAD_URL = 'https://forms.gle/linkFormUploadBuktiBayar'; // Link Google Form upload
+// ===================================
 
+// ROUTING HALAMAN
 function doGet(e) {
+  let template;
   if (e.parameter.page === 'dashboard') {
-    return HtmlService.createTemplateFromFile('dashboard')
-    .evaluate()
-    .setTitle('Dashboard PGM KBB')
-    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+    template = HtmlService.createTemplateFromFile('dashboard');
+    template.setTitle('Dashboard PGM KBB');
   } else {
-    return HtmlService.createTemplateFromFile('index')
-    .evaluate()
-    .setTitle('Portal PGM Indonesia KBB')
-    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+    template = HtmlService.createTemplateFromFile('index');
+    template.setTitle('Portal PGM Indonesia KBB');
   }
+  
+  return template.evaluate()
+ .addMetaTag('viewport', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+ .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
+// Buat include file HTML lain
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
-// LOGIN: NIK = Kolom A, PASSWORD = Kolom P, ROLE = Kolom O
+// LOGIN: Cek NIK + PASSWORD + ROLE
+// Kolom A = NIK, P = password, O = role
 function loginUser(nik, password) {
-  const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
-  const data = sheet.getDataRange().getValues();
+  try {
+    const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
+    const data = sheet.getDataRange().getValues();
 
-  for(let i = 1; i < data.length; i++) {
-    const rowNik = data[i][0].toString(); // A
-    const rowPass = data[i][15].toString(); // P
-    const rowRole = data[i][14].toString(); // O
+    for (let i = 1; i < data.length; i++) {
+      const rowNik = data[i][0]? data[i][0].toString().trim() : ''; // A
+      const rowPass = data[i][15]? data[i][15].toString().trim() : ''; // P
+      const rowRole = data[i][14]? data[i][14].toString().trim() : 'user'; // O
 
-    if(rowNik === nik && rowPass === password) {
-      return {
-        success: true,
-        nik: rowNik,
-        role: rowRole.toLowerCase()
-      };
-    }
-  }
-  return {success: false, message: 'NIK atau Password salah'};
-}
-
-// GET DATA: Mapping sesuai kolom real
-function getUserData(nik) {
-  const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
-  const data = sheet.getDataRange().getValues();
-
-  for(let i = 1; i < data.length; i++) {
-    if(data[i][0].toString() === nik) {
-      return {
-        nik: data[i][0], // A
-        foto: data[i][1], // B
-        nama: data[i][2], // C
-        noKta: data[i][3], // D
-        wilayah: data[i][5], // F = WILAYAH_PC_PGM
-        tahunGabung: data[i][6], // G
-        statusAktif: data[i][7], // H
-        bayar: data[i][11], // L = Bayar
-        statusValidasi: data[i][12], // M = Status
-        linkSertifikat: data[i][13], // N = Link Sertifikat
-        formBayar: FORM_UPLOAD_URL
-      };
-    }
-  }
-  return null;
-}
-
-// Trigger Form: Update kolom L dan M
-function updatePembayaran(e) {
-  const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
-  const data = sheet.getDataRange().getValues();
-  const nikForm = e.namedValues['NIK'][0];
-
-  for(let i = 1; i < data.length; i++) {
-    if(data[i][0].toString() === nikForm) {
-      sheet.getRange(i+1, 12).setValue('sudah'); // L
-      sheet.getRange(i+1, 13).setValue('menunggu validasi'); // M
-      break;
-    }
-  }
-}
-
-// Generate link PDF dari NIK.pdf di Drive
-function generateLinkPDF() {
-  const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
-  const data = sheet.getDataRange().getValues();
-  const folder = DriveApp.getFolderById(FOLDER_SERTIFIKAT_ID);
-
-  for(let i = 1; i < data.length; i++) {
-    const status = data[i][12].toString().toLowerCase(); // M
-    const nik = data[i][0].toString(); // A
-    const linkKosong =!data[i][13]; // N
-
-    if(status === 'valid' && linkKosong) {
-      const files = folder.getFilesByName(nik + '.pdf');
-      if(files.hasNext()) {
-        const file = files.next();
-        file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-        const url = file.getUrl();
-        sheet.getRange(i+1, 14).setValue(url); // N
+      if (rowNik === nik.toString().trim() && rowPass === password.toString().trim()) {
+        return {
+          success: true,
+          nik: rowNik,
+          role: rowRole.toLowerCase()
+        };
       }
     }
+    return { success: false, message: 'NIK atau Password salah' };
+  } catch (err) {
+    return { success: false, message: 'Error server: ' + err.message };
   }
+}
+
+// AMBIL DATA USER buat dashboard
+// A=NIK, B=FOTO, C=NAMA, D=NO_KTA, F=WILAYAH_PC, G=TAHUN_GABUNG, H=STATUS_KEAKTIFAN
+// L=Bayar, M=Status, N=Link Sertifikat
+function getUserData(nik) {
+  try {
+    const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
+    const data = sheet.getDataRange().getValues();
+
+    for (let i = 1; i < data.length; i++) {
+      if (data[i][0] && data[i][0].toString().trim() === nik.toString().trim()) {
+        return {
+          nik: data[i][0], // A
+          foto: data[i][1] || 'https://via.placeholder.com/50', // B
+          nama: data[i][2] || '-', // C
+          noKta: data[i][3] || '-', // D
+          wilayah: data[i][5] || '-', // F
+          tahunGabung: data[i][6] || '-', // G
+          statusAktif: data[i][7] || '-', // H
+          bayar: data[i][11] || '', // L
+          statusValidasi: data[i][12] || '', // M
+          linkSertifikat: data[i][13] || '', // N
+          formBayar: FORM_UPLOAD_URL
+        };
+      }
+    }
+    return null;
+  } catch (err) {
+    throw new Error('Gagal ambil data: ' + err.message);
+  }
+}
+
+// TRIGGER: Dipanggil otomatis saat Google Form upload bukti disubmit
+// Pastikan field NIK di Form namanya "NIK"
+function updatePembayaran(e) {
+  try {
+    const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
+    const data = sheet.getDataRange().getValues();
+    const nikForm = e.namedValues['NIK']? e.namedValues['NIK'][0].toString().trim() : '';
+
+    if (!nikForm) return;
+
+    for (let i = 1; i < data.length; i++) {
+      if (data[i][0] && data[i][0].toString().trim() === nikForm) {
+        sheet.getRange(i + 1, 12).setValue('sudah'); // L = Bayar
+        sheet.getRange(i + 1, 13).setValue('menunggu validasi'); // M = Status
+        break;
+      }
+    }
+  } catch (err) {
+    console.error('updatePembayaran error: ' + err.message);
+  }
+}
+
+// GENERATE LINK PDF: Cari file NIK.pdf di Drive terus isi kolom N
+function generateLinkPDF() {
+  try {
+    const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
+    const data = sheet.getDataRange().getValues();
+    const folder = DriveApp.getFolderById(FOLDER_SERTIFIKAT_ID);
+
+    for (let i = 1; i < data.length; i++) {
+      const status = data[i][12]? data[i][12].toString().toLowerCase().trim() : ''; // M
+      const nik = data[i][0]? data[i][0].toString().trim() : ''; // A
+      const linkSudahAda = data[i][13]? data[i][13].toString().trim()!== '' : false; // N
+
+      if (status === 'valid' &&!linkSudahAda && nik) {
+        const files = folder.getFilesByName(nik + '.pdf');
+        if (files.hasNext()) {
+          const file = files.next();
+          file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+          const url = file.getUrl();
+          sheet.getRange(i + 1, 14).setValue(url); // N
+        }
+      }
+    }
+  } catch (err) {
+    console.error('generateLinkPDF error: ' + err.message);
+  }
+}
+
+// FUNGSI TEST
+function testLogin() {
+  const hasil = loginUser('32171107048', '830018');
+  Logger.log(hasil);
+}
+
+function testGetData() {
+  const hasil = getUserData('32171107048');
+  Logger.log(hasil);
 }
