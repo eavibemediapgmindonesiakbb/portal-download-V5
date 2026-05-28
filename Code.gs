@@ -41,7 +41,32 @@ function loginUser(nik, password) {
     return { success: false, message: 'Error server: ' + err.message };
   }
 }
+function loginUser(nik, password) {
+  try {
+    console.log('Login attempt:', nik); // Buat cek di log
+    const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
+    if (!sheet) throw new Error('Sheet tidak ditemukan');
 
+    const data = sheet.getDataRange().getValues();
+    console.log('Total rows:', data.length);
+
+    for (let i = 1; i < data.length; i++) {
+      const rowNik = data[i][0]? data[i][0].toString().trim() : '';
+      const rowPass = data[i][15]? data[i][15].toString().trim() : '';
+      const rowRole = data[i][14]? data[i][14].toString().trim() : 'user';
+
+      if (rowNik === nik.toString().trim() && rowPass === password.toString().trim()) {
+        console.log('Login success:', rowNik);
+        return { success: true, nik: rowNik, role: rowRole.toLowerCase() };
+      }
+    }
+    console.log('Login failed: NIK/Pass tidak cocok');
+    return { success: false, message: 'NIK atau Password salah' };
+  } catch (err) {
+    console.error('loginUser error:', err.message);
+    return { success: false, message: 'Error server: ' + err.message };
+  }
+}
 function getUserData(nik) {
   try {
     const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
