@@ -9,28 +9,28 @@
     :root{--hijau-pgm:#16a34a;--hijau-muda:#dcfce7;--putih:#fff;--abu:#f3f4f6;--shadow:0 4px 12px rgba(0,0,0,0.08)}
     *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
     body{background:var(--abu);color:#1f2937}
-   .dashboard{max-width:480px;width:100%;margin:0 auto;padding:16px;min-height:100vh}
-   .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-top:8px}
-   .header p{font-size:13px;color:#6b7280}
-   .header h3{font-size:20px;font-weight:700}
-   .foto-profil{width:48px;height:48px;border-radius:50%;object-fit:cover;box-shadow:var(--shadow);border:2px solid var(--putih)}
-   .card{background:var(--putih);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
-   .card h4{margin-bottom:14px;color:#111827;font-size:16px}
-   .data-row{display:flex;justify-content:space-between;padding:10px 0;font-size:15px;border-bottom:1px solid var(--abu)}
-   .data-row:last-child{border:none}
-   .data-row span{color:#6b7280}
-   .badge{padding:10px 14px;border-radius:12px;font-weight:600;text-align:center;margin-bottom:12px;font-size:14px}
-   .badge.kuning{background:#fef3c7;color:#92400e}
-   .badge.hijau{background:var(--hijau-muda);color:#065f46}
-   .badge.merah{background:#fee2e2;color:#991b1b}
-   .badge.abu{background:#e5e7eb;color:#374151}
-   .warning{background:#fef2f2;color:#b91c1c;padding:12px;border-radius:12px;font-size:13px;margin-bottom:12px;display:none}
-   .btn-primary,.btn-outline{width:100%;padding:15px;border-radius:14px;font-size:16px;font-weight:600;border:none;cursor:pointer}
-   .btn-primary{background:var(--hijau-pgm);color:var(--putih);margin-bottom:10px}
-   .btn-primary:disabled{background:#9ca3af;cursor:not-allowed}
-   .btn-outline{background:var(--putih);color:var(--hijau-pgm);border:2px solid var(--hijau-pgm)}
-   .donasi{background:var(--hijau-muda)}
-   .loading{text-align:center;padding:40px;color:#6b7280}
+  .dashboard{max-width:480px;width:100%;margin:0 auto;padding:16px;min-height:100vh}
+  .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-top:8px}
+  .header p{font-size:13px;color:#6b7280}
+  .header h3{font-size:20px;font-weight:700}
+  .foto-profil{width:48px;height:48px;border-radius:50%;object-fit:cover;box-shadow:var(--shadow);border:2px solid var(--putih)}
+  .card{background:var(--putih);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+  .card h4{margin-bottom:14px;color:#111827;font-size:16px}
+  .data-row{display:flex;justify-content:space-between;padding:10px 0;font-size:15px;border-bottom:1px solid var(--abu)}
+  .data-row:last-child{border:none}
+  .data-row span{color:#6b7280}
+  .badge{padding:10px 14px;border-radius:12px;font-weight:600;text-align:center;margin-bottom:12px;font-size:14px}
+  .badge.kuning{background:#fef3c7;color:#92400e}
+  .badge.hijau{background:var(--hijau-muda);color:#065f46}
+  .badge.merah{background:#fee2e2;color:#991b1b}
+  .badge.abu{background:#e5e7eb;color:#374151}
+  .warning{background:#fef2f2;color:#b91c1c;padding:12px;border-radius:12px;font-size:13px;margin-bottom:12px;display:none}
+  .btn-primary,.btn-outline{width:100%;padding:15px;border-radius:14px;font-size:16px;font-weight:600;border:none;cursor:pointer}
+  .btn-primary{background:var(--hijau-pgm);color:var(--putih);margin-bottom:10px}
+  .btn-primary:disabled{background:#9ca3af;cursor:not-allowed}
+  .btn-outline{background:var(--putih);color:var(--hijau-pgm);border:2px solid var(--hijau-pgm)}
+  .donasi{background:var(--hijau-muda)}
+  .loading{text-align:center;padding:40px;color:#6b7280}
   </style>
 </head>
 <body>
@@ -69,7 +69,8 @@
     window.onload = () => {
       const nik = sessionStorage.getItem('nik');
       if(!nik) return window.location.href = '?';
-      google.script.run.withSuccessHandler(data => {
+      google.script.run
+     .withSuccessHandler(data => {
         if(!data) return alert('Data tidak ditemukan');
         document.getElementById('loading').style.display = 'none';
         document.getElementById('content').style.display = 'block';
@@ -94,7 +95,11 @@
         }
         document.getElementById('btnBayar').onclick = () => window.open(data.formBayar, '_blank');
         document.getElementById('btnDonasi').onclick = () => window.open(data.formDonasi, '_blank');
-      }).getUserData(nik);
+      })
+     .withFailureHandler(err => {
+        document.getElementById('loading').innerHTML = 'Gagal load data: ' + err.message;
+      })
+     .getUserData(nik);
     }
   </script>
 </body>
