@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#16a34a">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Dashboard PGM KBB</title>
+</head>
+<body>
+  <div class="dashboard">
+    <div class="header">
+      <div>
+        <p>Halo,</p>
+        <h3 id="namaUser">Loading...</h3>
+      </div>
+      <img id="fotoUser" src="https://via.placeholder.com/50" class="foto-profil" alt="Foto">
+    </div>
+
+    <div class="card">
+      <h4><i class="fa-solid fa-address-card"></i> Kartu Anggota</h4>
+      <div class="data-row"><span>No KTA</span><b id="noKta">-</b></div>
+      <div class="data-row"><span>Status Keaktifan</span><b id="statusAktif">-</b></div>
+      <div class="data-row"><span>Tahun Bergabung</span><b id="tahunGabung">-</b></div>
+      <div class="data-row"><span>Wilayah PC</span><b id="wilayah">-</b></div>
+    </div>
+
+    <div class="card">
+      <h4><i class="fa-solid fa-file-circle-check"></i> Status Validasi</h4>
+      <div id="badgeStatus" class="badge">Memuat...</div>
+      <div id="warningDitolak" class="warning" style="display:none">
+        <i class="fa-solid fa-triangle-exclamation"></i> Silahkan tinjau kembali bukti upload
+      </div>
+
+      <div class="btn-group">
+        <button id="btnBayar" class="btn-outline"><i class="fa-solid fa-upload"></i> Bayar</button>
+        <button id="btnDownload" class="btn-primary" disabled><i class="fa-solid fa-download"></i> Download Sertifikat</button>
+      </div>
+    </div>
+
+    <div class="card donasi">
+      <h4><i class="fa-solid fa-heart"></i> Donasi Pengembang</h4>
+      <p>Dukung Pengembangan Sistem PGM Indonesia KBB</p>
+      <div class="donasi-info">
+        <img src="https://i.imgur.com/danaLogo.png" alt="DANA" width="40">
+        <div>
+          <b>0812xxxxxxx</b>
+          <p>a.n Tim Media PGM IKBB</p>
+        </div>
+      </div>
+      <button class="btn-danger" onclick="window.open('https://link.dana.id/qr/@timmediapgmindonesiakbb','_blank')">
+        <i class="fa-solid fa-paper-plane"></i> Kirim Donasi
+      </button>
+    </div>
+
+    <p class="version">©2026 Tim Media PGM Indonesia KBB | Portal V5</p>
+  </div>
+
+  <?!= include('script');?>
+</body>
+</html>

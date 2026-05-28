@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#16a34a">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Login PGM KBB</title>
+</head>
+<body>
+  <div id="splash">
+    <img src="https://i.imgur.com/logoPGM.png" alt="Logo PGM" class="splash-logo">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="container" id="loginPage" style="display:none">
+    <div class="login-card">
+      <img src="https://i.imgur.com/logoPGM.png" class="logo" alt="PGM">
+      <h2>PGM Indonesia<br>Bandung Barat</h2>
+
+      <div class="input-group">
+        <i class="fa-solid fa-id-card"></i>
+        <input type="text" id="nik" placeholder="Masukan NIK">
+      </div>
+
+      <div class="input-group">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" id="password" placeholder="Masukan Password">
+      </div>
+
+      <button class="btn-primary" onclick="handleLogin()">
+        <i class="fa-solid fa-right-to-bracket"></i> Masuk
+      </button>
+
+      <div class="login-footer">
+        <a href="https://wa.me/62812xxxxxxx?text=Assalamualaikum%20Admin%20PGM%20KBB%2C%20saya%20lupa%20password" target="_blank">
+          Lupa Password? Hubungi Admin
+        </a>
+        <a href="https://forms.gle/FormPendataanAnggota" target="_blank">
+          Daftar Sekarang
+        </a>
+      </div>
+    </div>
+    <p class="version">©2026 Tim Media PGM Indonesia KBB | Portal V5</p>
+  </div>
+
+  <?!= include('script');?>
+</body>
+</html>
