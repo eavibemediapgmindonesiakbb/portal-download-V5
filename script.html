@@ -6,17 +6,48 @@ window.onload = () => {
   }, 2000);
 }
 
+let config = {};
+
 function handleLogin() {
-  const nik = document.getElementById('nik').value;
-  const pass = document.getElementById('password').value;
-  if(!nik ||!pass) return alert('NIK dan Password wajib diisi');
-  
+  const nik = document.getElementById('nik').value.trim();
+  const pass = document.getElementById('password').value.trim();
+  const btn = document.getElementById('btnLogin');
+  const err = document.getElementById('errorMsg');
+
+  err.style.display = 'none';
+  if(!nik ||!pass) {
+    err.innerText = 'NIK dan Password wajib diisi';
+    err.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
+
   google.script.run.withSuccessHandler(res => {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk';
     if(res.success) {
       sessionStorage.setItem('nik', res.nik);
-      if(res.role === 'admin') alert('Dashboard Admin belum dibuat');
-      else window.location.href = '?page=dashboard';
-    } else alert(res.message);
+      if(res.role === 'admin') {
+        alert('Dashboard Admin belum dibuat');
+      } else {
+        window.location.href = '?page=dashboard';
+      }
+    } else {
+      err.innerText = res.message;
+      err.style.display = 'block';
+    }
   }).loginUser(nik, pass);
+}
+
+function lupaPass() {
+  google.script.run.withSuccessHandler(data => {
+    window.open('https://wa.me/' + data.waAdmin + '?text=Assalamualaikum%20Admin%20PGM%2C%20saya%20lupa%20password', '_blank');
+  }).getUserData('dummy');
+}
+
+function daftar() {
+  window.open('https://forms.gle/FormPendataanAnggota', '_blank');
 }
 </script>
