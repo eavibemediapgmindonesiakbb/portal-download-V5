@@ -3,12 +3,20 @@ const SHEET_NAME = 'data base kumpul';
 const FOLDER_SERTIFIKAT_ID = '1pKiqCRRgGZd7gkf0ZeDBjUZjZAaBOUri';
 const FORM_UPLOAD_URL = 'https://forms.gle/linkFormUploadBuktiBayar';
 
-function doGet() {
-  return HtmlService.createTemplateFromFile('index')
-  .evaluate()
-  .setTitle('Portal PGM Indonesia KBB')
-  .addMetaTag('viewport', 'width=device-width, initial-scale=1')
-  .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+function doGet(e) {
+  if (e.parameter.page === 'dashboard') {
+    return HtmlService.createTemplateFromFile('dashboard')
+    .evaluate()
+    .setTitle('Dashboard PGM KBB')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  } else {
+    return HtmlService.createTemplateFromFile('index')
+    .evaluate()
+    .setTitle('Portal PGM Indonesia KBB')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  }
 }
 
 function include(filename) {
