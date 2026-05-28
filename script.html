@@ -1,0 +1,22 @@
+<script>
+window.onload = () => {
+  setTimeout(() => {
+    document.getElementById('splash').style.display = 'none';
+    document.getElementById('loginPage').style.display = 'block';
+  }, 2000);
+}
+
+function handleLogin() {
+  const nik = document.getElementById('nik').value;
+  const pass = document.getElementById('password').value;
+  if(!nik ||!pass) return alert('NIK dan Password wajib diisi');
+  
+  google.script.run.withSuccessHandler(res => {
+    if(res.success) {
+      sessionStorage.setItem('nik', res.nik);
+      if(res.role === 'admin') alert('Dashboard Admin belum dibuat');
+      else window.location.href = '?page=dashboard';
+    } else alert(res.message);
+  }).loginUser(nik, pass);
+}
+</script>
