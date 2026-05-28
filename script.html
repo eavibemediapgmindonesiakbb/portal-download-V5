@@ -3,17 +3,7 @@ window.onload = () => {
   setTimeout(() => {
     document.getElementById('splash').style.display = 'none';
     document.getElementById('loginPage').style.display = 'block';
-  }, 2000);
-}
-
-let config = {};
-
-<script>
-window.onload = () => {
-  setTimeout(() => {
-    document.getElementById('splash').style.display = 'none';
-    document.getElementById('loginPage').style.display = 'block';
-  }, 2000);
+  }, 1500);
 }
 
 function handleLogin() {
@@ -33,70 +23,29 @@ function handleLogin() {
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
 
   google.script.run
-  .withSuccessHandler(res => {
+ .withSuccessHandler(res => {
       btn.disabled = false;
       btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk';
       if(res.success) {
         sessionStorage.setItem('nik', res.nik);
-        if(res.role === 'admin') {
-          alert('Dashboard Admin belum dibuat');
-        } else {
-          window.location.href = '?page=dashboard';
-        }
+        window.location.href = '?page=dashboard';
       } else {
         err.innerText = res.message;
         err.style.display = 'block';
       }
     })
-  .withFailureHandler(error => {
+ .withFailureHandler(error => {
       btn.disabled = false;
       btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk';
       err.innerText = 'Error: ' + error.message;
       err.style.display = 'block';
-      console.error(error);
+      console.error('Login Error:', error);
     })
-  .loginUser(nik, pass);
+ .loginUser(nik, pass);
 }
 
 function lupaPass() {
   window.open('https://wa.me/62812xxxxxxx?text=Assalamualaikum%20Admin%20PGM%2C%20saya%20lupa%20password', '_blank');
-}
-
-function daftar() {
-  window.open('https://forms.gle/FormPendataanAnggota', '_blank');
-}
-</script>
-  err.style.display = 'none';
-  if(!nik ||!pass) {
-    err.innerText = 'NIK dan Password wajib diisi';
-    err.style.display = 'block';
-    return;
-  }
-
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
-
-  google.script.run.withSuccessHandler(res => {
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk';
-    if(res.success) {
-      sessionStorage.setItem('nik', res.nik);
-      if(res.role === 'admin') {
-        alert('Dashboard Admin belum dibuat');
-      } else {
-        window.location.href = '?page=dashboard';
-      }
-    } else {
-      err.innerText = res.message;
-      err.style.display = 'block';
-    }
-  }).loginUser(nik, pass);
-}
-
-function lupaPass() {
-  google.script.run.withSuccessHandler(data => {
-    window.open('https://wa.me/' + data.waAdmin + '?text=Assalamualaikum%20Admin%20PGM%2C%20saya%20lupa%20password', '_blank');
-  }).getUserData('dummy');
 }
 
 function daftar() {
