@@ -1,33 +1,48 @@
-// ===== KONFIGURASI - GANTI INI =====
-const SS_ID = '18XyDsxNaO9UCokjxUUf8V5kMv8SRZAXnDNA1o9cNZ_M'; // ID dari URL spreadsheet
-const SHEET_NAME = 'data base kumpul'; // Nama sheet persis
-const FOLDER_SERTIFIKAT_ID = '1pKiqCRRgGZd7gkf0ZeDBjUZjZAaBOUri'; // ID folder Drive isinya NIK.pdf
-const FORM_UPLOAD_URL = 'https://forms.gle/linkFormUploadBuktiBayar'; // Link Google Form upload
-// ===================================
+// ===== KONFIGURASI =====
+const SS_ID = '18XyDsxNaO9UCokjxUUf8V5kMv8SRZAXnDNA1o9cNZ_M';
+const SHEET_NAME = 'data base kumpul';
+const FOLDER_SERTIFIKAT_ID = '1pKiqCRRgGZd7gkf0ZeDBjUZjZAaBOUri';
+const FORM_UPLOAD_URL = 'https://forms.gle/linkFormUploadBuktiBayar'; // Ganti kalau udah ada form
+// =======================
 
-// ROUTING HALAMAN
+/**
+ * ROUTING HALAMAN
+ * @param {Object} e - Event parameter dari Apps Script
+ */
 function doGet(e) {
-  let template;
+  let htmlOutput;
+
   if (e.parameter.page === 'dashboard') {
-    template = HtmlService.createTemplateFromFile('dashboard');
-    template.setTitle('Dashboard PGM KBB');
+    htmlOutput = HtmlService.createTemplateFromFile('dashboard')
+    .evaluate()
+    .setTitle('Dashboard PGM KBB');
   } else {
-    template = HtmlService.createTemplateFromFile('index');
-    template.setTitle('Portal PGM Indonesia KBB');
+    htmlOutput = HtmlService.createTemplateFromFile('index')
+    .evaluate()
+    .setTitle('Portal PGM Indonesia KBB');
   }
-  
-  return template.evaluate()
- .addMetaTag('viewport', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
- .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+
+  return htmlOutput
+  .addMetaTag('viewport', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+  .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
-// Buat include file HTML lain
+/**
+ * Include HTML file lain ke dalam template
+ * @param {string} filename - Nama file tanpa.html
+ */
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
-// LOGIN: Cek NIK + PASSWORD + ROLE
-// Kolom A = NIK, P = password, O = role
+/**
+ * LOGIN USER
+ * Cek NIK + PASSWORD + ROLE dari sheet
+ * Kolom A = NIK, P = password, O = role
+ * @param {string} nik
+ * @param {string} password
+ * @returns {Object} {success: boolean, nik, role, message}
+ */
 function loginUser(nik, password) {
   try {
     const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
@@ -52,9 +67,13 @@ function loginUser(nik, password) {
   }
 }
 
-// AMBIL DATA USER buat dashboard
-// A=NIK, B=FOTO, C=NAMA, D=NO_KTA, F=WILAYAH_PC, G=TAHUN_GABUNG, H=STATUS_KEAKTIFAN
-// L=Bayar, M=Status, N=Link Sertifikat
+/**
+ * AMBIL DATA USER untuk dashboard
+ * A=NIK, B=FOTO, C=NAMA, D=NO_KTA, F=WILAYAH_PC, G=TAHUN_GABUNG, H=STATUS_KEAKTIFAN
+ * L=Bayar, M=Status, N=Link Sertifikat
+ * @param {string} nik
+ * @returns {Object|null}
+ */
 function getUserData(nik) {
   try {
     const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
@@ -83,8 +102,11 @@ function getUserData(nik) {
   }
 }
 
-// TRIGGER: Dipanggil otomatis saat Google Form upload bukti disubmit
-// Pastikan field NIK di Form namanya "NIK"
+/**
+ * TRIGGER: Update otomatis saat Google Form upload bukti disubmit
+ * Field NIK di Form harus namanya "NIK"
+ * @param {Object} e - Form submit event
+ */
 function updatePembayaran(e) {
   try {
     const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
@@ -105,7 +127,11 @@ function updatePembayaran(e) {
   }
 }
 
-// GENERATE LINK PDF: Cari file NIK.pdf di Drive terus isi kolom N
+/**
+ * GENERATE LINK PDF sertifikat
+ * Cari file NIK.pdf di Drive terus isi kolom N kalau status = valid
+ * Jalanin manual atau bikin trigger onEdit kolom M
+ */
 function generateLinkPDF() {
   try {
     const sheet = SpreadsheetApp.openById(SS_ID).getSheetByName(SHEET_NAME);
@@ -115,9 +141,9 @@ function generateLinkPDF() {
     for (let i = 1; i < data.length; i++) {
       const status = data[i][12]? data[i][12].toString().toLowerCase().trim() : ''; // M
       const nik = data[i][0]? data[i][0].toString().trim() : ''; // A
-      const linkSudahAda = data[i][13]? data[i][13].toString().trim()!== '' : false; // N
+      const linkKosong =!data[i][13] || data[i][13].toString().trim() === ''; // N
 
-      if (status === 'valid' &&!linkSudahAda && nik) {
+      if (status === 'valid' && linkKosong && nik) {
         const files = folder.getFilesByName(nik + '.pdf');
         if (files.hasNext()) {
           const file = files.next();
@@ -132,7 +158,7 @@ function generateLinkPDF() {
   }
 }
 
-// FUNGSI TEST
+// ===== FUNGSI TEST - Hapus kalau udah production =====
 function testLogin() {
   const hasil = loginUser('32171107048', '830018');
   Logger.log(hasil);
