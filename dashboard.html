@@ -1,61 +1,101 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
+  <base target="_top">
   <meta charset="UTF-8">
-  <meta name="theme-color" content="#16a34a">
-  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <title>Dashboard PGM KBB</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+    :root{--hijau-pgm:#16a34a;--hijau-muda:#dcfce7;--putih:#fff;--abu:#f3f4f6;--shadow:0 4px 12px rgba(0,0,0,0.08)}
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+    body{background:var(--abu);color:#1f2937}
+   .dashboard{max-width:480px;width:100%;margin:0 auto;padding:16px;min-height:100vh}
+   .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-top:8px}
+   .header p{font-size:13px;color:#6b7280}
+   .header h3{font-size:20px;font-weight:700}
+   .foto-profil{width:48px;height:48px;border-radius:50%;object-fit:cover;box-shadow:var(--shadow);border:2px solid var(--putih)}
+   .card{background:var(--putih);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+   .card h4{margin-bottom:14px;color:#111827;font-size:16px}
+   .data-row{display:flex;justify-content:space-between;padding:10px 0;font-size:15px;border-bottom:1px solid var(--abu)}
+   .data-row:last-child{border:none}
+   .data-row span{color:#6b7280}
+   .badge{padding:10px 14px;border-radius:12px;font-weight:600;text-align:center;margin-bottom:12px;font-size:14px}
+   .badge.kuning{background:#fef3c7;color:#92400e}
+   .badge.hijau{background:var(--hijau-muda);color:#065f46}
+   .badge.merah{background:#fee2e2;color:#991b1b}
+   .badge.abu{background:#e5e7eb;color:#374151}
+   .warning{background:#fef2f2;color:#b91c1c;padding:12px;border-radius:12px;font-size:13px;margin-bottom:12px;display:none}
+   .btn-primary,.btn-outline{width:100%;padding:15px;border-radius:14px;font-size:16px;font-weight:600;border:none;cursor:pointer}
+   .btn-primary{background:var(--hijau-pgm);color:var(--putih);margin-bottom:10px}
+   .btn-primary:disabled{background:#9ca3af;cursor:not-allowed}
+   .btn-outline{background:var(--putih);color:var(--hijau-pgm);border:2px solid var(--hijau-pgm)}
+   .donasi{background:var(--hijau-muda)}
+   .loading{text-align:center;padding:40px;color:#6b7280}
+  </style>
 </head>
 <body>
   <div class="dashboard">
-    <div class="header">
-      <div>
-        <p>Halo,</p>
-        <h3 id="namaUser">Loading...</h3>
-      </div>
-      <img id="fotoUser" src="https://via.placeholder.com/50" class="foto-profil" alt="Foto">
-    </div>
-
-    <div class="card">
-      <h4><i class="fa-solid fa-address-card"></i> Kartu Anggota</h4>
-      <div class="data-row"><span>No KTA</span><b id="noKta">-</b></div>
-      <div class="data-row"><span>Status Keaktifan</span><b id="statusAktif">-</b></div>
-      <div class="data-row"><span>Tahun Bergabung</span><b id="tahunGabung">-</b></div>
-      <div class="data-row"><span>Wilayah PC</span><b id="wilayah">-</b></div>
-    </div>
-
-    <div class="card">
-      <h4><i class="fa-solid fa-file-circle-check"></i> Status Validasi</h4>
-      <div id="badgeStatus" class="badge">Memuat...</div>
-      <div id="warningDitolak" class="warning" style="display:none">
-        <i class="fa-solid fa-triangle-exclamation"></i> Silahkan tinjau kembali bukti upload
-      </div>
-
-      <div class="btn-group">
-        <button id="btnBayar" class="btn-outline"><i class="fa-solid fa-upload"></i> Bayar</button>
-        <button id="btnDownload" class="btn-primary" disabled><i class="fa-solid fa-download"></i> Download Sertifikat</button>
-      </div>
-    </div>
-
-    <div class="card donasi">
-      <h4><i class="fa-solid fa-heart"></i> Donasi Pengembang</h4>
-      <p>Dukung Pengembangan Sistem PGM Indonesia KBB</p>
-      <div class="donasi-info">
-        <img src="https://i.imgur.com/danaLogo.png" alt="DANA" width="40">
+    <div id="loading" class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data...</div>
+    <div id="content" style="display:none">
+      <div class="header">
         <div>
-          <b>0812xxxxxxx</b>
-          <p>a.n Tim Media PGM IKBB</p>
+          <p>Assalamualaikum,</p>
+          <h3 id="namaUser">-</h3>
         </div>
+        <img id="fotoUser" class="foto-profil" src="https://via.placeholder.com/50" alt="Foto">
       </div>
-      <button class="btn-danger" onclick="window.open('https://link.dana.id/qr/@timmediapgmindonesiakbb','_blank')">
-        <i class="fa-solid fa-paper-plane"></i> Kirim Donasi
-      </button>
+      <div class="card">
+        <h4>Data Keanggotaan</h4>
+        <div class="data-row"><span>No. KTA</span><b id="noKta">-</b></div>
+        <div class="data-row"><span>Status</span><b id="statusAktif">-</b></div>
+        <div class="data-row"><span>Tahun Gabung</span><b id="tahunGabung">-</b></div>
+        <div class="data-row"><span>Wilayah</span><b id="wilayah">-</b></div>
+      </div>
+      <div class="card">
+        <h4>Status Pembayaran</h4>
+        <div id="badgeStatus" class="badge abu">Cek status...</div>
+        <div id="warningDitolak" class="warning">Data ditolak admin. Silakan upload ulang bukti bayar.</div>
+        <button id="btnBayar" class="btn-primary"><i class="fa-solid fa-upload"></i> Upload Bukti Bayar</button>
+        <button id="btnDownload" class="btn-outline" disabled><i class="fa-solid fa-download"></i> Download Sertifikat</button>
+      </div>
+      <div class="card donasi">
+        <h4>Program Donasi PGM KBB</h4>
+        <p style="font-size:14px;color:#374151;margin-bottom:12px">Dukung program dakwah dan pendidikan PGM KBB</p>
+        <button class="btn-primary" id="btnDonasi"><i class="fa-solid fa-hand-holding-heart"></i> Donasi Sekarang</button>
+      </div>
     </div>
-
-    <p class="version">©2026 Tim Media PGM Indonesia KBB | Portal V5</p>
   </div>
-
-  <?!= include('script');?>
+  <script>
+    window.onload = () => {
+      const nik = sessionStorage.getItem('nik');
+      if(!nik) return window.location.href = '?';
+      google.script.run.withSuccessHandler(data => {
+        if(!data) return alert('Data tidak ditemukan');
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+        document.getElementById('namaUser').innerText = data.nama;
+        document.getElementById('fotoUser').src = data.foto;
+        document.getElementById('noKta').innerText = data.noKta;
+        document.getElementById('statusAktif').innerText = data.statusAktif;
+        document.getElementById('tahunGabung').innerText = data.tahunGabung;
+        document.getElementById('wilayah').innerText = data.wilayah;
+        const badge = document.getElementById('badgeStatus');
+        const btnDownload = document.getElementById('btnDownload');
+        const status = (data.statusValidasi || '').toLowerCase();
+        if(!status) { badge.innerText = 'Belum Upload'; badge.className = 'badge abu'; }
+        else if(status === 'menunggu validasi') { badge.innerText = 'Menunggu Validasi'; badge.className = 'badge kuning'; }
+        else if(status === 'valid') {
+          badge.innerText = 'Valid'; badge.className = 'badge hijau';
+          btnDownload.disabled = false;
+          btnDownload.onclick = () => window.open(data.linkSertifikat, '_blank');
+        } else if(status === 'ditolak') {
+          badge.innerText = 'Ditolak'; badge.className = 'badge merah';
+          document.getElementById('warningDitolak').style.display = 'block';
+        }
+        document.getElementById('btnBayar').onclick = () => window.open(data.formBayar, '_blank');
+        document.getElementById('btnDonasi').onclick = () => window.open(data.formDonasi, '_blank');
+      }).getUserData(nik);
+    }
+  </script>
 </body>
 </html>
