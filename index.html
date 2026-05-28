@@ -2,18 +2,25 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="theme-color" content="#16a34a">
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <title>Login PGM KBB</title>
+  <title>Portal PGM KBB</title>
 </head>
 <body>
+  <!-- SPLASH SCREEN HP -->
   <div id="splash">
-    <img src="https://i.imgur.com/logoPGM.png" alt="Logo PGM" class="splash-logo">
-    <div class="spinner"></div>
+    <div class="splash-content">
+      <img src="https://i.imgur.com/logoPGM.png" alt="Logo PGM" class="splash-logo">
+      <h1>PGM INDONESIA<br>BANDUNG BARAT</h1>
+      <div class="spinner"></div>
+      <p class="splash-version">Portal V5</p>
+    </div>
   </div>
 
+  <!-- LOGIN PAGE -->
   <div class="container" id="loginPage" style="display:none">
     <div class="login-card">
       <img src="https://i.imgur.com/logoPGM.png" class="logo" alt="PGM">
@@ -21,12 +28,12 @@
 
       <div class="input-group">
         <i class="fa-solid fa-id-card"></i>
-        <input type="text" id="nik" placeholder="Masukan NIK">
+        <input type="tel" id="nik" placeholder="Masukan NIK" inputmode="numeric" pattern="[0-9]*">
       </div>
 
       <div class="input-group">
         <i class="fa-solid fa-lock"></i>
-        <input type="password" id="password" placeholder="Masukan Password">
+        <input type="password" id="password" placeholder="Masukan Password" inputmode="numeric">
       </div>
 
       <button class="btn-primary" onclick="handleLogin()">
@@ -41,7 +48,6 @@
           Daftar Sekarang
         </a>
       </div>
-    </div>
     <p class="version">©2026 Tim Media PGM Indonesia KBB | Portal V5</p>
   </div>
 
