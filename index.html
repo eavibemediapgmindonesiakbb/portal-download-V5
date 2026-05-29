@@ -140,7 +140,17 @@
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbwF7J-RQ-YMucOQR5GCs9MhwjA4a_o0qYfSH77HsKtZMqQAGitx7VK6-zggunGrfBDI/exec';
-
+        window.addEventListener('popstate', function(event) {
+            const user = localStorage.getItem('pgm_user');
+            if (user) {
+                if (confirm('Mau keluar dari aplikasi?')) {
+                    localStorage.removeItem('pgm_user');
+                    location.reload();
+                } else {
+                    history.pushState(null, null, location.href);
+                }
+            }
+        });
         setTimeout(() => {
             document.getElementById('splash').classList.add('hidden');
             checkLogin();
