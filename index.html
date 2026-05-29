@@ -4,78 +4,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PGM Indonesia KBB</title>
-  <link rel="icon" href="assets/icon/icon-192.png">
+  <link rel="icon" href="assets/icon/icon-192.png?v=3">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-    body { background: #f3f4f6; color: #1f2937; }
-.mobile { max-width: 480px; width: 100%; margin: 0 auto; background: #f3f4f6; min-height: 100vh; }
-
-    /* DASHBOARD DOANG - SESUAI GAMBAR */
-.dashboard { display: block; padding-bottom: 40px; }
-    
-    /* HEADER */
-.dash-header { 
-      background: #fff; padding: 12px 16px; display: flex; align-items: center; 
-      justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    }
-.dash-header.left { display: flex; align-items: center; gap: 10px; }
-.dash-header.left img { width: 36px; height: 36px; }
-.dash-header.left.info h3 { font-size: 15px; font-weight: 700; line-height: 1.2; color: #1f2937; }
-.dash-header.left.info p { font-size: 11px; color: #6b7280; }
-.dash-header.right { display: flex; gap: 14px; align-items: center; }
-.dash-header.right i { font-size: 20px; color: #9ca3af; }
-.dash-header.right.foto { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
-    
-.container { padding: 16px; }
-    
-    /* CARD IJO WELCOME */
-.welcome { 
-      background: #16a34a; color: #fff; 
-      border-radius: 16px 16px 16px 4px; padding: 18px; margin-bottom: 16px; position: relative;
-    }
-.welcome::after { content: '👋'; position: absolute; right: 16px; top: 16px; font-size: 26px; }
-.welcome h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.3px; }
-.welcome p { font-size: 12px; opacity: 0.95; line-height: 1.4; }
-    
-    /* CARD PROFIL */
-.card { background: #fff; border-radius: 16px; padding: 16px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-.card h4 { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #111827; }
-.profil-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; border-bottom: 1px solid #f3f4f6; }
-.profil-row:last-child { border-bottom: none; padding-bottom: 0; }
-.profil-row.label { font-size: 14px; color: #6b7280; }
-.profil-row.value { font-size: 14px; font-weight: 700; color: #111827; }
-.badge { display: inline-block; padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 600; }
-.badge.hijau { background: #dcfce7; color: #166534; }
-.badge.merah { background: #fee2e2; color: #991b1b; }
-    
-    /* BUTTON */
-.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-.btn-outline { padding: 11px; background: #fff; color: #374151; border: 2px solid #d1d5db; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; }
-.btn-outline:disabled { color: #374151; opacity: 1; }
-.btn-full { width: 100%; padding: 11px; background: #fff; color: #374151; border: 2px solid #d1d5db; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    
-    /* DONASI */
-.donasi { background: #dcfce7; border-radius: 16px; padding: 16px; text-align: center; }
-.donasi h4 { font-size: 15px; margin-bottom: 4px; font-weight: 700; }
-.donasi.heart { color: #ef4444; }
-.donasi p { font-size: 12px; color: #374151; margin-bottom: 12px; line-height: 1.5; }
-.donasi.dana { margin-bottom: 8px; }
-.donasi.dana img { height: 20px; }
-.donasi.norek { font-size: 20px; font-weight: 700; color: #16a34a; margin-bottom: 2px; }
-.donasi.an { font-size: 11px; color: #6b7280; }
-.btn-donasi { width: 100%; padding: 13px; background: #dc2626; color: #fff; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-.btn-logout { width: 100%; padding: 12px; background: #fee2e2; color: #991b1b; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+    body{background:#f3f4f6;color:#1f2937}
+.mobile{max-width:480px;width:100%;margin:0 auto;background:#f3f4f6;min-height:100vh}
+.dash-header{background:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.dash-header .left{display:flex;align-items:center;gap:10px}
+.dash-header .left img{width:36px!important;height:36px!important;flex-shrink:0}
+.dash-header .left .info h3{font-size:15px;font-weight:700;line-height:1.2;color:#1f2937}
+.dash-header .left .info p{font-size:11px;color:#6b7280}
+.dash-header .right{display:flex;gap:14px;align-items:center}
+.dash-header .right i{font-size:20px;color:#9ca3af}
+.dash-header .right .foto{width:32px!important;height:32px!important;border-radius:50%;object-fit:cover}
+.container{padding:16px}
+.welcome{background:#16a34a;color:#fff;border-radius:16px 16px 16px 4px;padding:18px;margin-bottom:16px;position:relative}
+.welcome::after{content:'👋';position:absolute;right:16px;top:16px;font-size:26px}
+.welcome h2{font-size:22px;font-weight:700;margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}
+.welcome p{font-size:12px;opacity:.95;line-height:1.4}
+.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.card h4{font-size:16px;font-weight:700;margin-bottom:12px;color:#111827}
+.profil-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f3f4f6}
+.profil-row:last-child{border-bottom:none;padding-bottom:0}
+.profil-row .label{font-size:14px;color:#6b7280}
+.profil-row .value{font-size:14px;font-weight:700;color:#111827}
+.badge{display:inline-block;padding:4px 12px;border-radius:16px;font-size:12px;font-weight:600}
+.badge.hijau{background:#dcfce7;color:#166534}
+.badge.merah{background:#fee2e2;color:#991b1b}
+.btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.btn-outline{padding:11px;background:#fff;color:#374151;border:2px solid #d1d5db;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer}
+.btn-outline:disabled{color:#374151;opacity:1}
+.btn-full{width:100%;padding:11px;background:#fff;color:#374151;border:2px solid #d1d5db;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px}
+.donasi{background:#dcfce7;border-radius:16px;padding:16px;text-align:center}
+.donasi h4{font-size:15px;margin-bottom:4px;font-weight:700}
+.donasi .heart{color:#ef4444}
+.donasi p{font-size:12px;color:#374151;margin-bottom:12px;line-height:1.5}
+.donasi .dana{margin-bottom:8px}
+.donasi .dana img{height:20px}
+.donasi .norek{font-size:20px;font-weight:700;color:#16a34a;margin-bottom:2px}
+.donasi .an{font-size:11px;color:#6b7280}
+.btn-donasi{width:100%;padding:13px;background:#dc2626;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-logout{width:100%;padding:12px;background:#fee2e2;color:#991b1b;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px}
   </style>
 </head>
 <body>
   <div class="mobile">
-    <!-- DASHBOARD LANGSUNG TAMPIL -->
-    <div class="dashboard" id="dashboard">
+    <div class="dashboard">
       <div class="dash-header">
         <div class="left">
-          <img src="assets/logo-pgm.png" alt="Logo">
+          <img src="assets/logo-pgm.png?v=3" alt="Logo">
           <div class="info">
             <h3>PGM Indonesia Bandung Barat</h3>
             <p>Perkumpulan Guru Madrasah (PGM)</p>
@@ -83,7 +62,7 @@
         </div>
         <div class="right">
           <i class="fa-regular fa-bell"></i>
-          <img class="foto" src="https://i.pravatar.cc/100?img=12" alt="Foto">
+          <img class="foto" src="https://i.pravatar.cc/100?img=12?v=3" alt="Foto">
         </div>
       </div>
       <div class="container">
