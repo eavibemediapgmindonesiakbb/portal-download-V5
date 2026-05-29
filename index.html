@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PGM Indonesia KBB</title>
-  <link rel="icon" href="assets/icon/icon-192.png?v=4">
+  <link rel="icon" href="assets/icon/icon-192.png?v=5">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#16a34a">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -14,12 +14,16 @@
     body{background:#f3f4f6;color:#1f2937}
 .mobile{max-width:480px;width:100%;margin:0 auto;background:#f3f4f6;min-height:100vh}
 
-    /* SPLASH SCREEN */
-.splash{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;background:linear-gradient(135deg,#16a34a,#15803d),url('assets/masjid-bg.svg?v=4');background-size:cover;background-position:center;background-blend-mode:overlay;color:#fff}
-.splash img{width:85px!important;height:85px!important;margin-bottom:16px;animation:pulse 1.5s infinite}
-.splash h1{font-size:22px;font-weight:700;margin-bottom:6px;text-shadow:0 2px 4px rgba(0,0,0,0.2)}
-.splash p{font-size:14px;opacity:.9}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+    /* SPLASH MODERN - BG PUTIH */
+.splash{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;background:#ffffff;position:relative}
+.splash .logo-wrap{position:relative;width:100px;height:100px;margin-bottom:24px}
+.splash .logo-wrap img{width:100px!important;height:100px!important;position:relative;z-index:2}
+.splash .logo-wrap::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:140px;height:140px;background:#16a34a;opacity:0.1;border-radius:50%;animation:ping 1.5s cubic-bezier(0,0,0.2,1) infinite}
+@keyframes ping{75%,100%{transform:translate(-50%,-50%) scale(1.5);opacity:0}}
+.splash h1{font-size:20px;font-weight:700;color:#16a34a;margin-bottom:6px}
+.splash p{font-size:13px;color:#6b7280;margin-bottom:32px}
+.splash .loader{width:40px;height:40px;border:4px solid #e5e7eb;border-top:4px solid #16a34a;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 
     /* LOGIN PAGE */
 .login{display:none;min-height:100vh;background:#f0fdf4;padding:40px 20px}
@@ -62,6 +66,7 @@
 .container{padding:16px}
 .welcome{background:#16a34a;color:#fff;border-radius:16px 16px 16px 4px;padding:18px;margin-bottom:16px;position:relative}
 .welcome::after{content:'👋';position:absolute;right:16px;top:16px;font-size:26px}
+.welcome .salam{font-size:13px;opacity:0.9;margin-bottom:2px;font-weight:500}
 .welcome h2{font-size:22px;font-weight:700;margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}
 .welcome p{font-size:12px;opacity:.95;line-height:1.4}
 .card{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
@@ -92,17 +97,20 @@
 </head>
 <body>
   <div class="mobile">
-    <!-- SPLASH -->
+    <!-- SPLASH MODERN -->
     <div class="splash" id="splash">
-      <img src="assets/logo-pgm.png?v=4" alt="Logo PGM">
+      <div class="logo-wrap">
+        <img src="assets/logo-pgm.png?v=5" alt="Logo PGM">
+      </div>
       <h1>PGM Indonesia KBB</h1>
       <p>Sistem Informasi Anggota</p>
+      <div class="loader"></div>
     </div>
 
     <!-- LOGIN -->
     <div class="login" id="loginPage">
       <div class="login-header">
-        <img src="assets/logo-pgm.png?v=4" alt="Logo">
+        <img src="assets/logo-pgm.png?v=5" alt="Logo">
         <h1>PGM Indonesia<br>Bandung Barat</h1>
         <p>Perkumpulan Guru Madrasah (PGM)</p>
         <div class="garis"></div>
@@ -150,7 +158,7 @@
     <div class="dashboard" id="dashboard">
       <div class="dash-header">
         <div class="left">
-          <img src="assets/logo-pgm.png?v=4" alt="Logo">
+          <img src="assets/logo-pgm.png?v=5" alt="Logo">
           <div class="info">
             <h3>PGM Indonesia Bandung Barat</h3>
             <p>Perkumpulan Guru Madrasah (PGM)</p>
@@ -158,11 +166,12 @@
         </div>
         <div class="right">
           <i class="fa-regular fa-bell"></i>
-          <img class="foto" src="https://i.pravatar.cc/100?img=12?v=4" alt="Foto">
+          <img class="foto" src="https://i.pravatar.cc/100?img=12?v=5" alt="Foto">
         </div>
       </div>
       <div class="container">
         <div class="welcome">
+          <div class="salam">Assalamualaikum.</div>
           <h2>EVAL AL FARUK</h2>
           <p>Selamat datang di Sistem Data Anggota<br>PGM Indonesia KBB</p>
         </div>
@@ -206,21 +215,16 @@
   </div>
 
   <script>
-    // DATA USER DEMO
-    const USER = {
-      nik: '3217090802760018',
-      password: '760018'
-    };
+    const USER = { nik: '3217090802760018', password: '760018' };
 
-    // SPLASH 1.5 DETIK -> LOGIN
+    // SPLASH 2 DETIK
     window.onload = () => {
       setTimeout(() => {
         document.getElementById('splash').style.display = 'none';
         document.getElementById('loginPage').style.display = 'block';
-      }, 1500);
+      }, 2000);
     }
 
-    // TOGGLE PASSWORD
     document.getElementById('togglePass').onclick = function() {
       const pass = document.getElementById('password');
       const type = pass.type === 'password'? 'text' : 'password';
@@ -228,7 +232,6 @@
       this.className = type === 'password'? 'fa-regular fa-eye mata' : 'fa-regular fa-eye-slash mata';
     }
 
-    // LOGIN
     function handleLogin() {
       const nik = document.getElementById('nik').value.trim();
       const pass = document.getElementById('password').value.trim();
