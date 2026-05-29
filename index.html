@@ -12,7 +12,6 @@
         body { background: #f1f5f9; }
         .hidden { display: none !important; }
         
-        /* Splash Screen */
         #splash { position: fixed; inset: 0; background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999; }
         #splash img { width: 120px; margin-bottom: 16px; }
         #splash h1 { font-size: 24px; font-weight: 700; }
@@ -20,7 +19,6 @@
         #splash .loader { margin-top: 20px; width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top: 4px solid #16a34a; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Login */
         #login-page { min-height: 100vh; background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); display: flex; justify-content: center; align-items: center; padding: 20px; }
         .login-card { background: #fff; padding: 32px 24px; border-radius: 16px; width: 100%; max-width: 360px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
         .login-card img { width: 80px; margin-bottom: 16px; }
@@ -30,16 +28,15 @@
         .form-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
         .form-group input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 16px; }
         .btn-primary { width: 100%; padding: 14px; background: #16a34a; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
-        .btn-primary:disabled { background: #94a3b8; }
+        .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
         #error-message { color: #ef4444; font-size: 14px; margin-top: 12px; height: 20px; }
 
-        /* Dashboard */
         #dashboard { padding-bottom: 20px; }
         .dashboard-header { background: #16a34a; color: #fff; padding: 16px; display: flex; align-items: center; gap: 12px; }
         .dashboard-header img { width: 40px; height: 40px; }
         .dashboard-header h2 { font-size: 16px; }
         .dashboard-header p { font-size: 12px; opacity: 0.9; }
-        .header-icons { margin-left: auto; display: flex; gap: 16px; font-size: 20px; }
+        .header-icons { margin-left: auto; display: flex; gap: 16px; font-size: 20px; cursor: pointer; }
         
         .welcome-card { background: #fff; margin: 16px; padding: 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .welcome-card p { font-size: 24px; font-weight: 700; }
@@ -47,10 +44,11 @@
         .welcome-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
 
         .profile-card { background: #fff; margin: 16px; padding: 16px; border-radius: 12px; display: flex; gap: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .profile-card img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; }
+        .profile-card img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
         .profile-info p { font-size: 14px; color: #64748b; margin-bottom: 2px; }
         .profile-info p strong { color: #0f172a; font-weight: 600; }
-        .profile-info p:not(:first-child) { margin-top: 10px; }
+        .profile-info > p { margin-top: 10px; }
+        .profile-info > p:first-child { margin-top: 0; }
         .badge { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; }
         .badge.green { background: #dcfce7; color: #166534; }
         .badge.red { background: #fee2e2; color: #991b1b; }
@@ -110,7 +108,7 @@
             </div>
             <div class="header-icons">
                 <i class="fas fa-bell"></i>
-                <i class="fas fa-bars" id="logout-btn"></i>
+                <i class="fas fa-bars" id="logout-btn" title="Logout"></i>
             </div>
         </header>
 
@@ -169,7 +167,7 @@
         // GANTI URL INI PAKE URL WEB APP DARI APPS SCRIPT LU
         const API_URL = 'https://script.google.com/macros/s/AKfycbwF7J-RQ-YMucOQR5GCs9MhwjA4a_o0qYfSH77HsKtZMqQAGitx7VK6-zggunGrfBDI/exec'; 
 
-        // Splash -> Login
+        // Splash -> Cek Login
         setTimeout(() => {
             document.getElementById('splash').classList.add('hidden');
             checkLogin();
@@ -181,6 +179,7 @@
                 showDashboard(JSON.parse(user));
             } else {
                 document.getElementById('login-page').classList.remove('hidden');
+                document.getElementById('dashboard').classList.add('hidden');
             }
         }
 
@@ -215,6 +214,7 @@
             })
             .catch(err => {
                 errorMsg.textContent = 'Gagal konek ke server. Cek URL API';
+                console.error(err);
             })
             .finally(() => {
                 loginBtn.textContent = 'Masuk';
@@ -226,39 +226,37 @@
             document.getElementById('login-page').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('hidden');
             
-            // Isi data dari Sheet
             document.getElementById('member-name').textContent = user.nama;
             document.getElementById('profile-name').textContent = user.nama;
             document.getElementById('profile-no-kta').textContent = user.no_kta || '-';
-            document.getElementById('profile-status').textContent = user.status_aktif || '-';
             document.getElementById('profile-tahun').textContent = user.tahun_gabung || '-';
             document.getElementById('profile-wilayah').textContent = user.wilayah_pc || '-';
             
-            // Badge Status warna ijo/merah
+            // Status badge warna ijo/merah
             const statusEl = document.getElementById('profile-status');
-            if(user.status_aktif && user.status_aktif.includes('AKTIF')) {
+            if(user.status_aktif && user.status_aktif.toUpperCase().includes('AKTIF')) {
                 statusEl.innerHTML = `<span class="badge green">${user.status_aktif}</span>`;
             } else {
-                statusEl.innerHTML = `<span class="badge red">${user.status_aktif}</span>`;
+                statusEl.innerHTML = `<span class="badge red">${user.status_aktif || '-'}</span>`;
             }
             
-            // Ganti foto kalo ada
-            if(user.foto && user.foto.includes('http')) {
+            // Ganti foto kalo ada URL
+            if(user.foto && user.foto.startsWith('http')) {
                 document.getElementById('member-photo').src = user.foto;
                 document.getElementById('profile-photo').src = user.foto;
             }
             
-            // Cek role admin
             if(user.role === 'admin') {
                 console.log('Login sebagai ADMIN');
-                // Nanti bisa tambah menu admin disini
             }
         }
 
         // Logout
         document.getElementById('logout-btn').addEventListener('click', function() {
-            localStorage.removeItem('pgm_user');
-            location.reload();
+            if(confirm('Yakin mau logout?')) {
+                localStorage.removeItem('pgm_user');
+                location.reload();
+            }
         });
 
         // Register Service Worker PWA
