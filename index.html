@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PGM Indonesia KBB</title>
-  <link rel="icon" href="assets/icon/icon-192.png?v=6">
+  <link rel="icon" href="assets/icon/icon-192.png?v=7">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#16a34a">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -82,16 +82,33 @@
 .btn-outline{padding:11px;background:#fff;color:#374151;border:2px solid #d1d5db;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer}
 .btn-outline:disabled{color:#374151;opacity:1}
 .btn-full{width:100%;padding:11px;background:#fff;color:#374151;border:2px solid #d1d5db;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px}
-.donasi{background:#dcfce7;border-radius:16px;padding:16px;text-align:center}
-.donasi h4{font-size:15px;margin-bottom:4px;font-weight:700}
-.donasi .heart{color:#ef4444}
-.donasi p{font-size:12px;color:#374151;margin-bottom:12px;line-height:1.5}
-.donasi .dana{margin-bottom:8px}
-.donasi .dana img{height:20px}
-.donasi .norek{font-size:20px;font-weight:700;color:#16a34a;margin-bottom:2px}
-.donasi .an{font-size:11px;color:#6b7280}
-.btn-donasi{width:100%;padding:13px;background:#dc2626;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-logout{width:100%;padding:12px;background:#fee2e2;color:#991b1b;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px}
+
+    /* DONASI VERSI HALUS */
+.donasi{background:#f0fdf4;border:1px solid #dcfce7;border-radius:16px;padding:20px;text-align:left;margin-bottom:14px}
+.donasi-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.donasi-header .logo-tim{width:36px!important;height:36px!important;border-radius:8px;object-fit:cover;background:#e5e7eb}
+.donasi-header h4{font-size:15px;font-weight:700;color:#166534;margin:0}
+.donasi-desc{font-size:12px;color:#374151;line-height:1.6;margin-bottom:16px;text-align:left}
+.donasi-box{background:#fff;border:1px dashed #bbf7d0;border-radius:12px;padding:14px;text-align:center;margin-bottom:14px}
+.dana-label{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:8px}
+.dana-label img{height:18px}
+.dana-label span{font-size:12px;font-weight:600;color:#1e40af}
+.donasi-box .norek{font-size:18px;font-weight:700;color:#16a34a;margin-bottom:2px;letter-spacing:0.5px}
+.donasi-box .an{font-size:11px;color:#6b7280}
+.btn-donasi-soft{width:100%;padding:12px;background:#fff;color:#16a34a;border:2px solid #16a34a;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;transition:.3s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-donasi-soft:hover{background:#16a34a;color:#fff}
+.btn-logout{width:100%;padding:12px;background:#f9fafb;color:#6b7280;border:1px solid #e5e7eb;border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px}
+
+    /* FOOTER */
+.footer{text-align:center;padding:24px 16px 16px;color:#9ca3af;font-size:11px;line-height:1.6}
+.footer p{margin:2px 0}
+
+    /* RESPONSIVE HP */
+@media (max-width:380px){
+  .donasi-desc{text-align:justify;font-size:11px}
+  .welcome h2{font-size:20px}
+  .welcome .salam{font-size:12px}
+}
 .error{background:#fee2e2;color:#991b1b;padding:12px;border-radius:8px;font-size:14px;margin-bottom:16px;display:none}
   </style>
 </head>
@@ -100,7 +117,7 @@
     <!-- SPLASH MODERN -->
     <div class="splash" id="splash">
       <div class="logo-wrap">
-        <img src="assets/logo-pgm.png?v=6" alt="Logo PGM">
+        <img src="assets/logo-pgm.png?v=7" alt="Logo PGM">
       </div>
       <h1>PGM Indonesia KBB</h1>
       <p>Sistem Informasi Anggota</p>
@@ -110,7 +127,7 @@
     <!-- LOGIN -->
     <div class="login" id="loginPage">
       <div class="login-header">
-        <img src="assets/logo-pgm.png?v=6" alt="Logo">
+        <img src="assets/logo-pgm.png?v=7" alt="Logo">
         <h1>PGM Indonesia<br>Bandung Barat</h1>
         <p>Perkumpulan Guru Madrasah (PGM)</p>
         <div class="garis"></div>
@@ -158,7 +175,7 @@
     <div class="dashboard" id="dashboard">
       <div class="dash-header">
         <div class="left">
-          <img src="assets/logo-pgm.png?v=6" alt="Logo">
+          <img src="assets/logo-pgm.png?v=7" alt="Logo">
           <div class="info">
             <h3>PGM Indonesia Bandung Barat</h3>
             <p>Perkumpulan Guru Madrasah (PGM)</p>
@@ -166,7 +183,7 @@
         </div>
         <div class="right">
           <i class="fa-regular fa-bell"></i>
-          <img class="foto" src="https://i.pravatar.cc/100?img=12?v=6" alt="Foto">
+          <img class="foto" src="https://i.pravatar.cc/100?img=12?v=7" alt="Foto">
         </div>
       </div>
       <div class="container">
@@ -199,17 +216,36 @@
           <button class="btn-outline">Bayar</button>
         </div>
         <button class="btn-full"><i class="fa-solid fa-lock"></i> Download Sertifikat Anggota</button>
+        
+        <!-- BAGIAN DONASI - UDAH HALUS -->
         <div class="donasi">
-          <h4><span class="heart">❤️</span> Donasi Pengembang</h4>
-          <p>Dukung Pengembangan Sistem PGM Indonesia KBB</p>
-          <div class="dana">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="DANA">
+          <div class="donasi-header">
+            <img src="https://i.imgur.com/xxxxxx.png" alt="Logo Tim Media" class="logo-tim">
+            <h4>Dukung Pengembangan</h4>
           </div>
-          <div class="norek">0812xxxxxxx</div>
-          <div class="an">a.n Tim Media PGM IKBB</div>
+          <p class="donasi-desc">Sistem ini dikelola secara swadaya oleh Tim Media PGM IKBB. Donasi Anda membantu biaya server, domain, dan pengembangan fitur agar anggota makin nyaman.</p>
+          
+          <div class="donasi-box">
+            <div class="dana-label">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="DANA">
+              <span>DANA</span>
+            </div>
+            <div class="norek">0812xxxxxxx</div>
+            <div class="an">a.n Tim Media PGM IKBB</div>
+          </div>
+          
+          <button class="btn-donasi-soft" onclick="window.open('https://link.dana.id/qr/xxx')">
+            <i class="fa-solid fa-hand-holding-heart"></i> Salurkan Dukungan
+          </button>
         </div>
-        <button class="btn-donasi"><i class="fa-solid fa-heart"></i> Kirim Donasi</button>
+
         <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+
+        <!-- FOOTER LISENSI -->
+        <div class="footer">
+          <p>&copy; 2026 tim_media_pgm_indonesia_kbb</p>
+          <p>Versi 1.0.0</p>
+        </div>
       </div>
     </div>
   </div>
