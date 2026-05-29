@@ -4,13 +4,53 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PGM Indonesia KBB</title>
-  <link rel="icon" href="assets/icon/icon-192.png?v=3">
+  <link rel="icon" href="assets/icon/icon-192.png?v=4">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#16a34a">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
     *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
     body{background:#f3f4f6;color:#1f2937}
 .mobile{max-width:480px;width:100%;margin:0 auto;background:#f3f4f6;min-height:100vh}
+
+    /* SPLASH SCREEN */
+.splash{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;background:linear-gradient(135deg,#16a34a,#15803d),url('assets/masjid-bg.svg?v=4');background-size:cover;background-position:center;background-blend-mode:overlay;color:#fff}
+.splash img{width:85px!important;height:85px!important;margin-bottom:16px;animation:pulse 1.5s infinite}
+.splash h1{font-size:22px;font-weight:700;margin-bottom:6px;text-shadow:0 2px 4px rgba(0,0,0,0.2)}
+.splash p{font-size:14px;opacity:.9}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+
+    /* LOGIN PAGE */
+.login{display:none;min-height:100vh;background:#f0fdf4;padding:40px 20px}
+.login-header{text-align:center;margin-bottom:40px}
+.login-header img{width:70px!important;height:70px!important;margin:0 auto 16px}
+.login-header h1{color:#16a34a;font-size:26px;font-weight:700;line-height:1.3}
+.login-header p{color:#6b7280;font-size:14px;margin-top:8px}
+.login-header .garis{width:50px;height:3px;background:#f59e0b;margin:16px auto;border-radius:2px}
+.login-header .sub{font-size:13px;color:#6b7280;line-height:1.6}
+.login-card{background:#fff;border-radius:16px;padding:28px 20px;box-shadow:0 4px 16px rgba(0,0,0,0.06);margin-bottom:32px}
+.login-card h2{text-align:center;color:#16a34a;font-size:22px;font-weight:700;margin-bottom:6px}
+.login-card .subtitle{text-align:center;color:#6b7280;font-size:14px;margin-bottom:24px}
+.form-group{margin-bottom:16px;position:relative}
+.form-group i{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#6b7280;font-size:16px}
+.form-group input{width:100%;padding:14px 16px 14px 48px;border:2px solid #e5e7eb;border-radius:12px;font-size:15px;transition:all .3s;background:#f9fafb}
+.form-group input:focus{outline:none;border-color:#16a34a;background:#fff}
+.form-group .mata{position:absolute;right:16px;top:50%;transform:translateY(-50%);cursor:pointer;left:auto}
+.lupa{text-align:right;margin-bottom:20px}
+.lupa a{color:#16a34a;font-size:13px;text-decoration:none;font-weight:500}
+.btn-login{width:100%;padding:16px;background:#16a34a;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;transition:.3s}
+.btn-login:hover{background:#15803d}
+.btn-login:disabled{background:#9ca3af;cursor:not-allowed}
+.daftar{text-align:center;margin-top:20px;font-size:14px;color:#6b7280}
+.daftar a{color:#16a34a;font-weight:600;text-decoration:none}
+.fitur{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center}
+.fitur-item i{font-size:28px;color:#16a34a;margin-bottom:8px}
+.fitur-item h4{font-size:13px;font-weight:600;margin-bottom:4px}
+.fitur-item p{font-size:11px;color:#6b7280;line-height:1.4}
+
+    /* DASHBOARD */
+.dashboard{display:none;padding-bottom:40px}
 .dash-header{background:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
 .dash-header .left{display:flex;align-items:center;gap:10px}
 .dash-header .left img{width:36px!important;height:36px!important;flex-shrink:0}
@@ -47,14 +87,70 @@
 .donasi .an{font-size:11px;color:#6b7280}
 .btn-donasi{width:100%;padding:13px;background:#dc2626;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-logout{width:100%;padding:12px;background:#fee2e2;color:#991b1b;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px}
+.error{background:#fee2e2;color:#991b1b;padding:12px;border-radius:8px;font-size:14px;margin-bottom:16px;display:none}
   </style>
 </head>
 <body>
   <div class="mobile">
-    <div class="dashboard">
+    <!-- SPLASH -->
+    <div class="splash" id="splash">
+      <img src="assets/logo-pgm.png?v=4" alt="Logo PGM">
+      <h1>PGM Indonesia KBB</h1>
+      <p>Sistem Informasi Anggota</p>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="login" id="loginPage">
+      <div class="login-header">
+        <img src="assets/logo-pgm.png?v=4" alt="Logo">
+        <h1>PGM Indonesia<br>Bandung Barat</h1>
+        <p>Perkumpulan Guru Madrasah (PGM)</p>
+        <div class="garis"></div>
+        <p class="sub">Bergerak Bersama Memberi Manfaat<br>Suara Guru Suara Perubahan</p>
+      </div>
+      
+      <div class="login-card">
+        <h2>Selamat Datang!</h2>
+        <p class="subtitle">Silakan masuk untuk melanjutkan</p>
+        <div class="error" id="errorMsg"></div>
+        <div class="form-group">
+          <i class="fa-solid fa-id-card"></i>
+          <input type="text" id="nik" placeholder="Nomor Induk Kependudukan (NIK)" maxlength="16" value="3217090802760018">
+        </div>
+        <div class="form-group">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="password" placeholder="Password" value="760018">
+          <i class="fa-regular fa-eye mata" id="togglePass"></i>
+        </div>
+        <div class="lupa"><a href="#" onclick="alert('Hubungi Admin WA: 0812xxxxxxx')">Lupa Password?</a></div>
+        <button class="btn-login" id="btnLogin" onclick="handleLogin()"><i class="fa-solid fa-right-to-bracket"></i> Masuk</button>
+        <div class="daftar">Belum punya akun? <a href="#" onclick="alert('Daftar via Google Form')">Daftar Sekarang</a></div>
+      </div>
+
+      <div class="fitur">
+        <div class="fitur-item">
+          <i class="fa-solid fa-shield-halved"></i>
+          <h4>Data Aman</h4>
+          <p>Informasi Anda terlindungi</p>
+        </div>
+        <div class="fitur-item">
+          <i class="fa-solid fa-bolt"></i>
+          <h4>Mudah & Cepat</h4>
+          <p>Akses sistem lebih mudah</p>
+        </div>
+        <div class="fitur-item">
+          <i class="fa-solid fa-circle-check"></i>
+          <h4>Terpercaya</h4>
+          <p>Digunakan oleh ribuan guru madrasah</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="dashboard" id="dashboard">
       <div class="dash-header">
         <div class="left">
-          <img src="assets/logo-pgm.png?v=3" alt="Logo">
+          <img src="assets/logo-pgm.png?v=4" alt="Logo">
           <div class="info">
             <h3>PGM Indonesia Bandung Barat</h3>
             <p>Perkumpulan Guru Madrasah (PGM)</p>
@@ -62,7 +158,7 @@
         </div>
         <div class="right">
           <i class="fa-regular fa-bell"></i>
-          <img class="foto" src="https://i.pravatar.cc/100?img=12?v=3" alt="Foto">
+          <img class="foto" src="https://i.pravatar.cc/100?img=12?v=4" alt="Foto">
         </div>
       </div>
       <div class="container">
@@ -104,9 +200,72 @@
           <div class="an">a.n Tim Media PGM IKBB</div>
         </div>
         <button class="btn-donasi"><i class="fa-solid fa-heart"></i> Kirim Donasi</button>
-        <button class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+        <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
       </div>
     </div>
   </div>
+
+  <script>
+    // DATA USER DEMO
+    const USER = {
+      nik: '3217090802760018',
+      password: '760018'
+    };
+
+    // SPLASH 1.5 DETIK -> LOGIN
+    window.onload = () => {
+      setTimeout(() => {
+        document.getElementById('splash').style.display = 'none';
+        document.getElementById('loginPage').style.display = 'block';
+      }, 1500);
+    }
+
+    // TOGGLE PASSWORD
+    document.getElementById('togglePass').onclick = function() {
+      const pass = document.getElementById('password');
+      const type = pass.type === 'password'? 'text' : 'password';
+      pass.type = type;
+      this.className = type === 'password'? 'fa-regular fa-eye mata' : 'fa-regular fa-eye-slash mata';
+    }
+
+    // LOGIN
+    function handleLogin() {
+      const nik = document.getElementById('nik').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      const btn = document.getElementById('btnLogin');
+      const err = document.getElementById('errorMsg');
+      
+      err.style.display = 'none';
+      if(!nik ||!pass) {
+        err.innerText = 'NIK dan Password wajib diisi';
+        err.style.display = 'block';
+        return;
+      }
+      
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
+      
+      setTimeout(() => {
+        if(nik === USER.nik && pass === USER.password) {
+          document.getElementById('loginPage').style.display = 'none';
+          document.getElementById('dashboard').style.display = 'block';
+        } else {
+          err.innerText = 'NIK atau Password salah';
+          err.style.display = 'block';
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk';
+        }
+      }, 800);
+    }
+
+    function logout() {
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('loginPage').style.display = 'block';
+      document.getElementById('nik').value = '';
+      document.getElementById('password').value = '';
+      document.getElementById('btnLogin').disabled = false;
+      document.getElementById('btnLogin').innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk';
+    }
+  </script>
 </body>
 </html>
