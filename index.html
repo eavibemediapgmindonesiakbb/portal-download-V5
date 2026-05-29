@@ -29,14 +29,15 @@
         .form-group input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 16px; }
         .btn-primary { width: 100%; padding: 14px; background: #16a34a; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
         .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
-        #error-message { color: #ef4444; font-size: 14px; margin-top: 12px; height: 20px; }
+        #error-message { color: #ef4444; font-size: 14px; margin-top: 12px; min-height: 20px; }
 
         #dashboard { padding-bottom: 20px; }
         .dashboard-header { background: #16a34a; color: #fff; padding: 16px; display: flex; align-items: center; gap: 12px; }
         .dashboard-header img { width: 40px; height: 40px; }
         .dashboard-header h2 { font-size: 16px; }
         .dashboard-header p { font-size: 12px; opacity: 0.9; }
-        .header-icons { margin-left: auto; display: flex; gap: 16px; font-size: 20px; cursor: pointer; }
+        .header-icons { margin-left: auto; display: flex; gap: 16px; font-size: 20px; align-items: center; }
+        .btn-logout { background:#ef4444; color:#fff; border:none; padding:8px 12px; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer; display: flex; align-items: center; gap: 6px; }
         
         .welcome-card { background: #fff; margin: 16px; padding: 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .welcome-card p { font-size: 24px; font-weight: 700; }
@@ -108,7 +109,9 @@
             </div>
             <div class="header-icons">
                 <i class="fas fa-bell"></i>
-                <i class="fas fa-bars" id="logout-btn" title="Logout"></i>
+                <button class="btn-logout" id="logout-btn">
+                    <i class="fas fa-right-from-bracket"></i> Keluar
+                </button>
             </div>
         </header>
 
@@ -165,22 +168,30 @@
 
     <script>
         // GANTI URL INI PAKE URL WEB APP DARI APPS SCRIPT LU
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwF7J-RQ-YMucOQR5GCs9MhwjA4a_o0qYfSH77HsKtZMqQAGitx7VK6-zggunGrfBDI/exec'; 
+        const API_URL = 'https://script.google.com/macros/s/AKfycbx.../exec'; 
 
         // Splash -> Cek Login
         setTimeout(() => {
             document.getElementById('splash').classList.add('hidden');
             checkLogin();
-        }, 2000);
+        }, 1500);
 
         function checkLogin() {
             const user = localStorage.getItem('pgm_user');
-            if (user) {
-                showDashboard(JSON.parse(user));
-            } else {
-                document.getElementById('login-page').classList.remove('hidden');
-                document.getElementById('dashboard').classList.add('hidden');
+            if (user && user !== 'null' && user !== 'undefined') {
+                try {
+                    const userData = JSON.parse(user);
+                    if (userData.status === 'success') {
+                        showDashboard(userData);
+                        return;
+                    }
+                } catch(e) {
+                    localStorage.removeItem('pgm_user');
+                }
             }
+            // Kalo ga ada data / data rusak, tampilkan login
+            document.getElementById('login-page').classList.remove('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
         }
 
         // Login Process
@@ -226,40 +237,34 @@
             document.getElementById('login-page').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('hidden');
             
-            document.getElementById('member-name').textContent = user.nama;
-            document.getElementById('profile-name').textContent = user.nama;
+            document.getElementById('member-name').textContent = user.nama || '-';
+            document.getElementById('profile-name').textContent = user.nama || '-';
             document.getElementById('profile-no-kta').textContent = user.no_kta || '-';
             document.getElementById('profile-tahun').textContent = user.tahun_gabung || '-';
             document.getElementById('profile-wilayah').textContent = user.wilayah_pc || '-';
             
-            // Status badge warna ijo/merah
             const statusEl = document.getElementById('profile-status');
-            if(user.status_aktif && user.status_aktif.toUpperCase().includes('AKTIF')) {
-                statusEl.innerHTML = `<span class="badge green">${user.status_aktif}</span>`;
+            const statusAktif = user.status_aktif || '';
+            if(statusAktif.toUpperCase().includes('AKTIF')) {
+                statusEl.innerHTML = `<span class="badge green">${statusAktif}</span>`;
             } else {
-                statusEl.innerHTML = `<span class="badge red">${user.status_aktif || '-'}</span>`;
+                statusEl.innerHTML = `<span class="badge red">${statusAktif || '-'}</span>`;
             }
             
-            // Ganti foto kalo ada URL
             if(user.foto && user.foto.startsWith('http')) {
                 document.getElementById('member-photo').src = user.foto;
                 document.getElementById('profile-photo').src = user.foto;
-            }
-            
-            if(user.role === 'admin') {
-                console.log('Login sebagai ADMIN');
             }
         }
 
         // Logout
         document.getElementById('logout-btn').addEventListener('click', function() {
-            if(confirm('Yakin mau logout?')) {
+            if(confirm('Yakin mau keluar?')) {
                 localStorage.removeItem('pgm_user');
                 location.reload();
             }
         });
 
-        // Register Service Worker PWA
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js');
         }
