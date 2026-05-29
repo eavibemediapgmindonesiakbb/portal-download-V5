@@ -10,57 +10,85 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: #f8fafc; }
-        .hidden { display: none !important; }
-        
-        /* SPLASH SCREEN */
+        body { background: #f1f5f9; }
+       .hidden { display: none!important; }
+
+        /* SPLASH + LOGIN - SAMA KAYAK TADI */
         #splash { position: fixed; inset: 0; background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999; }
         #splash img { width: 120px; margin-bottom: 16px; }
         #splash h1 { font-size: 24px; font-weight: 700; color: #166534; }
         #splash p { color: #64748b; }
-        #splash .loader { margin-top: 20px; width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top: 4px solid #16a34a; border-radius: 50%; animation: spin 1s linear infinite; }
+        #splash.loader { margin-top: 20px; width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top: 4px solid #16a34a; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* LOGIN PAGE BARU */
         #login-page { min-height: 100vh; background: #f8fafc; padding: 20px; }
-        .login-header { text-align: center; padding: 40px 20px 20px; }
-        .login-header img { width: 80px; margin-bottom: 16px; }
-        .login-header h1 { font-size: 24px; font-weight: 700; color: #166534; line-height: 1.2; }
-        .login-header p { color: #475569; font-size: 14px; margin-top: 8px; }
-        .login-header .line { width: 60px; height: 3px; background: #f59e0b; margin: 12px auto; }
-        .login-header .tagline { font-size: 13px; color: #64748b; line-height: 1.5; }
-
-        .login-card { background: #fff; padding: 24px; border-radius: 16px; width: 100%; max-width: 400px; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .login-card h2 { font-size: 20px; font-weight: 700; text-align: center; margin-bottom: 4px; color: #0f172a; }
-        .login-card .subtitle { font-size: 14px; color: #64748b; text-align: center; margin-bottom: 24px; }
-        
-        .form-group { margin-bottom: 16px; position: relative; }
-        .form-group input { width: 100%; padding: 14px 14px 14px 45px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 15px; background: #f8fafc; }
-        .form-group input:focus { outline: none; border-color: #16a34a; background: #fff; }
-        .form-group i { position: absolute; left: 16px; top: 16px; color: #16a34a; font-size: 16px; }
-        .toggle-password { left: auto !important; right: 16px !important; cursor: pointer; color: #94a3b8 !important; }
-
-        .lupa-password { text-align: right; font-size: 13px; color: #16a34a; font-weight: 500; margin: -8px 0 16px; cursor: pointer; }
-        .btn-primary { width: 100%; padding: 14px; background: #16a34a; color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
+       .login-header { text-align: center; padding: 40px 20px 20px; }
+       .login-header img { width: 80px; margin-bottom: 16px; }
+       .login-header h1 { font-size: 24px; font-weight: 700; color: #166534; line-height: 1.2; }
+       .login-header p { color: #475569; font-size: 14px; margin-top: 8px; }
+       .login-header.line { width: 60px; height: 3px; background: #f59e0b; margin: 12px auto; }
+       .login-header.tagline { font-size: 13px; color: #64748b; line-height: 1.5; }
+       .login-card { background: #fff; padding: 24px; border-radius: 16px; width: 100%; max-width: 400px; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+       .login-card h2 { font-size: 20px; font-weight: 700; text-align: center; margin-bottom: 4px; color: #0f172a; }
+       .login-card.subtitle { font-size: 14px; color: #64748b; text-align: center; margin-bottom: 24px; }
+       .form-group { margin-bottom: 16px; position: relative; }
+       .form-group input { width: 100%; padding: 14px 14px 14px 45px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 15px; background: #f8fafc; }
+       .form-group input:focus { outline: none; border-color: #16a34a; background: #fff; }
+       .form-group i { position: absolute; left: 16px; top: 16px; color: #16a34a; font-size: 16px; }
+       .toggle-password { left: auto!important; right: 16px!important; cursor: pointer; color: #94a3b8!important; }
+       .lupa-password { text-align: right; font-size: 13px; color: #16a34a; font-weight: 500; margin: -8px 0 16px; cursor: pointer; }
+       .btn-primary { width: 100%; padding: 14px; background: #16a34a; color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; }
+       .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
         #error-message { color: #ef4444; font-size: 14px; margin-top: 12px; min-height: 20px; text-align: center; }
-        
-        .daftar-link { text-align: center; font-size: 14px; color: #64748b; margin-top: 20px; }
-        .daftar-link a { color: #16a34a; font-weight: 600; text-decoration: none; }
+       .daftar-link { text-align: center; font-size: 14px; color: #64748b; margin-top: 20px; }
+       .daftar-link a { color: #16a34a; font-weight: 600; text-decoration: none; }
+       .benefits { max-width: 400px; margin: 32px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; text-align: center; }
+       .benefit-item i { font-size: 24px; color: #16a34a; background: #dcfce7; width: 50px; height: 50px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+       .benefit-item h4 { font-size: 13px; font-weight: 600; color: #0f172a; margin-bottom: 4px; }
+       .benefit-item p { font-size: 11px; color: #64748b; line-height: 1.4; }
 
-        .benefits { max-width: 400px; margin: 32px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; text-align: center; }
-        .benefit-item i { font-size: 24px; color: #16a34a; background: #dcfce7; width: 50px; height: 50px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 8px; }
-        .benefit-item h4 { font-size: 13px; font-weight: 600; color: #0f172a; margin-bottom: 4px; }
-        .benefit-item p { font-size: 11px; color: #64748b; line-height: 1.4; }
-
-        /* DASHBOARD - Biarin dulu, nanti part 2 */
+        /* DASHBOARD USER - LENGKAP */
         #dashboard { padding-bottom: 20px; }
-        .dashboard-header { background: #16a34a; color: #fff; padding: 16px; display: flex; align-items: center; gap: 12px; }
-        .dashboard-header img { width: 40px; height: 40px; }
-        .dashboard-header h2 { font-size: 16px; }
-        .dashboard-header p { font-size: 12px; opacity: 0.9; }
-        .header-icons { margin-left: auto; display: flex; gap: 12px; font-size: 20px; align-items: center; }
-        .header-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.3); }
+       .dashboard-header { background: #16a34a; color: #fff; padding: 16px; display: flex; align-items: center; gap: 12px; }
+       .dashboard-header img { width: 40px; height: 40px; }
+       .dashboard-header h2 { font-size: 16px; }
+       .dashboard-header p { font-size: 12px; opacity: 0.9; }
+       .header-icons { margin-left: auto; display: flex; gap: 12px; font-size: 20px; align-items: center; }
+       .header-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.3); }
+
+       .welcome-card { background: #fff; margin: 16px; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+       .welcome-card p { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+       .welcome-card h3 { font-size: 18px; font-weight: 600; color: #16a34a; }
+
+       .profile-card { background: #fff; margin: 16px; padding: 16px; border-radius: 12px; display: flex; gap: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+       .profile-card img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+       .profile-info p { font-size: 14px; color: #64748b; margin-bottom: 2px; }
+       .profile-info p strong { color: #0f172a; font-weight: 600; }
+       .profile-info > p { margin-top: 10px; }
+       .profile-info > p:first-child { margin-top: 0; }
+       .badge { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; }
+       .badge.green { background: #dcfce7; color: #166534; }
+       .badge.red { background: #fee2e2; color: #991b1b; }
+
+       .action-buttons { margin: 16px; display: grid; gap: 10px; }
+       .btn { padding: 14px; border: none; border-radius: 8px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; }
+       .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+       .btn-secondary { background: #e2e8f0; color: #64748b; }
+       .btn-success { background: #16a34a; color: #fff; }
+       .btn-warning { background: #f59e0b; color: #fff; }
+       .btn-danger { background: #dc2626; color: #fff; }
+       .btn-outline { background: #fff; color: #16a34a; border: 2px solid #16a34a; }
+       .btn-logout { margin: 16px; padding: 14px; background: #ef4444; color: #fff; border: none; border-radius: 8px; font-weight: 600; width: calc(100% - 32px); }
+
+       .donation-card { background: #fff; margin: 16px; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+       .donation-card img { width: 60px; margin-bottom: 12px; }
+       .donation-card h3 { font-size: 16px; margin-bottom: 8px; }
+       .donation-card p { font-size: 14px; color: #475569; text-align: center; margin-bottom: 16px; }
+       .dana-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; display: flex; gap: 12px; text-align: left; margin-bottom: 16px; }
+       .dana-box i { font-size: 24px; color: #3b82f6; }
+       .dana-box p { margin: 0; font-size: 13px; }
+
+       .footer { text-align: center; padding: 20px 16px; font-size: 11px; color: #64748b; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     </style>
 </head>
 <body>
@@ -71,7 +99,6 @@
         <div class="loader"></div>
     </div>
 
-    <!-- LOGIN PAGE BARU -->
     <div id="login-page" class="hidden">
         <div class="login-header">
             <img src="assets/logo-pgm.png" alt="Logo PGM">
@@ -124,7 +151,7 @@
         </div>
     </div>
 
-    <!-- DASHBOARD - NANTI PART 2 -->
+    <!-- DASHBOARD LENGKAP -->
     <main id="dashboard" class="hidden">
         <header class="dashboard-header">
             <img src="assets/logo-pgm.png" alt="Logo PGM">
@@ -137,11 +164,67 @@
                 <img id="header-photo" class="header-avatar" src="https://i.pravatar.cc/80" alt="Foto">
             </div>
         </header>
-        <!-- Isi dashboard nanti di Part 2 -->
+
+        <div class="welcome-card">
+            <p>Assalamualaikum.</p>
+            <h3 id="member-name">-</h3>
+        </div>
+
+        <div class="profile-card">
+            <img id="profile-photo" src="https://i.pravatar.cc/80" alt="Foto Profil">
+            <div class="profile-info">
+                <p><strong>Nama Lengkap</strong></p>
+                <p id="profile-name">-</p>
+                <p><strong>No. KTA</strong></p>
+                <p id="profile-no-kta">-</p>
+                <p><strong>Status Keaktifan</strong></p>
+                <p id="profile-status">-</p>
+                <p><strong>Tahun Bergabung</strong></p>
+                <p id="profile-tahun">-</p>
+                <p><strong>Wilayah PC</strong></p>
+                <p id="profile-wilayah">-</p>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-secondary" id="status-btn" disabled>
+                <i class="fas fa-clock"></i> <span id="status-text">Memuat...</span>
+            </button>
+            <button class="btn btn-success" id="upload-btn">
+                <i class="fas fa-upload"></i> Upload Bukti Transfer
+            </button>
+            <button class="btn btn-secondary" id="download-btn" disabled>
+                <i class="fas fa-download"></i> Download Sertifikat
+            </button>
+        </div>
+
+        <div class="donation-card">
+            <img src="assets/logo-pgm.png" alt="Logo Tim Media">
+            <h3>Donasi Tim Media PGM Indonesia KBB</h3>
+            <p>Seluruh donasi dikelola secara swadaya oleh Tim Media PGM Indonesia Kab. Bandung Barat untuk mendukung dakwah digital dan kegiatan organisasi.</p>
+            <div class="dana-box">
+                <i class="fas fa-wallet"></i>
+                <div>
+                    <p><strong>DANA</strong></p>
+                    <p>No. Rek: 085215547300</p>
+                    <p>a.n Tim Media PGM Indonesia KBB</p>
+                </div>
+            </div>
+            <button class="btn btn-outline">Salurkan Dukungan</button>
+        </div>
+
+        <button class="btn-logout" id="logout-btn">
+            <i class="fas fa-right-from-bracket"></i> Keluar
+        </button>
+
+        <div class="footer">
+            &copy; 2026 Tim Media PGM Indonesia KBB • Versi 1.0.0
+        </div>
     </main>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwF7J-RQ-YMucOQR5GCs9MhwjA4a_o0qYfSH77HsKtZMqQAGitx7VK6-zggunGrfBDI/exec'; 
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwF7J-RQ-YMucOQR5GCs9MhwjA4a_o0qYfSH77HsKtZMqQAGitx7VK6-zggunGrfBDI/exec';
+        const FORM_UPLOAD = 'https://forms.gle/ipBiTuUzm5KR9cVW6';
 
         setTimeout(() => {
             document.getElementById('splash').classList.add('hidden');
@@ -150,7 +233,7 @@
 
         document.getElementById('togglePassword').addEventListener('click', function() {
             const password = document.getElementById('password');
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            const type = password.getAttribute('type') === 'password'? 'text' : 'password';
             password.setAttribute('type', type);
             this.classList.toggle('fa-eye');
             this.classList.toggle('fa-eye-slash');
@@ -158,14 +241,11 @@
 
         function checkLogin() {
             const user = localStorage.getItem('pgm_user');
-            if (user && user !== 'null' && user !== 'undefined') {
+            if (user && user!== 'null' && user!== 'undefined') {
                 try {
                     const userData = JSON.parse(user);
                     if (userData.status === 'success') {
-                        // Nanti redirect ke dashboard user/admin
-                        console.log('Udah login:', userData);
-                        document.getElementById('login-page').classList.add('hidden');
-                        document.getElementById('dashboard').classList.remove('hidden');
+                        showDashboard(userData);
                         return;
                     }
                 } catch(e) {
@@ -182,7 +262,7 @@
             const password = document.getElementById('password').value;
             const errorMsg = document.getElementById('error-message');
             const loginBtn = document.getElementById('login-btn');
-            
+
             errorMsg.textContent = '';
             loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             loginBtn.disabled = true;
@@ -196,13 +276,12 @@
                     password: password
                 })
             })
-            .then(res => res.json())
-            .then(data => {
+           .then(res => res.json())
+           .then(data => {
                 if (data.status === 'success') {
                     localStorage.setItem('pgm_user', JSON.stringify(data));
-                    // Cek role buat redirect
                     if (data.role === 'admin') {
-                        window.location.href = 'admin.html'; // Nanti kita bikin
+                        window.location.href = 'admin.html';
                     } else {
                         location.reload();
                     }
@@ -210,19 +289,99 @@
                     errorMsg.textContent = data.message || 'NIK atau Password salah';
                 }
             })
-            .catch(err => {
+           .catch(err => {
                 errorMsg.textContent = 'Gagal konek ke server. Cek koneksi!';
                 console.error(err);
             })
-            .finally(() => {
+           .finally(() => {
                 loginBtn.innerHTML = '<i class="fas fa-right-to-bracket"></i> Masuk';
                 loginBtn.disabled = false;
             });
+        });
+
+        function showDashboard(user) {
+            document.getElementById('login-page').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+
+            document.getElementById('member-name').textContent = user.nama || '-';
+            document.getElementById('profile-name').textContent = user.nama || '-';
+            document.getElementById('profile-no-kta').textContent = user.no_kta || '-';
+            document.getElementById('profile-tahun').textContent = user.tahun_gabung || '-';
+            document.getElementById('profile-wilayah').textContent = user.wilayah_pc || '-';
+
+            const statusEl = document.getElementById('profile-status');
+            const statusAktif = user.status_aktif || '';
+            if(statusAktif.toUpperCase().includes('AKTIF')) {
+                statusEl.innerHTML = `<span class="badge green">${statusAktif}</span>`;
+            } else {
+                statusEl.innerHTML = `<span class="badge red">${statusAktif || '-'}</span>`;
+            }
+
+            // LOGIKA 4 STATE TOMBOL
+            const bayar = (user.bayar || '').toLowerCase();
+            const status = (user.status || 'menunggu').toLowerCase();
+            const linkSertifikat = user.link_sertifikat || '';
+
+            const statusBtn = document.getElementById('status-btn');
+            const statusText = document.getElementById('status-text');
+            const uploadBtn = document.getElementById('upload-btn');
+            const downloadBtn = document.getElementById('download-btn');
+
+            uploadBtn.onclick = () => window.open(FORM_UPLOAD, '_blank');
+
+            if (bayar!== 'sudah') {
+                // Kondisi 1: Belum bayar
+                statusText.textContent = 'Belum Bayar';
+                statusBtn.className = 'btn btn-secondary';
+                statusBtn.disabled = true;
+                uploadBtn.disabled = false;
+                downloadBtn.disabled = true;
+            } else if (status === 'menunggu') {
+                // Kondisi 2: Sudah bayar, nunggu validasi
+                statusText.textContent = 'Menunggu Validasi';
+                statusBtn.className = 'btn btn-warning';
+                statusBtn.disabled = true;
+                uploadBtn.disabled = true;
+                downloadBtn.disabled = true;
+            } else if (status === 'valid') {
+                // Kondisi 3: Valid
+                statusText.textContent = 'Tervalidasi';
+                statusBtn.className = 'btn btn-success';
+                statusBtn.disabled = true;
+                uploadBtn.disabled = true;
+                downloadBtn.disabled = false;
+                downloadBtn.className = 'btn btn-success';
+                downloadBtn.onclick = () => window.open(linkSertifikat, '_blank');
+            } else if (status === 'ditolak') {
+                // Kondisi 4: Ditolak
+                statusText.textContent = 'Ditolak';
+                statusBtn.className = 'btn btn-danger';
+                statusBtn.disabled = true;
+                uploadBtn.disabled = false;
+                downloadBtn.disabled = false;
+                downloadBtn.className = 'btn btn-warning';
+                downloadBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Tinjau Kembali Bukti';
+                downloadBtn.onclick = () => alert('Silakan upload ulang bukti transfer yang valid');
+            }
+
+            if(user.foto && user.foto.startsWith('http')) {
+                document.getElementById('profile-photo').src = user.foto;
+                document.getElementById('header-photo').src = user.foto;
+            }
+        }
+
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            if(confirm('Yakin mau keluar?')) {
+                localStorage.removeItem('pgm_user');
+                location.reload();
+            }
         });
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js');
         }
     </script>
+</body>
+</html>
 </body>
 </html>
