@@ -37,8 +37,8 @@
         .dashboard-header img { width: 40px; height: 40px; }
         .dashboard-header h2 { font-size: 16px; }
         .dashboard-header p { font-size: 12px; opacity: 0.9; }
-        .header-icons { margin-left: auto; display: flex; gap: 16px; font-size: 20px; align-items: center; }
-        .btn-logout { background:#ef4444; color:#fff; border:none; padding:8px 12px; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer; display: flex; align-items: center; gap: 6px; }
+        .header-icons { margin-left: auto; display: flex; gap: 12px; font-size: 20px; align-items: center; }
+        .header-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.3); }
         
         .welcome-card { background: #fff; margin: 16px; padding: 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .welcome-card p { font-size: 24px; font-weight: 700; }
@@ -58,6 +58,7 @@
         .action-buttons { margin: 16px; display: grid; gap: 10px; }
         .btn-secondary { padding: 14px; background: #e2e8f0; color: #64748b; border: none; border-radius: 8px; font-weight: 600; }
         .btn-outline { padding: 14px; background: #fff; color: #16a34a; border: 2px solid #16a34a; border-radius: 8px; font-weight: 600; }
+        .btn-logout { margin: 16px; padding: 14px; background: #ef4444; color: #fff; border: none; border-radius: 8px; font-weight: 600; width: calc(100% - 32px); }
 
         .donation-card { background: #fff; margin: 16px; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .donation-card img { width: 60px; margin-bottom: 12px; }
@@ -108,9 +109,7 @@
             </div>
             <div class="header-icons">
                 <i class="fas fa-bell"></i>
-                <button class="btn-logout" id="logout-btn">
-                    <i class="fas fa-right-from-bracket"></i> Keluar
-                </button>
+                <img id="header-photo" class="header-avatar" src="https://i.pravatar.cc/80" alt="Foto">
             </div>
         </header>
 
@@ -140,7 +139,7 @@
 
         <div class="action-buttons">
             <button class="btn-secondary" disabled>Menunggu validasi</button>
-            <button class="btn-primary">Upload Bukti</button>
+            <button class="btn-primary">Bayar Iuran</button>
             <button class="btn-primary">Download Sertifikat</button>
         </div>
 
@@ -152,12 +151,15 @@
                 <i class="fas fa-wallet"></i>
                 <div>
                     <p><strong>DANA</strong></p>
-                    <p>No. Rek: 081234567890</p>
+                    <p>No. Rek: 085215547300</p>
                     <p>a.n Tim Media PGM Indonesia KBB</p>
                 </div>
-            </div>
             <button class="btn-outline">Salurkan Dukungan</button>
         </div>
+
+        <button class="btn-logout" id="logout-btn">
+            <i class="fas fa-right-from-bracket"></i> Keluar
+        </button>
 
         <div class="footer">
             <p>&copy; 2026 tim_media_pgm_indonesia_kbb</p>
@@ -166,15 +168,25 @@
     </main>
 
     <script>
-        // GANTI URL INI PAKE URL WEB APP DARI APPS SCRIPT LU
         const API_URL = 'https://script.google.com/macros/s/AKfycbwF7J-RQ-YMucOQR5GCs9MhwjA4a_o0qYfSH77HsKtZMqQAGitx7VK6-zggunGrfBDI/exec'; 
+
+        window.addEventListener('popstate', function(event) {
+            const user = localStorage.getItem('pgm_user');
+            if (user) {
+                if (confirm('Mau keluar dari aplikasi?')) {
+                    localStorage.removeItem('pgm_user');
+                    location.reload();
+                } else {
+                    history.pushState(null, null, location.href);
+                }
+            }
+        });
 
         setTimeout(() => {
             document.getElementById('splash').classList.add('hidden');
             checkLogin();
         }, 1500);
 
-        // Toggle Mata Password
         document.getElementById('togglePassword').addEventListener('click', function() {
             const password = document.getElementById('password');
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -190,6 +202,7 @@
                     const userData = JSON.parse(user);
                     if (userData.status === 'success') {
                         showDashboard(userData);
+                        history.pushState(null, null, location.href);
                         return;
                     }
                 } catch(e) {
@@ -211,7 +224,6 @@
             loginBtn.textContent = 'Memproses...';
             loginBtn.disabled = true;
 
-            // Pake mode: 'no-cors' ga bisa baca response, jadi pake ini aja
             fetch(API_URL, {
                 method: 'POST',
                 redirect: 'follow',
@@ -226,6 +238,7 @@
                 if (data.status === 'success') {
                     localStorage.setItem('pgm_user', JSON.stringify(data));
                     showDashboard(data);
+                    history.pushState(null, null, location.href);
                 } else {
                     errorMsg.textContent = data.message;
                 }
@@ -261,6 +274,7 @@
             if(user.foto && user.foto.startsWith('http')) {
                 document.getElementById('member-photo').src = user.foto;
                 document.getElementById('profile-photo').src = user.foto;
+                document.getElementById('header-photo').src = user.foto;
             }
         }
 
