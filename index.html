@@ -40,10 +40,9 @@
         .header-icons { margin-left: auto; display: flex; gap: 12px; font-size: 20px; align-items: center; }
         .header-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.3); }
         
-        .welcome-card { background: #fff; margin: 16px; padding: 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .welcome-card { background: #fff; margin: 16px; padding: 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .welcome-card p { font-size: 24px; font-weight: 700; }
-        .welcome-card h3 { font-size: 16px; font-weight: 500; color: #334155; }
-        .welcome-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
+        .welcome-card h3 { font-size: 16px; font-weight: 500; color: #334155; margin-top: 4px; }
 
         .profile-card { background: #fff; margin: 16px; padding: 16px; border-radius: 12px; display: flex; gap: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .profile-card img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
@@ -68,7 +67,8 @@
         .dana-box i { font-size: 24px; color: #3b82f6; }
         .dana-box p { margin: 0; font-size: 13px; }
         
-        .footer { text-align: center; padding: 20px; font-size: 12px; color: #94a3b8; }
+        .footer { text-align: center; padding: 24px 16px; font-size: 12px; color: #64748b; background: #fff; margin-top: 24px; border-top: 1px solid #e2e8f0; }
+        .footer p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     </style>
 </head>
 <body>
@@ -118,7 +118,6 @@
                 <p>Assalamualaikum.</p>
                 <h3 id="member-name">-</h3>
             </div>
-            <img id="member-photo" src="https://i.pravatar.cc/80" alt="Foto Profil">
         </div>
 
         <div class="profile-card">
@@ -139,8 +138,8 @@
 
         <div class="action-buttons">
             <button class="btn-secondary" disabled>Menunggu validasi</button>
-            <button class="btn-primary">Bayar Iuran</button>
-            <button class="btn-primary">Download Sertifikat</button>
+            <button class="btn-primary" id="upload-btn"><i class="fas fa-upload"></i> Upload Bukti Transfer</button>
+            <button class="btn-primary"><i class="fas fa-download"></i> Download Sertifikat</button>
         </div>
 
         <div class="donation-card">
@@ -151,9 +150,10 @@
                 <i class="fas fa-wallet"></i>
                 <div>
                     <p><strong>DANA</strong></p>
-                    <p>No. Rek: 081234567890</p>
+                    <p>No. Rek: 085215547300</p>
                     <p>a.n Tim Media PGM Indonesia KBB</p>
                 </div>
+            </div>
             <button class="btn-outline">Salurkan Dukungan</button>
         </div>
 
@@ -162,13 +162,12 @@
         </button>
 
         <div class="footer">
-            <p>&copy; 2026 tim_media_pgm_indonesia_kbb</p>
-            <p>Versi 1.0.0</p>
+            <p>&copy; 2026 Tim Media PGM Indonesia KBB. All Rights Reserved.</p>
         </div>
     </main>
 
     <script>
-        const API_URL = 'PASTE_URL_APPS_SCRIPT_LU_DISINI'; 
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwF7J-RQ-YMucOQR5GCs9MhwjA4a_o0qYfSH77HsKtZMqQAGitx7VK6-zggunGrfBDI/exec'; 
 
         window.addEventListener('popstate', function(event) {
             const user = localStorage.getItem('pgm_user');
@@ -272,11 +271,14 @@
             }
             
             if(user.foto && user.foto.startsWith('http')) {
-                document.getElementById('member-photo').src = user.foto;
                 document.getElementById('profile-photo').src = user.foto;
                 document.getElementById('header-photo').src = user.foto;
             }
         }
+
+        document.getElementById('upload-btn').addEventListener('click', function() {
+            alert('Fitur Upload Bukti Transfer akan segera hadir!');
+        });
 
         document.getElementById('logout-btn').addEventListener('click', function() {
             if(confirm('Yakin mau keluar?')) {
