@@ -188,8 +188,9 @@
             fetch(`${API_URL}?nik=${encodeURIComponent(nik)}&password=${encodeURIComponent(password)}`)
          .then(res => res.json())
          .then(data => {
-                if (data.status === 'success') {
-                    localStorage.setItem('pgm_user', JSON.stringify(data));
+                if (data.login_status === 'success') { // <-- Cek login_status, bukan status
+    localStorage.setItem('pgm_user', JSON.stringify(data));
+  ...
                     if (data.role === 'admin') {
                         window.location.href = 'admin.html';
                     } else {
