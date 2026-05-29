@@ -1,71 +1,324 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <base target="_top">
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PGM Indonesia KBB</title>
+  <link rel="icon" href="assets/icons/icon-192.png" type="image/png">
+  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#16a34a">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-    :root{--hijau-pgm:#16a34a;--hijau-muda:#dcfce7;--putih:#fff;--abu:#f3f4f6;--shadow:0 4px 12px rgba(0,0,0,0.08)}
-    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;-webkit-tap-highlight-color:transparent}
-    html,body{height:100%;overflow-x:hidden}
-    body{background:var(--abu);color:#1f2937}
-    #splash{position:fixed;inset:0;background:var(--hijau-pgm);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px}
-  .splash-content{text-align:center;color:var(--putih)}
-  .splash-logo{width:90px;height:90px;object-fit:contain;margin-bottom:16px}
-  .splash-content h1{font-size:22px;line-height:1.3;font-weight:700;margin-bottom:24px}
-  .spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,0.3);border-top:3px solid #fff;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px}
-    @keyframes spin{to{transform:rotate(360deg)}}
-  .container{max-width:480px;width:100%;margin:0 auto;padding:16px;min-height:100vh;min-height:100dvh}
-  .login-card{background:var(--putih);padding:28px 20px;border-radius:24px;box-shadow:var(--shadow);text-align:center;margin-top:8vh}
-  .logo{width:70px;margin-bottom:8px}
-  .login-card h2{color:var(--hijau-pgm);font-size:18px;margin-bottom:24px;line-height:1.3;font-weight:700}
-  .input-group{display:flex;align-items:center;background:var(--abu);border-radius:14px;padding:0 16px;margin-bottom:14px;height:52px}
-  .input-group i{color:#6b7280;margin-right:12px;font-size:18px}
-  .input-group input{border:none;outline:none;background:transparent;width:100%;font-size:16px;font-weight:500}
-  .btn-primary{width:100%;padding:15px;border-radius:14px;font-size:16px;font-weight:600;border:none;cursor:pointer;background:var(--hijau-pgm);color:var(--putih)}
-  .btn-primary:active{transform:scale(0.98)}
-  .btn-primary:disabled{background:#9ca3af}
-  .login-footer{margin-top:22px;display:flex;flex-direction:column;gap:12px}
-  .login-footer a{color:var(--hijau-pgm);text-decoration:none;font-size:14px;font-weight:500}
-  .version{text-align:center;font-size:11px;color:#6b7280;margin-top:24px;padding-bottom:20px}
-    #errorMsg{color:#dc2626;font-size:13px;margin-bottom:10px;display:none}
+    :root {
+      --hijau: #16a34a; --hijau-tua: #15803d; --hijau-muda: #dcfce7; --hijau-bg: #f0fdf4;
+      --kuning: #f59e0b; --kuning-muda: #fef3c7; --merah: #dc2626; --merah-muda: #fee2e2;
+      --putih: #ffffff; --abu: #f9fafb; --text: #1f2937; --text-abu: #6b7280; --border: #e5e7eb;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.06); --radius: 20px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: var(--abu); color: var(--text); }
+.mobile { max-width: 480px; width: 100%; margin: 0 auto; background: var(--abu); min-height: 100vh; }
+    
+    /* SPLASH SCREEN */
+.splash { 
+      display: flex; flex-direction: column; justify-content: center; align-items: center; 
+      height: 100vh; background: linear-gradient(135deg, var(--hijau), var(--hijau-tua)), url('assets/masjid-bg.svg'); 
+      background-size: cover; background-position: center; background-blend-mode: overlay; color: var(--putih);
+    }
+.splash img { width: 90px; height: 90px; margin-bottom: 20px; animation: pulse 1.5s infinite; }
+.splash h1 { font-size: 22px; font-weight: 700; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.splash p { font-size: 14px; opacity: 0.9; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+    /* LOGIN PAGE */
+.login { display: none; min-height: 100vh; background: var(--hijau-bg); padding: 40px 20px; }
+.login-header { text-align: center; margin-bottom: 40px; }
+.login-header img { width: 70px; height: 70px; margin: 0 auto 16px; }
+.login-header h1 { color: var(--hijau); font-size: 26px; font-weight: 700; line-height: 1.3; }
+.login-header p { color: var(--text-abu); font-size: 14px; margin-top: 8px; }
+.login-header.garis { width: 50px; height: 3px; background: var(--kuning); margin: 16px auto; border-radius: 2px; }
+.login-header.sub { font-size: 13px; color: var(--text-abu); line-height: 1.6; }
+    
+.login-card { background: var(--putih); border-radius: var(--radius); padding: 28px 20px; box-shadow: var(--shadow); margin-bottom: 32px; }
+.login-card h2 { text-align: center; color: var(--hijau); font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.login-card.subtitle { text-align: center; color: var(--text-abu); font-size: 14px; margin-bottom: 24px; }
+    
+.form-group { margin-bottom: 16px; position: relative; }
+.form-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-abu); }
+.form-group input { 
+      width: 100%; padding: 14px 16px 14px 48px; border: 2px solid var(--border); 
+      border-radius: 12px; font-size: 15px; transition: all 0.3s;
+    }
+.form-group input:focus { outline: none; border-color: var(--hijau); }
+.form-group.mata { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; left: auto; }
+    
+.lupa { text-align: right; margin-bottom: 20px; }
+.lupa a { color: var(--hijau); font-size: 13px; text-decoration: none; font-weight: 500; }
+    
+.btn-login { 
+      width: 100%; padding: 16px; background: var(--hijau); color: var(--putih); border: none; 
+      border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s;
+    }
+.btn-login:hover { background: var(--hijau-tua); }
+.btn-login:disabled { background: #9ca3af; cursor: not-allowed; }
+    
+.daftar { text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-abu); }
+.daftar a { color: var(--hijau); font-weight: 600; text-decoration: none; }
+    
+.fitur { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; text-align: center; }
+.fitur-item i { font-size: 28px; color: var(--hijau); margin-bottom: 8px; }
+.fitur-item h4 { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.fitur-item p { font-size: 11px; color: var(--text-abu); line-height: 1.4; }
+
+    /* DASHBOARD */
+.dashboard { display: none; padding-bottom: 80px; }
+.dash-header { 
+      background: var(--putih); padding: 16px 20px; display: flex; align-items: center; 
+      justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+.dash-header.left { display: flex; align-items: center; gap: 12px; }
+.dash-header.left img { width: 40px; height: 40px; }
+.dash-header.left.info h3 { font-size: 15px; font-weight: 700; line-height: 1.2; }
+.dash-header.left.info p { font-size: 12px; color: var(--text-abu); }
+.dash-header.right { display: flex; gap: 12px; align-items: center; }
+.dash-header.right i { font-size: 20px; color: var(--text-abu); }
+.dash-header.right.foto { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+    
+.container { padding: 16px; }
+.welcome { 
+      background: linear-gradient(135deg, var(--hijau), var(--hijau-tua)); color: var(--putih); 
+      border-radius: 20px; padding: 24px 20px; margin-bottom: 16px; position: relative; overflow: hidden;
+    }
+.welcome::after { content: '👋'; position: absolute; right: 20px; top: 20px; font-size: 32px; }
+.welcome h2 { font-size: 24px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
+.welcome p { font-size: 13px; opacity: 0.95; line-height: 1.5; }
+    
+.card { background: var(--putih); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow); }
+.card h4 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+.profil-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f3f4f6; }
+.profil-row:last-child { border-bottom: none; }
+.profil-row.label { font-size: 14px; color: var(--text-abu); }
+.profil-row.value { font-size: 14px; font-weight: 700; text-align: right; }
+.badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.badge.hijau { background: var(--hijau-muda); color: #065f46; }
+.badge.kuning { background: var(--kuning-muda); color: #92400e; }
+.badge.merah { background: var(--merah-muda); color: #991b1b; }
+    
+.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.btn-outline { padding: 14px; background: var(--putih); color: var(--text); border: 2px solid var(--border); border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; }
+.btn-outline:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-full { width: 100%; padding: 14px; background: var(--putih); color: var(--text); border: 2px solid var(--border); border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 12px; }
+    
+.donasi { background: linear-gradient(135deg, #dcfce7, #bbf7d0); border-radius: var(--radius); padding: 20px; text-align: center; }
+.donasi h4 { font-size: 16px; margin-bottom: 8px; }
+.donasi.heart { color: #ef4444; }
+.donasi p { font-size: 13px; color: var(--text); margin-bottom: 16px; }
+.donasi.dana { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; }
+.donasi.dana img { height: 24px; }
+.donasi.norek { font-size: 20px; font-weight: 700; color: var(--hijau); margin-bottom: 4px; }
+.donasi.an { font-size: 12px; color: var(--text-abu); }
+.btn-donasi { width: 100%; padding: 16px; background: var(--merah); color: var(--putih); border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 16px; }
+.btn-logout { width: 100%; padding: 14px; background: var(--merah-muda); color: #991b1b; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 12px; }
+    
+.error { background: var(--merah-muda); color: #991b1b; padding: 12px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; display: none; }
   </style>
 </head>
 <body>
-  <div id="splash">
-    <div class="splash-content">
-      <img src="https://drive.google.com/uc?export=view&id=1oVSlYkJJtZ9q7z8F7pN8p8p8p8p8" alt="Logo PGM" class="splash-logo">
-      <h1>PGM INDONESIA<br>BANDUNG BARAT</h1>
-      <div class="spinner"></div>
-      <p>Portal V5</p>
+  <div class="mobile">
+    <!-- SPLASH -->
+    <div class="splash" id="splash">
+      <img src="assets/logo-pgm.png" alt="Logo PGM">
+      <h1>PGM Indonesia KBB</h1>
+      <p>Sistem Informasi Anggota</p>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="login" id="loginPage">
+      <div class="login-header">
+        <img src="assets/logo-pgm.png" alt="Logo">
+        <h1>PGM Indonesia<br>Bandung Barat</h1>
+        <p>Perkumpulan Guru Madrasah (PGM)</p>
+        <div class="garis"></div>
+        <p class="sub">Bergerak Bersama Memberi Manfaat<br>Suara Guru Suara Perubahan</p>
+      </div>
+      
+      <div class="login-card">
+        <h2>Selamat Datang!</h2>
+        <p class="subtitle">Silakan masuk untuk melanjutkan</p>
+        <div class="error" id="errorMsg"></div>
+        <div class="form-group">
+          <i class="fa-solid fa-id-card"></i>
+          <input type="text" id="nik" placeholder="Nomor Induk Kependudukan (NIK)" maxlength="16" value="3217090802760018">
+        </div>
+        <div class="form-group">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="password" placeholder="Password" value="760018">
+          <i class="fa-regular fa-eye mata" id="togglePass"></i>
+        </div>
+        <div class="lupa"><a href="#" onclick="alert('Hubungi Admin WA: 0812xxxxxxx')">Lupa Password?</a></div>
+        <button class="btn-login" id="btnLogin" onclick="handleLogin()"><i class="fa-solid fa-right-to-bracket"></i> Masuk</button>
+        <div class="daftar">Belum punya akun? <a href="#" onclick="alert('Daftar via Google Form')">Daftar Sekarang</a></div>
+      </div>
+
+      <div class="fitur">
+        <div class="fitur-item">
+          <i class="fa-solid fa-shield-halved"></i>
+          <h4>Data Aman</h4>
+          <p>Informasi Anda terlindungi</p>
+        </div>
+        <div class="fitur-item">
+          <i class="fa-solid fa-bolt"></i>
+          <h4>Mudah & Cepat</h4>
+          <p>Akses sistem lebih mudah</p>
+        </div>
+        <div class="fitur-item">
+          <i class="fa-solid fa-circle-check"></i>
+          <h4>Terpercaya</h4>
+          <p>Digunakan oleh ribuan guru madrasah</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="dashboard" id="dashboard">
+      <div class="dash-header">
+        <div class="left">
+          <img src="assets/logo-pgm.png" alt="Logo">
+          <div class="info">
+            <h3>PGM Indonesia Bandung Barat</h3>
+            <p>Perkumpulan Guru Madrasah (PGM)</p>
+          </div>
+        </div>
+        <div class="right">
+          <i class="fa-regular fa-bell"></i>
+          <img class="foto" id="fotoUser" src="https://i.pravatar.cc/100?img=12" alt="Foto">
+        </div>
+      </div>
+      <div class="container">
+        <div class="welcome">
+          <h2 id="namaWelcome">EVAL AL FARUK</h2>
+          <p>Selamat datang di Sistem Data Anggota<br>PGM Indonesia KBB</p>
+        </div>
+        <div class="card">
+          <h4>Profil Anggota</h4>
+          <div class="profil-row">
+            <span class="label">Nama</span>
+            <span class="value" id="namaProfil">EVAL AL FARUK, S.Pd.I</span>
+          </div>
+          <div class="profil-row">
+            <span class="label">NIK</span>
+            <span class="value" id="nikProfil">3217090802760018</span>
+          </div>
+          <div class="profil-row">
+            <span class="label">Status</span>
+            <span class="value"><span class="badge hijau">Aktif</span></span>
+          </div>
+          <div class="profil-row">
+            <span class="label">Iuran</span>
+            <span class="value" id="iuranBadge"><span class="badge merah">Belum</span></span>
+          </div>
+        </div>
+        <div class="btn-grid">
+          <button class="btn-outline" id="btnValidasi" disabled>Menunggu validasi</button>
+          <button class="btn-outline" onclick="alert('Upload bukti transfer via GForm')">Bayar</button>
+        </div>
+        <button class="btn-full" onclick="alert('Download Sertifikat PDF - Fitur aktif setelah lunas')"><i class="fa-solid fa-lock"></i> Download Sertifikat Anggota</button>
+        <div class="donasi">
+          <h4><span class="heart">❤️</span> Donasi Pengembang</h4>
+          <p>Dukung Pengembangan Sistem PGM Indonesia KBB</p>
+          <div class="dana">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="DANA">
+          </div>
+          <div class="norek">0812xxxxxxx</div>
+          <div class="an">a.n Tim Media PGM IKBB</div>
+        </div>
+        <button class="btn-donasi" onclick="window.open('https://link.dana.id/donasi')"><i class="fa-solid fa-heart"></i> Kirim Donasi</button>
+        <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+      </div>
     </div>
   </div>
 
-  <div class="container" id="loginPage" style="display:none">
-    <div class="login-card">
-      <img src="https://drive.google.com/uc?export=view&id=1oVSlYkJJtZ9q7z8F7pN8p8p8" class="logo" alt="PGM">
-      <h2>PGM Indonesia<br>Bandung Barat</h2>
-      <div id="errorMsg"></div>
-      <div class="input-group">
-        <i class="fa-solid fa-id-card"></i>
-        <input type="tel" id="nik" placeholder="Masukan NIK" inputmode="numeric">
-      </div>
-      <div class="input-group">
-        <i class="fa-solid fa-lock"></i>
-        <input type="password" id="password" placeholder="Masukan Password">
-      </div>
-      <button class="btn-primary" id="btnLogin" onclick="handleLogin()">
-        <i class="fa-solid fa-right-to-bracket"></i> Masuk
-      </button>
-      <div class="login-footer">
-        <a href="#" onclick="lupaPass()">Lupa Password? Hubungi Admin</a>
-        <a href="#" onclick="daftar()">Daftar Sekarang</a>
-      </div>
-    </div>
-    <p class="version">©2026 Tim Media PGM Indonesia KBB | Portal V5</p>
-  </div>
-  <?!= include('script');?>
+  <script>
+    // DATA USER DEMO - Ganti sesuai data asli
+    const USER = {
+      nik: '3217090802760018',
+      password: '760018',
+      nama: 'EVAL AL FARUK, S.Pd.I',
+      foto: 'https://i.pravatar.cc/100?img=12',
+      status: 'Aktif',
+      iuran: 'belum' // ganti jadi 'lunas' atau 'menunggu'
+    };
+
+    // SPLASH -> LOGIN
+    window.onload = () => {
+      setTimeout(() => {
+        document.getElementById('splash').style.display = 'none';
+        document.getElementById('loginPage').style.display = 'block';
+      }, 1500);
+    }
+
+    // TOGGLE PASSWORD
+    document.getElementById('togglePass').onclick = function() {
+      const pass = document.getElementById('password');
+      const type = pass.type === 'password'? 'text' : 'password';
+      pass.type = type;
+      this.className = type === 'password'? 'fa-regular fa-eye mata' : 'fa-regular fa-eye-slash mata';
+    }
+
+    // LOGIN
+    function handleLogin() {
+      const nik = document.getElementById('nik').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      const btn = document.getElementById('btnLogin');
+      const err = document.getElementById('errorMsg');
+      
+      err.style.display = 'none';
+      if(!nik ||!pass) {
+        err.innerText = 'NIK dan Password wajib diisi';
+        err.style.display = 'block';
+        return;
+      }
+      
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
+      
+      setTimeout(() => {
+        if(nik === USER.nik && pass === USER.password) {
+          document.getElementById('loginPage').style.display = 'none';
+          document.getElementById('dashboard').style.display = 'block';
+          loadDashboard();
+        } else {
+          err.innerText = 'NIK atau Password salah';
+          err.style.display = 'block';
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk';
+        }
+      }, 800);
+    }
+
+    // LOAD DASHBOARD
+    function loadDashboard() {
+      document.getElementById('namaWelcome').innerText = USER.nama.split(',')[0];
+      document.getElementById('namaProfil').innerText = USER.nama;
+      document.getElementById('nikProfil').innerText = USER.nik;
+      document.getElementById('fotoUser').src = USER.foto;
+      
+      const iuran = USER.iuran;
+      const badge = document.getElementById('iuranBadge');
+      if(iuran === 'lunas') badge.innerHTML = '<span class="badge hijau">Lunas</span>';
+      else if(iuran === 'menunggu') badge.innerHTML = '<span class="badge kuning">Menunggu</span>';
+      else badge.innerHTML = '<span class="badge merah">Belum</span>';
+    }
+
+    function logout() {
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('loginPage').style.display = 'block';
+      document.getElementById('nik').value = '';
+      document.getElementById('password').value = '';
+      document.getElementById('btnLogin').disabled = false;
+      document.getElementById('btnLogin').innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk';
+    }
+  </script>
 </body>
 </html>
