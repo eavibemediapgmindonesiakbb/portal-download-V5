@@ -8,30 +8,52 @@
     <meta name="theme-color" content="#16a34a">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: #f1f5f9; }
+        body { background: #f8fafc; }
         .hidden { display: none !important; }
         
+        /* SPLASH SCREEN */
         #splash { position: fixed; inset: 0; background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999; }
         #splash img { width: 120px; margin-bottom: 16px; }
-        #splash h1 { font-size: 24px; font-weight: 700; }
+        #splash h1 { font-size: 24px; font-weight: 700; color: #166534; }
         #splash p { color: #64748b; }
         #splash .loader { margin-top: 20px; width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top: 4px solid #16a34a; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        #login-page { min-height: 100vh; background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .login-card { background: #fff; padding: 32px 24px; border-radius: 16px; width: 100%; max-width: 360px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
-        .login-card img { width: 80px; margin-bottom: 16px; }
-        .login-card h2 { font-size: 20px; margin-bottom: 4px; }
-        .login-card p { color: #64748b; font-size: 14px; margin-bottom: 24px; }
-        .form-group { margin-bottom: 16px; text-align: left; position: relative; }
-        .form-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
-        .form-group input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 16px; padding-right: 40px; }
-        .toggle-password { position: absolute; right: 12px; top: 38px; cursor: pointer; color: #64748b; }
-        .btn-primary { width: 100%; padding: 14px; background: #16a34a; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
-        .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
-        #error-message { color: #ef4444; font-size: 14px; margin-top: 12px; min-height: 20px; }
+        /* LOGIN PAGE BARU */
+        #login-page { min-height: 100vh; background: #f8fafc; padding: 20px; }
+        .login-header { text-align: center; padding: 40px 20px 20px; }
+        .login-header img { width: 80px; margin-bottom: 16px; }
+        .login-header h1 { font-size: 24px; font-weight: 700; color: #166534; line-height: 1.2; }
+        .login-header p { color: #475569; font-size: 14px; margin-top: 8px; }
+        .login-header .line { width: 60px; height: 3px; background: #f59e0b; margin: 12px auto; }
+        .login-header .tagline { font-size: 13px; color: #64748b; line-height: 1.5; }
 
+        .login-card { background: #fff; padding: 24px; border-radius: 16px; width: 100%; max-width: 400px; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .login-card h2 { font-size: 20px; font-weight: 700; text-align: center; margin-bottom: 4px; color: #0f172a; }
+        .login-card .subtitle { font-size: 14px; color: #64748b; text-align: center; margin-bottom: 24px; }
+        
+        .form-group { margin-bottom: 16px; position: relative; }
+        .form-group input { width: 100%; padding: 14px 14px 14px 45px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 15px; background: #f8fafc; }
+        .form-group input:focus { outline: none; border-color: #16a34a; background: #fff; }
+        .form-group i { position: absolute; left: 16px; top: 16px; color: #16a34a; font-size: 16px; }
+        .toggle-password { left: auto !important; right: 16px !important; cursor: pointer; color: #94a3b8 !important; }
+
+        .lupa-password { text-align: right; font-size: 13px; color: #16a34a; font-weight: 500; margin: -8px 0 16px; cursor: pointer; }
+        .btn-primary { width: 100%; padding: 14px; background: #16a34a; color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
+        #error-message { color: #ef4444; font-size: 14px; margin-top: 12px; min-height: 20px; text-align: center; }
+        
+        .daftar-link { text-align: center; font-size: 14px; color: #64748b; margin-top: 20px; }
+        .daftar-link a { color: #16a34a; font-weight: 600; text-decoration: none; }
+
+        .benefits { max-width: 400px; margin: 32px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; text-align: center; }
+        .benefit-item i { font-size: 24px; color: #16a34a; background: #dcfce7; width: 50px; height: 50px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+        .benefit-item h4 { font-size: 13px; font-weight: 600; color: #0f172a; margin-bottom: 4px; }
+        .benefit-item p { font-size: 11px; color: #64748b; line-height: 1.4; }
+
+        /* DASHBOARD - Biarin dulu, nanti part 2 */
         #dashboard { padding-bottom: 20px; }
         .dashboard-header { background: #16a34a; color: #fff; padding: 16px; display: flex; align-items: center; gap: 12px; }
         .dashboard-header img { width: 40px; height: 40px; }
@@ -39,36 +61,6 @@
         .dashboard-header p { font-size: 12px; opacity: 0.9; }
         .header-icons { margin-left: auto; display: flex; gap: 12px; font-size: 20px; align-items: center; }
         .header-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.3); }
-        
-        .welcome-card { background: #fff; margin: 16px; padding: 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .welcome-card p { font-size: 24px; font-weight: 700; }
-        .welcome-card h3 { font-size: 16px; font-weight: 500; color: #334155; margin-top: 4px; }
-
-        .profile-card { background: #fff; margin: 16px; padding: 16px; border-radius: 12px; display: flex; gap: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .profile-card img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
-        .profile-info p { font-size: 14px; color: #64748b; margin-bottom: 2px; }
-        .profile-info p strong { color: #0f172a; font-weight: 600; }
-        .profile-info > p { margin-top: 10px; }
-        .profile-info > p:first-child { margin-top: 0; }
-        .badge { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; }
-        .badge.green { background: #dcfce7; color: #166534; }
-        .badge.red { background: #fee2e2; color: #991b1b; }
-
-        .action-buttons { margin: 16px; display: grid; gap: 10px; }
-        .btn-secondary { padding: 14px; background: #e2e8f0; color: #64748b; border: none; border-radius: 8px; font-weight: 600; }
-        .btn-outline { padding: 14px; background: #fff; color: #16a34a; border: 2px solid #16a34a; border-radius: 8px; font-weight: 600; }
-        .btn-logout { margin: 16px; padding: 14px; background: #ef4444; color: #fff; border: none; border-radius: 8px; font-weight: 600; width: calc(100% - 32px); }
-
-        .donation-card { background: #fff; margin: 16px; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .donation-card img { width: 60px; margin-bottom: 12px; }
-        .donation-card h3 { font-size: 16px; margin-bottom: 8px; }
-        .donation-card p { font-size: 14px; color: #475569; text-align: center; margin-bottom: 16px; }
-        .dana-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; display: flex; gap: 12px; text-align: left; margin-bottom: 16px; }
-        .dana-box i { font-size: 24px; color: #3b82f6; }
-        .dana-box p { margin: 0; font-size: 13px; }
-        
-        .footer { text-align: center; padding: 24px 16px; font-size: 12px; color: #64748b; background: #fff; margin-top: 24px; border-top: 1px solid #e2e8f0; }
-        .footer p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     </style>
 </head>
 <body>
@@ -79,27 +71,60 @@
         <div class="loader"></div>
     </div>
 
+    <!-- LOGIN PAGE BARU -->
     <div id="login-page" class="hidden">
-        <div class="login-card">
+        <div class="login-header">
             <img src="assets/logo-pgm.png" alt="Logo PGM">
-            <h2>PGM INDONESIA</h2>
-            <p>KAB. BANDUNG BARAT</p>
+            <h1>PGM Indonesia<br>Bandung Barat</h1>
+            <p>Perkumpulan Guru Madrasah (PGM)</p>
+            <div class="line"></div>
+            <p class="tagline">Bergerak Bersama Memberi Manfaat<br>Suara Guru Suara Perubahan</p>
+        </div>
+
+        <div class="login-card">
+            <h2>Selamat Datang!</h2>
+            <p class="subtitle">Silakan masuk untuk melanjutkan</p>
             <form id="login-form">
                 <div class="form-group">
-                    <label for="nik">NIK</label>
-                    <input type="text" id="nik" placeholder="Masukkan NIK" required>
+                    <i class="fas fa-id-card"></i>
+                    <input type="text" id="nik" placeholder="Nomor Induk Kependudukan (NIK)" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Masukkan Password" required>
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Password" required>
                     <i class="fas fa-eye toggle-password" id="togglePassword"></i>
                 </div>
-                <button type="submit" class="btn-primary" id="login-btn">Masuk</button>
+                <div class="lupa-password">Lupa Password?</div>
+                <button type="submit" class="btn-primary" id="login-btn">
+                    <i class="fas fa-right-to-bracket"></i> Masuk
+                </button>
                 <p id="error-message"></p>
             </form>
+            <div class="daftar-link">
+                Belum punya akun? <a href="https://forms.gle/S14oodQbcmJb7GWD8" target="_blank">Daftar Sekarang</a>
+            </div>
+        </div>
+
+        <div class="benefits">
+            <div class="benefit-item">
+                <i class="fas fa-shield-halved"></i>
+                <h4>Data Aman</h4>
+                <p>Informasi Anda terlindungi</p>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-bolt"></i>
+                <h4>Mudah & Cepat</h4>
+                <p>Akses sistem lebih mudah</p>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-circle-check"></i>
+                <h4>Terpercaya</h4>
+                <p>Digunakan oleh ribuan guru madrasah</p>
+            </div>
         </div>
     </div>
 
+    <!-- DASHBOARD - NANTI PART 2 -->
     <main id="dashboard" class="hidden">
         <header class="dashboard-header">
             <img src="assets/logo-pgm.png" alt="Logo PGM">
@@ -112,74 +137,11 @@
                 <img id="header-photo" class="header-avatar" src="https://i.pravatar.cc/80" alt="Foto">
             </div>
         </header>
-
-        <div class="welcome-card">
-            <div>
-                <p>Assalamualaikum.</p>
-                <h3 id="member-name">-</h3>
-            </div>
-        </div>
-
-        <div class="profile-card">
-            <img id="profile-photo" src="https://i.pravatar.cc/80" alt="Foto Profil">
-            <div class="profile-info">
-                <p><strong>Nama Lengkap</strong></p>
-                <p id="profile-name">-</p>
-                <p><strong>No. KTA</strong></p>
-                <p id="profile-no-kta">-</p>
-                <p><strong>Status Keaktifan</strong></p>
-                <p id="profile-status">-</p>
-                <p><strong>Tahun Bergabung</strong></p>
-                <p id="profile-tahun">-</p>
-                <p><strong>Wilayah PC</strong></p>
-                <p id="profile-wilayah">-</p>
-            </div>
-        </div>
-
-        <div class="action-buttons">
-            <button class="btn-secondary" disabled>Menunggu validasi</button>
-            <button class="btn-primary" id="upload-btn"><i class="fas fa-upload"></i> Upload Bukti Transfer</button>
-            <button class="btn-primary"><i class="fas fa-download"></i> Download Sertifikat</button>
-        </div>
-
-        <div class="donation-card">
-            <img src="assets/logo-pgm.png" alt="Logo Tim Media">
-            <h3>Donasi Tim Media PGM Indonesia KBB</h3>
-            <p>Seluruh donasi dikelola secara swadaya oleh Tim Media PGM Indonesia Kab. Bandung Barat untuk mendukung dakwah digital dan kegiatan organisasi.</p>
-            <div class="dana-box">
-                <i class="fas fa-wallet"></i>
-                <div>
-                    <p><strong>DANA</strong></p>
-                    <p>No. Rek: 085215547300</p>
-                    <p>a.n Tim Media PGM Indonesia KBB</p>
-                </div>
-            </div>
-            <button class="btn-outline">Salurkan Dukungan</button>
-        </div>
-
-        <button class="btn-logout" id="logout-btn">
-            <i class="fas fa-right-from-bracket"></i> Keluar
-        </button>
-
-        <div class="footer">
-            <p>&copy; 2026 Tim Media PGM Indonesia KBB. All Rights Reserved.</p>
-        </div>
+        <!-- Isi dashboard nanti di Part 2 -->
     </main>
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbwF7J-RQ-YMucOQR5GCs9MhwjA4a_o0qYfSH77HsKtZMqQAGitx7VK6-zggunGrfBDI/exec'; 
-
-        window.addEventListener('popstate', function(event) {
-            const user = localStorage.getItem('pgm_user');
-            if (user) {
-                if (confirm('Mau keluar dari aplikasi?')) {
-                    localStorage.removeItem('pgm_user');
-                    location.reload();
-                } else {
-                    history.pushState(null, null, location.href);
-                }
-            }
-        });
 
         setTimeout(() => {
             document.getElementById('splash').classList.add('hidden');
@@ -200,8 +162,10 @@
                 try {
                     const userData = JSON.parse(user);
                     if (userData.status === 'success') {
-                        showDashboard(userData);
-                        history.pushState(null, null, location.href);
+                        // Nanti redirect ke dashboard user/admin
+                        console.log('Udah login:', userData);
+                        document.getElementById('login-page').classList.add('hidden');
+                        document.getElementById('dashboard').classList.remove('hidden');
                         return;
                     }
                 } catch(e) {
@@ -220,7 +184,7 @@
             const loginBtn = document.getElementById('login-btn');
             
             errorMsg.textContent = '';
-            loginBtn.textContent = 'Memproses...';
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             loginBtn.disabled = true;
 
             fetch(API_URL, {
@@ -236,55 +200,24 @@
             .then(data => {
                 if (data.status === 'success') {
                     localStorage.setItem('pgm_user', JSON.stringify(data));
-                    showDashboard(data);
-                    history.pushState(null, null, location.href);
+                    // Cek role buat redirect
+                    if (data.role === 'admin') {
+                        window.location.href = 'admin.html'; // Nanti kita bikin
+                    } else {
+                        location.reload();
+                    }
                 } else {
-                    errorMsg.textContent = data.message;
+                    errorMsg.textContent = data.message || 'NIK atau Password salah';
                 }
             })
             .catch(err => {
-                errorMsg.textContent = 'Gagal konek ke server. Cek setting Apps Script!';
+                errorMsg.textContent = 'Gagal konek ke server. Cek koneksi!';
                 console.error(err);
             })
             .finally(() => {
-                loginBtn.textContent = 'Masuk';
+                loginBtn.innerHTML = '<i class="fas fa-right-to-bracket"></i> Masuk';
                 loginBtn.disabled = false;
             });
-        });
-
-        function showDashboard(user) {
-            document.getElementById('login-page').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
-            
-            document.getElementById('member-name').textContent = user.nama || '-';
-            document.getElementById('profile-name').textContent = user.nama || '-';
-            document.getElementById('profile-no-kta').textContent = user.no_kta || '-';
-            document.getElementById('profile-tahun').textContent = user.tahun_gabung || '-';
-            document.getElementById('profile-wilayah').textContent = user.wilayah_pc || '-';
-            
-            const statusEl = document.getElementById('profile-status');
-            const statusAktif = user.status_aktif || '';
-            if(statusAktif.toUpperCase().includes('AKTIF')) {
-                statusEl.innerHTML = `<span class="badge green">${statusAktif}</span>`;
-            } else {
-                statusEl.innerHTML = `<span class="badge red">${statusAktif || '-'}</span>`;
-            }
-            
-            if(user.foto && user.foto.startsWith('http')) {
-                document.getElementById('profile-photo').src = user.foto;
-                document.getElementById('header-photo').src = user.foto;
-            }
-        }
-
-        document.getElementById('upload-btn').addEventListener('click', function() {
-            alert('Fitur Upload Bukti Transfer akan segera hadir!');
-        });
-
-        document.getElementById('logout-btn').addEventListener('click', function() {
-            if(confirm('Yakin mau keluar?')) {
-                localStorage.removeItem('pgm_user');
-                location.reload();
-            }
         });
 
         if ('serviceWorker' in navigator) {
