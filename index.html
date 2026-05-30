@@ -508,43 +508,91 @@
         });
 
         function showDashboard(user) {
-            document.getElementById('login-page').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
-            
-            document.getElementById('member-name').textContent = user.nama || '-';
-            document.getElementById('profile-name').textContent = user.nama || '-';
-            document.getElementById('profile-no-kta').textContent = user.no_kta || '-';
-            document.getElementById('profile-tahun').textContent = user.tahun_gabung || '-';
-            document.getElementById('profile-wilayah').textContent = user.wilayah_pc || '-';
-            
-            const statusEl = document.getElementById('profile-status');
-            const statusAktif = user.status_aktif || '';
-            if(statusAktif.toUpperCase().includes('AKTIF')) {
-                statusEl.innerHTML = `<span class="badge green">${statusAktif}</span>`;
-            } else {
-                statusEl.innerHTML = `<span class="badge red">${statusAktif || '-'}</span>`;
-            }
-            
-            if(user.foto && user.foto.startsWith('http')) {
-                document.getElementById('profile-photo').src = user.foto;
-                document.getElementById('header-photo').src = user.foto;
-            }
-        }
+    document.getElementById('login-page').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
 
-        document.getElementById('upload-btn').addEventListener('click', function() {
-            alert('Fitur Upload Bukti Transfer akan segera hadir!');
-        });
+    document.getElementById('member-name').textContent = user.nama || '-';
+    document.getElementById('profile-name').textContent = user.nama || '-';
+    document.getElementById('profile-no-kta').textContent = user.no_kta || '-';
+    document.getElementById('profile-tahun').textContent = user.tahun_gabung || '-';
+    document.getElementById('profile-wilayah').textContent = user.wilayah_pc || '-';
 
-        document.getElementById('logout-btn').addEventListener('click', function() {
-            if(confirm('Yakin mau keluar?')) {
-                localStorage.removeItem('pgm_user');
-                location.reload();
+    const statusEl = document.getElementById('profile-status');
+    const statusAktif = user.status_aktif || '';
+    if(statusAktif.toUpperCase().includes('AKTIF')) {
+        statusEl.innerHTML = `<span class="badge green">${statusAktif}</span>`;
+    } else {
+        statusEl.innerHTML = `<span class="badge red">${statusAktif || '-'}</span>`;
+    }
+
+    if(user.foto && user.foto.startsWith('http')) {
+        document.getElementById('profile-photo').src = user.foto;
+        document.getElementById('header-photo').src = user.foto;
+    }
+
+    // ==== INI YANG BARU: LOGIKA TOMBOL UPLOAD + DOWNLOAD ====
+    const btnUpload = document.getElementById('upload-btn');
+    const actionButtons = document.querySelectorAll('.action-buttons.btn-primary');
+    const btnDownload = actionButtons[1]; // tombol download = tombol kedua
+
+    // 1. TOMBOL UPLOAD BUKTI
+    if (user.bayar === 'Sudah') {
+        btnUpload.innerHTML = '<i class="fas fa-check-circle"></i> Sudah Upload Bukti';
+        btnUpload.style.background = '#22c55e';
+        btnUpload.style.border = '2px solid #22c55e';
+        btnUpload.disabled = true;
+        btnUpload.onclick = null;
+    } else {
+        btnUpload.innerHTML = '<i class="fas fa-upload"></i> Upload Bukti Transfer';
+        btnUpload.style.background = '#3b82f6';
+        btnUpload.style.border = '2px solid #3b82f6';
+        btnUpload.disabled = false;
+        btnUpload.onclick = () => {
+            const konfirmasi = confirm(
+                'SILAKAN TRANSFER KE:\n\n' +
+                'Bank BJB\n' +
+                'No. Rek: 001122334455\n' + // GANTI NOREK BJB ASLI
+                'a.n PGM Indonesia KBB\n\n' + // GANTI NAMA REK ASLI
+                'Nominal: Rp 50.000\n\n' +
+                'Setelah transfer, klik OK untuk upload bukti.'
+            );
+            if (konfirmasi) {
+                window.open(LINK_FORM_UPLOAD, '_blank');
             }
-        });
+        };
+    }
 
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
+    // 2. TOMBOL DOWNLOAD SERTIFIKAT
+    const statusSertif = (user.status || '').toString().toLowerCase().trim();
+    const linkSertif = (user.link_sertifikat || '').toString().trim();
+
+    if (statusSertif === 'valid' && linkSertif!== '') {
+        btnDownload.innerHTML = '<i class="fas fa-download"></i> Download Sertifikat';
+        btnDownload.style.background = '#16a34a';
+        btnDownload.style.border = '2px solid #16a34a';
+        btnDownload.disabled = false;
+        btnDownload.onclick = () => window.open(linkSertif, '_blank');
+    } else if (statusSertif === 'pending') {
+        btnDownload.innerHTML = '<i class="fas fa-clock"></i> Menunggu Validasi';
+        btnDownload.style.background = '#f59e0b';
+        btnDownload.style.border = '2px solid #f59e0b';
+        btnDownload.disabled = true;
+        btnDownload.onclick = null;
+    } else if (statusSertif === 'rejected') {
+        btnDownload.innerHTML = '<i class="fas fa-times-circle"></i> Ditolak';
+        btnDownload.style.background = '#ef4444';
+        btnDownload.style.border = '2px solid #ef4444';
+        btnDownload.disabled = true;
+        btnDownload.onclick = null;
+    } else {
+        btnDownload.innerHTML = '<i class="fas fa-download"></i> Belum Tersedia';
+        btnDownload.style.background = '#94a3b8';
+        btnDownload.style.border = '2px solid #94a3b8';
+        btnDownload.disabled = true;
+        btnDownload.onclick = null;
+    }
+    // ==== SELESAI TAMBAHAN ====
+}
     </script>
 </body>
 </html>
