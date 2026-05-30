@@ -19,7 +19,7 @@
         #splash .loader { margin-top: 20px; width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top: 4px solid #16a34a; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* LOGIN PAGE - FINAL */
+        /* LOGIN PAGE FINAL */
         #login-page { 
             min-height: 100vh; 
             background: url('assets/masjid-bg.svg') center top no-repeat; 
@@ -163,29 +163,39 @@
             background: #fff;
         }
 
-        /* Toast Lupa Password */
+        /* Toast Lupa Password - Tengah Layar */
         .toast-alert {
             position: fixed;
-            top: 20px;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            background: #16a34a;
-            color: #fff;
-            padding: 14px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            font-size: 14px;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: #fff;
+            color: #0f172a;
+            padding: 20px 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            font-size: 15px;
             font-weight: 500;
             z-index: 1000;
             opacity: 0;
             transition: all 0.3s ease;
+            max-width: 340px;
+            width: 90%;
+            text-align: center;
+            border: 2px solid #16a34a;
         }
         .toast-alert.show {
-            transform: translateX(-50%) translateY(0);
+            transform: translate(-50%, -50%) scale(1);
             opacity: 1;
         }
-        /* LOGIN PAGE - SELESAI */
+        .toast-alert i {
+            color: #16a34a;
+            font-size: 22px;
+            display: block;
+            margin-bottom: 10px;
+        }
 
+        /* DASHBOARD */
         #dashboard { padding-bottom: 20px; }
         .dashboard-header { background: #16a34a; color: #fff; padding: 16px; display: flex; align-items: center; gap: 12px; }
         .dashboard-header img { width: 40px; height: 40px; }
@@ -383,7 +393,7 @@
             this.classList.toggle('fa-eye-slash');
         });
 
-        // Handle Lupa Password
+        // Handle Lupa Password - Tengah + Narasi Formal
         document.getElementById('forgot-pass-link').addEventListener('click', function(e) {
             e.preventDefault();
             
@@ -395,12 +405,12 @@
                 document.body.appendChild(toast);
             }
             
-            toast.innerHTML = '<i class="fas fa-info-circle"></i> Password adalah 6 angka terakhir NIK Anda';
+            toast.innerHTML = '<i class="fas fa-key"></i>Password akun Anda adalah 6 (enam) digit terakhir dari Nomor Induk Kependudukan (NIK) yang terdaftar.';
             toast.classList.add('show');
             
             setTimeout(() => {
                 toast.classList.remove('show');
-            }, 3000);
+            }, 4000);
         });
 
         function checkLogin() {
@@ -456,7 +466,7 @@
                 console.error(err);
             })
             .finally(() => {
-                loginBtn.textContent = 'Masuk';
+                loginBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Masuk';
                 loginBtn.disabled = false;
             });
         });
