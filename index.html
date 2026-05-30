@@ -380,7 +380,7 @@
         <div class="donation-card">
             <img src="assets/logo-media-pgm.png" alt="Logo Tim Media">
             <h3>Donasi Tim Media PGM Indonesia KBB</h3>
-            <p>Seluruh donasi pengembangan dikelola secara swadaya oleh Tim Media PGM Indonesia Kab. Bandung Barat untuk mendukung dakwah digital dan kegiatan organisasi.</p>
+            <p>Seluruh donasi dikelola secara swadaya oleh PGM Indonesia Kab. Bandung Barat untuk mendukung pengembangan digitalisasi kegiatan organisasi.</p>
             <div class="dana-box">
                 <i class="fas fa-wallet"></i>
                 <div>
@@ -403,7 +403,7 @@
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbwF7J-RQ-YMucOQR5GCs9MhwjA4a_o0qYfSH77HsKtZMqQAGitx7VK6-zggunGrfBDI/exec'; 
-
+        const LINK_FORM_UPLOAD = 'https://forms.gle/xS2c4tDXsQtKJtLP9'; // GANTI LINK FORM UPLOAD KAMU
         window.addEventListener('popstate', function(event) {
             const user = localStorage.getItem('pgm_user');
             if (user) {
@@ -551,9 +551,9 @@
             const konfirmasi = confirm(
                 'SILAKAN TRANSFER KE:\n\n' +
                 'Bank BJB\n' +
-                'No. Rek: 001122334455\n' + // GANTI NOREK BJB ASLI
-                'a.n PGM Indonesia KBB\n\n' + // GANTI NAMA REK ASLI
-                'Nominal: Rp 50.000\n\n' +
+                'No. Rek: 0082949143100\n' + // GANTI NOREK BJB ASLI
+                'a.n PERKUMPULAN GURU MADRASAH KBB\n\n' + // GANTI NAMA REK ASLI
+                'Nominal: Rp 5.000\n\n' +
                 'Setelah transfer, klik OK untuk upload bukti.'
             );
             if (konfirmasi) {
