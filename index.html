@@ -19,213 +19,82 @@
         #splash .loader { margin-top: 20px; width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top: 4px solid #16a34a; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* LOGIN PAGE - GEDUNG FULL DI ATAS */
-        #login-page { 
-            min-height: 100vh; 
-            background: #f0fdf4;
-        }
-
+        /* LOGIN PAGE */
+        #login-page { min-height: 100vh; background: #f0fdf4; }
         .hero-image {
-            width: 100%;
-            height: 45vh;
+            width: 100%; height: 45vh;
             background: url('assets/gedung-pgm-bg.png') center center no-repeat;
-            background-size: cover;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: #fff;
+            background-size: cover; position: relative;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; color: #fff;
         }
         .hero-image::after {
-            content: '';
-            position: absolute;
-            inset: 0;
+            content: ''; position: absolute; inset: 0;
             background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5));
         }
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            padding: 20px;
-        }
-        .hero-content img { 
-            width: 80px; 
-            margin-bottom: 12px; 
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
-        }
-        .hero-content h2 { 
-            font-size: 22px; 
-            font-weight: 700; 
-            margin-bottom: 4px; 
-            line-height: 1.2;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
-        }
-        .hero-content p { 
-            font-size: 13px; 
-            color: #f0fdf4;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
-        }
+        .hero-content { position: relative; z-index: 2; padding: 20px; }
+        .hero-content img { width: 80px; margin-bottom: 12px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)); }
+        .hero-content h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; line-height: 1.2; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+        .hero-content p { font-size: 13px; color: #f0fdf4; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
         .hero-content .tagline { 
-            font-size: 12px; 
-            color: #dcfce7; 
-            margin-top: 10px; 
-            border-top: 2px solid #fbbf24; 
-            display: inline-block; 
-            padding-top: 6px; 
-            line-height: 1.4;
+            font-size: 12px; color: #dcfce7; margin-top: 10px; 
+            border-top: 2px solid #fbbf24; display: inline-block; padding-top: 6px; line-height: 1.4;
             text-shadow: 0 2px 8px rgba(0,0,0,0.6);
         }
 
-        .login-wrapper {
-            position: relative;
-            margin-top: -30px;
-            padding: 0 20px 20px;
-        }
-
+        .login-wrapper { position: relative; margin-top: -30px; padding: 0 20px 20px; }
         .login-card { 
-            background: #fff; 
-            padding: 24px 20px; 
-            border-radius: 24px; 
-            width: 100%; 
-            max-width: 480px; 
-            margin: 0 auto;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.1); 
-            text-align: center;
+            background: #fff; padding: 24px 20px; border-radius: 24px; 
+            width: 100%; max-width: 480px; margin: 0 auto;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1); text-align: center;
         }
         .login-card h3 { font-size: 20px; margin-bottom: 4px; color: #166534; }
         .login-card > p { color: #64748b; font-size: 14px; margin-bottom: 20px; }
 
         .form-group { margin-bottom: 14px; text-align: left; position: relative; }
         .form-group input { 
-            width: 100%; 
-            padding: 14px 44px 14px 44px; 
-            border: 1px solid #cbd5e1; 
-            border-radius: 8px; 
-            font-size: 15px; 
-            background: #f8fafc;
+            width: 100%; padding: 14px 44px 14px 44px; 
+            border: 1px solid #cbd5e1; border-radius: 8px; 
+            font-size: 15px; background: #f8fafc;
         }
-        .form-group .input-icon {
-            position: absolute;
-            left: 14px;
-            top: 14px;
-            color: #94a3b8;
-            font-size: 18px;
+        .form-group .input-icon { position: absolute; left: 14px; top: 14px; color: #94a3b8; font-size: 18px; }
+        .toggle-password { position: absolute; right: 14px; top: 14px; cursor: pointer; color: #64748b; }
+        .forgot-pass { text-align: right; margin: -6px 0 16px; }
+        .forgot-pass a { color: #16a34a; font-size: 13px; text-decoration: none; font-weight: 500; }
+        .btn-login { 
+            width: 100%; padding: 14px; background: #16a34a; color: #fff; 
+            border: none; border-radius: 8px; font-size: 16px; font-weight: 600; 
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .toggle-password { 
-            position: absolute; 
-            right: 14px; 
-            top: 14px; 
-            cursor: pointer; 
-            color: #64748b; 
-        }
-
-        .forgot-pass {
-            text-align: right;
-            margin: -6px 0 16px;
-        }
-        .forgot-pass a {
-            color: #16a34a;
-            font-size: 13px;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .btn-primary { 
-            width: 100%; 
-            padding: 14px; 
-            background: #16a34a; 
-            color: #fff; 
-            border: none; 
-            border-radius: 8px; 
-            font-size: 16px; 
-            font-weight: 600; 
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
         #error-message { color: #ef4444; font-size: 14px; margin-top: 12px; min-height: 20px; }
-
-        .register-text {
-            font-size: 14px;
-            color: #475569;
-            margin-top: 20px;
-        }
-        .register-text a {
-            color: #16a34a;
-            font-weight: 600;
-            text-decoration: none;
-        }
+        .register-text { font-size: 14px; color: #475569; margin-top: 20px; }
+        .register-text a { color: #16a34a; font-weight: 600; text-decoration: none; }
 
         .features {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            padding: 24px 0 0;
-            max-width: 480px;
-            width: 100%;
-            margin: 24px auto 0;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+            padding: 24px 0 0; max-width: 480px; width: 100%; margin: 24px auto 0;
         }
         .feature-item { text-align: center; }
         .feature-item i {
-            font-size: 24px;
-            color: #16a34a;
-            background: #dcfce7;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 8px;
+            font-size: 24px; color: #16a34a; background: #dcfce7;
+            width: 48px; height: 48px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center; margin-bottom: 8px;
         }
         .feature-item h4 { font-size: 13px; font-weight: 600; color: #0f172a; }
         .feature-item p { font-size: 11px; color: #64748b; line-height: 1.4; }
+        .login-footer { text-align: center; padding: 24px 16px 16px; font-size: 11px; color: #94a3b8; max-width: 480px; width: 100%; margin: 0 auto; }
 
-        .login-footer {
-            text-align: center;
-            padding: 24px 16px 16px;
-            font-size: 11px;
-            color: #94a3b8;
-            max-width: 480px;
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        /* Toast Lupa Password - Tengah Layar */
+        /* TOAST */
         .toast-alert {
-            position: fixed;
-            top: 50%;
-            left: 50%;
+            position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0.9);
-            background: #fff;
-            color: #0f172a;
-            padding: 20px 24px;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-            font-size: 15px;
-            font-weight: 500;
-            z-index: 1000;
-            opacity: 0;
-            transition: all 0.3s ease;
-            max-width: 340px;
-            width: 90%;
-            text-align: center;
-            border: 2px solid #16a34a;
+            background: #fff; color: #0f172a; padding: 20px 24px; border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12); font-size: 15px; font-weight: 500;
+            z-index: 1000; opacity: 0; transition: all 0.3s ease;
+            max-width: 340px; width: 90%; text-align: center; border: 2px solid #16a34a;
         }
-        .toast-alert.show {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
-        .toast-alert i {
-            color: #16a34a;
-            font-size: 22px;
-            display: block;
-            margin-bottom: 10px;
-        }
+        .toast-alert.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        .toast-alert i { color: #16a34a; font-size: 22px; display: block; margin-bottom: 10px; }
 
         /* DASHBOARD */
         #dashboard { padding-bottom: 20px; }
@@ -250,10 +119,36 @@
         .badge.green { background: #dcfce7; color: #166534; }
         .badge.red { background: #fee2e2; color: #991b1b; }
 
-        .action-buttons { margin: 16px; display: grid; gap: 10px; }
-        .btn-secondary { padding: 14px; background: #e2e8f0; color: #64748b; border: none; border-radius: 8px; font-weight: 600; }
-        .btn-outline { padding: 14px; background: #fff; color: #16a34a; border: 2px solid #16a34a; border-radius: 8px; font-weight: 600; }
-        .btn-logout { margin: 16px; padding: 14px; background: #ef4444; color: #fff; border: none; border-radius: 8px; font-weight: 600; width: calc(100% - 32px); }
+        /* 3 TOMBOL FOKUS */
+        .action-buttons { margin: 16px; display: grid; gap: 12px; }
+        
+        .btn-action {
+            padding: 14px; border: none; border-radius: 12px; 
+            font-weight: 600; font-size: 15px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-action:active { transform: scale(0.98); }
+        
+        /* State: Nonaktif */
+        .btn-action.disabled { 
+            background: #e2e8f0; color: #64748b; cursor: not-allowed; 
+        }
+        /* State: Aktif Hijau */
+        .btn-action.active { 
+            background: #16a34a; color: #fff; 
+            box-shadow: 0 2px 8px rgba(22,163,74,0.25);
+        }
+        /* State: Pending Kuning */
+        .btn-action.pending { 
+            background: #fef3c7; color: #92400e; 
+        }
+        /* State: Ditolak Merah */
+        .btn-action.rejected { 
+            background: #fee2e2; color: #991b1b; cursor: not-allowed;
+        }
+
+        .btn-logout { margin: 16px; padding: 14px; background: #ef4444; color: #fff; border: none; border-radius: 12px; font-weight: 600; width: calc(100% - 32px); }
 
         .donation-card { background: #fff; margin: 16px; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .donation-card img { width: 60px; margin-bottom: 12px; }
@@ -265,6 +160,28 @@
         
         .footer { text-align: center; padding: 24px 16px; font-size: 12px; color: #64748b; background: #fff; margin-top: 24px; border-top: 1px solid #e2e8f0; }
         .footer p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* MODAL UPLOAD */
+        .modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1001; padding: 20px;
+        }
+        .modal-content {
+            background: #fff; border-radius: 16px; padding: 24px;
+            max-width: 400px; width: 100%; text-align: center;
+        }
+        .modal-content h3 { font-size: 18px; margin-bottom: 12px; color: #166534; }
+        .modal-content p { font-size: 14px; color: #475569; line-height: 1.6; margin-bottom: 16px; text-align: left; }
+        .modal-content .rek-box {
+            background: #f8fafc; border: 2px solid #16a34a; border-radius: 8px;
+            padding: 12px; margin-bottom: 16px; font-weight: 600;
+        }
+        .modal-btn { 
+            width: 100%; padding: 12px; background: #16a34a; color: #fff; 
+            border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
+        }
+        .modal-close { margin-top: 10px; background: #e2e8f0; color: #475569; }
     </style>
 </head>
 <body>
@@ -281,7 +198,7 @@
                 <img src="assets/logo-pgm.png" alt="Logo PGM">
                 <h2>PGM Indonesia<br>Bandung Barat</h2>
                 <p>Perkumpulan Guru Madrasah (PGM)</p>
-                <p class="tagline">Bergerak Berdampak Menebar Manfaat<br>Suara Guru Suara Perubahan</p>
+                <p class="tagline">Bergerak Bersama Memberi Manfaat<br>Suara Guru Suara Perubahan</p>
             </div>
         </div>
 
@@ -302,12 +219,11 @@
                     <div class="forgot-pass">
                         <a href="#" id="forgot-pass-link">Lupa Password?</a>
                     </div>
-                    <button type="submit" class="btn-primary" id="login-btn">
+                    <button type="submit" class="btn-login" id="login-btn">
                         <i class="fas fa-arrow-right-to-bracket"></i> Masuk
                     </button>
                     <p id="error-message"></p>
                 </form>
-
                 <p class="register-text">Belum punya akun? <a href="https://forms.gle/TvbUGkvixSx4hyze6" target="_blank">Daftar Sekarang</a></p>
             </div>
 
@@ -328,10 +244,7 @@
                     <p>Digunakan oleh ribuan guru madrasah</p>
                 </div>
             </div>
-
-            <div class="login-footer">
-                © 2025 PGM Indonesia KBB<br>All rights reserved
-            </div>
+            <div class="login-footer">© 2025 PGM Indonesia KBB<br>All rights reserved</div>
         </div>
     </div>
 
@@ -372,9 +285,15 @@
         </div>
 
         <div class="action-buttons">
-            <button class="btn-secondary" disabled>Menunggu validasi</button>
-            <button class="btn-primary" id="upload-btn"><i class="fas fa-upload"></i> Upload Bukti Transfer</button>
-            <button class="btn-primary"><i class="fas fa-download"></i> Download Sertifikat</button>
+            <button class="btn-action disabled" id="btn-validasi">
+                <i class="fas fa-clock"></i> Menunggu validasi
+            </button>
+            <button class="btn-action active" id="btn-upload">
+                <i class="fas fa-cloud-upload-alt"></i> Upload Bukti Transfer
+            </button>
+            <button class="btn-action disabled" id="btn-download">
+                <i class="fas fa-download"></i> Download Sertifikat
+            </button>
         </div>
 
         <div class="donation-card">
@@ -402,7 +321,8 @@
     </main>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwF7J-RQ-YMucOQR5GCs9MhwjA4a_o0qYfSH77HsKtZMqQAGitx7VK6-zggunGrfBDI/exec'; 
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwwIi2EwTuLClxgJkCmiWN9hEEufrlm8zJiLbEAR755i-4f57TbPFu34aba90_hoRSX/exec'; 
+        const FORM_UPLOAD_LINK = 'https://forms.gle/JrzYUjYTWXTVdZzK8';
 
         window.addEventListener('popstate', function(event) {
             const user = localStorage.getItem('pgm_user');
@@ -429,10 +349,8 @@
             this.classList.toggle('fa-eye-slash');
         });
 
-        // Handle Lupa Password - Tengah + Narasi Formal
         document.getElementById('forgot-pass-link').addEventListener('click', function(e) {
             e.preventDefault();
-            
             let toast = document.getElementById('toast-alert');
             if (!toast) {
                 toast = document.createElement('div');
@@ -440,13 +358,9 @@
                 toast.className = 'toast-alert';
                 document.body.appendChild(toast);
             }
-            
             toast.innerHTML = '<i class="fas fa-key"></i>Password akun Anda adalah 6 (enam) digit terakhir dari Nomor Induk Kependudukan (NIK) yang terdaftar.';
             toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 4000);
+            setTimeout(() => { toast.classList.remove('show'); }, 4000);
         });
 
         function checkLogin() {
@@ -518,11 +432,52 @@
             document.getElementById('profile-wilayah').textContent = user.wilayah_pc || '-';
             
             const statusEl = document.getElementById('profile-status');
-            const statusAktif = user.status_aktif || '';
+            const statusAktif = user.status_keaktifan || '';
             if(statusAktif.toUpperCase().includes('AKTIF')) {
                 statusEl.innerHTML = `<span class="badge green">${statusAktif}</span>`;
             } else {
                 statusEl.innerHTML = `<span class="badge red">${statusAktif || '-'}</span>`;
+            }
+            
+            // LOGIC 3 TOMBOL SESUAI DATABASE
+            const btnValidasi = document.getElementById('btn-validasi');
+            const btnUpload = document.getElementById('btn-upload');
+            const btnDownload = document.getElementById('btn-download');
+            
+            const bayar = (user.bayar || '').toLowerCase();
+            const status = (user.status || '').toLowerCase();
+            const linkSertifikat = user.link_sertifikat || '';
+
+            // 1. Default: Belum bayar / bayar belum "sudah"
+            if (bayar !== 'sudah') {
+                btnValidasi.className = 'btn-action disabled';
+                btnValidasi.innerHTML = '<i class="fas fa-ban"></i> Menunggu validasi';
+                btnDownload.className = 'btn-action disabled';
+                btnDownload.innerHTML = '<i class="fas fa-download"></i> Download Sertifikat';
+            }
+            // 2. Sudah bayar, status "menunggu", link belum ada
+            else if (bayar === 'sudah' && status === 'menunggu' && !linkSertifikat) {
+                btnValidasi.className = 'btn-action pending';
+                btnValidasi.innerHTML = '<i class="fas fa-clock"></i> Menunggu validasi';
+                btnDownload.className = 'btn-action disabled';
+                btnDownload.innerHTML = '<i class="fas fa-download"></i> Download Sertifikat';
+            }
+            // 3. Sudah bayar, status "valid", ada link
+            else if (bayar === 'sudah' && status === 'valid' && linkSertifikat) {
+                btnValidasi.className = 'btn-action active';
+                btnValidasi.innerHTML = '<i class="fas fa-check-circle"></i> Valid';
+                btnDownload.className = 'btn-action active';
+                btnDownload.innerHTML = '<i class="fas fa-download"></i> Download Sertifikat';
+                btnDownload.onclick = function() {
+                    window.open(linkSertifikat, '_blank');
+                };
+            }
+            // 4. Sudah bayar, status "di tolak", link ga ada
+            else if (bayar === 'sudah' && status === 'di tolak' && !linkSertifikat) {
+                btnValidasi.className = 'btn-action rejected';
+                btnValidasi.innerHTML = '<i class="fas fa-times-circle"></i> Tinjau Kembali';
+                btnDownload.className = 'btn-action disabled';
+                btnDownload.innerHTML = '<i class="fas fa-download"></i> Download Sertifikat';
             }
             
             if(user.foto && user.foto.startsWith('http')) {
@@ -531,8 +486,28 @@
             }
         }
 
-        document.getElementById('upload-btn').addEventListener('click', function() {
-            alert('Fitur Upload Bukti Transfer akan segera hadir!');
+        // 5. Tombol Upload Bukti Transfer
+        document.getElementById('btn-upload').addEventListener('click', function() {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <h3><i class="fas fa-university"></i> Informasi Transfer</h3>
+                    <p>Silahkan transfer ke norek:</p>
+                    <div class="rek-box">
+                        BJB : 0082949143100<br>
+                        A.N PERKUMPULAN GURU MADRASAH KBB
+                    </div>
+                    <p>Setelah melakukan transaksi silahkan upload bukti transfernya di link berikut:</p>
+                    <button class="modal-btn" onclick="window.open('${FORM_UPLOAD_LINK}', '_blank')">
+                        <i class="fas fa-external-link-alt"></i> Buka Form Upload
+                    </button>
+                    <button class="modal-btn modal-close" onclick="this.closest('.modal').remove()">
+                        Tutup
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modal);
         });
 
         document.getElementById('logout-btn').addEventListener('click', function() {
