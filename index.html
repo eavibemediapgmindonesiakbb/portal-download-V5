@@ -321,20 +321,39 @@
     </main>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwwIi2EwTuLClxgJkCmiWN9hEEufrlm8zJiLbEAR755i-4f57TbPFu34aba90_hoRSX/exec'; 
-        const FORM_UPLOAD_LINK = 'https://forms.gle/JrzYUjYTWXTVdZzK8';
+        <script>
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwwIi2EwTuLClxgJkCmiWN9hEEufrlm8zJiLbEAR755i-4f57TbPFu34aba90_hoRSX/exec'; // WAJIB GANTI
 
-        window.addEventListener('popstate', function(event) {
-            const user = localStorage.getItem('pgm_user');
-            if (user) {
-                if (confirm('Mau keluar dari aplikasi?')) {
-                    localStorage.removeItem('pgm_user');
-                    location.reload();
-                } else {
-                    history.pushState(null, null, location.href);
-                }
-            }
-        });
+  const formLogin = document.getElementById('formLogin'); // ID form kamu
+  const btnLogin = document.getElementById('btnLogin');   // ID tombol login kamu
+  const errorMsg = document.getElementById('errorMsg');   // ID tempat error kamu
+
+  // Setting form
+  formLogin.action = API_URL;
+  formLogin.method = 'POST';
+  formLogin.target = 'hidden_iframe';
+
+  formLogin.addEventListener('submit', function() {
+    btnLogin.innerText = 'Memproses...';
+    btnLogin.disabled = true;
+    errorMsg.innerText = '';
+  });
+
+  // Tangkap balasan dari Apps Script
+  window.addEventListener('message', function(e) {
+    const res = e.data;
+
+    btnLogin.innerText = 'Masuk';
+    btnLogin.disabled = false;
+
+    if (res.status === 'success') {
+      sessionStorage.setItem('userData', JSON.stringify(res.data));
+      window.location.href = 'dashboard.html';
+    } else {
+      errorMsg.innerText = res.error || 'Terjadi kesalahan';
+    }
+  });
+</script>
 
         setTimeout(() => {
             document.getElementById('splash').classList.add('hidden');
@@ -521,5 +540,6 @@
             navigator.serviceWorker.register('sw.js');
         }
     </script>
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 </body>
 </html>
