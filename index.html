@@ -218,231 +218,213 @@
     </main>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbx6iqyfHpTvVHEiQ1IGZRFhb7rDChXJ70DLeHOsEUsyo8w_ZCFDRaFNv8f3AWui16CY/exec'; 
-        const LINK_FORM_UPLOAD = 'https://forms.gle/xS2c4tDXsQtKJtLP9';
-        const NO_ADMIN_DANA = '62852155473xx';
+    const API_URL = 'GANTI_PAKE_URL_EXEC_LU_YANG_BARU'; 
+    const LINK_FORM_UPLOAD = 'https://forms.gle/xS2c4tDXsQtKJtLP9';
+    const NO_ADMIN_DANA = '62852155473xx';
 
-        // CEGAH BACK BUTTON
-        window.addEventListener('popstate', function(event) {
-            const user = localStorage.getItem('pgm_user');
-            if (user) {
-                if (confirm('Mau keluar dari aplikasi?')) {
-                    localStorage.removeItem('pgm_user');
-                    location.reload();
-                } else {
-                    history.pushState(null, null, location.href);
-                }
-            }
-        });
-
-        // SPLASH SCREEN + CEK LOGIN - FIX ANTI NYANGKUT
-        document.addEventListener('DOMContentLoaded', function() {
-            const splash = document.getElementById('splash');
-            const loginPage = document.getElementById('login-page');
-            const dashboard = document.getElementById('dashboard');
-            
-            const userData = localStorage.getItem('pgm_user');
-            let isLoggedIn = false;
-            
-            if (userData && userData !== 'null' && userData !== 'undefined') {
-                try {
-                    const user = JSON.parse(userData);
-                    if (user.status === 'success') isLoggedIn = true;
-                } catch(e) {
-                    localStorage.removeItem('pgm_user');
-                }
-            }
-
-            setTimeout(() => {
-                splash.classList.add('hidden');
-                if (isLoggedIn) {
-                    showDashboard(JSON.parse(localStorage.getItem('pgm_user')));
-                    history.pushState(null, null, location.href);
-                } else {
-                    loginPage.classList.remove('hidden');
-                    dashboard.classList.add('hidden');
-                }
-            }, 1500);
-        });
-
-        // TOGGLE PASSWORD
-        document.getElementById('togglePassword').addEventListener('click', function() {
-            const password = document.getElementById('password');
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
-        });
-
-        // LUPA PASSWORD
-        document.getElementById('forgot-pass-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            let toast = document.getElementById('toast-alert');
-            if (!toast) {
-                toast = document.createElement('div');
-                toast.id = 'toast-alert';
-                toast.className = 'toast-alert';
-                document.body.appendChild(toast);
-            }
-            toast.innerHTML = '<i class="fas fa-key"></i>Password akun Anda adalah 6 (enam) digit terakhir dari Nomor Induk Kependudukan (NIK) yang terdaftar.';
-            toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 4000);
-        });
-
-        // PROSES LOGIN
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const nik = document.getElementById('nik').value;
-            const password = document.getElementById('password').value;
-            const errorMsg = document.getElementById('error-message');
-            const loginBtn = document.getElementById('login-btn');
-            
-            errorMsg.textContent = '';
-            loginBtn.textContent = 'Memproses...';
-            loginBtn.disabled = true;
-
-            fetch(API_URL, {
-                method: 'POST',
-                redirect: 'follow',
-                body: new URLSearchParams({
-                    action: 'login',
-                    nik: nik,
-                    password: password
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    localStorage.setItem('pgm_user', JSON.stringify(data));
-                    showDashboard(data);
-                    history.pushState(null, null, location.href);
-                } else {
-                    errorMsg.textContent = data.message;
-                }
-            })
-            .catch(err => {
-                errorMsg.textContent = 'Gagal konek ke server. Cek setting Apps Script!';
-                console.error(err);
-            })
-            .finally(() => {
-                loginBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Masuk';
-                loginBtn.disabled = false;
-            });
-        });
-
-        // TAMPILKAN DASHBOARD - VERSI FINAL
-        function showDashboard(user) {
-            document.getElementById('login-page').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
-
-            document.getElementById('member-name').textContent = user.nama || '-';
-            document.getElementById('profile-name').textContent = user.nama || '-';
-            document.getElementById('profile-no-kta').textContent = user.no_kta || '-';
-            document.getElementById('profile-tahun').textContent = user.tahun_gabung || '-';
-            document.getElementById('profile-wilayah').textContent = user.wilayah_pc || '-';
-
-            const statusEl = document.getElementById('profile-status');
-            const statusAktif = user.status_aktif || '';
-            if(statusAktif.toUpperCase().includes('AKTIF')) {
-                statusEl.innerHTML = '<span class="badge green">' + statusAktif + '</span>';
+    // CEGAH BACK BUTTON
+    window.addEventListener('popstate', function(event) {
+        const user = localStorage.getItem('pgm_user');
+        if (user) {
+            if (confirm('Mau keluar dari aplikasi?')) {
+                localStorage.removeItem('pgm_user');
+                location.reload();
             } else {
-                statusEl.innerHTML = '<span class="badge red">' + (statusAktif || '-') + '</span>';
+                history.pushState(null, null, location.href);
             }
+        }
+    });
 
-            if(user.foto && user.foto.startsWith('http')) {
-                document.getElementById('profile-photo').src = user.foto;
-                document.getElementById('header-photo').src = user.foto;
-            }
-
-            // TOMBOL UPLOAD BUKTI
-            const btnUpload = document.getElementById('upload-btn');
-            if (user.bayar === 'Sudah') {
-                btnUpload.innerHTML = '<i class="fas fa-check-circle"></i> Sudah Upload Bukti';
-                btnUpload.style.background = '#22c55e';
-                btnUpload.style.border = '2px solid #22c55e';
-                btnUpload.disabled = true;
-                btnUpload.onclick = null;
-            } else {
-                btnUpload.innerHTML = '<i class="fas fa-upload"></i> Upload Bukti Transfer';
-                btnUpload.style.background = '#3b82f6';
-                btnUpload.style.border = '2px solid #3b82f6';
-                btnUpload.disabled = false;
-                btnUpload.onclick = () => {
-                    const konfirmasi = confirm('SILAKAN TRANSFER KE:\n\nBank BJB\nNo. Rek: 0082949143100\na.n PERKUMPULAN GURU MADRASAH KBB\n\nNominal: Rp 5.000\n\nSetelah transfer, klik OK untuk upload bukti.');
-                    if (konfirmasi) {
-                        window.open(LINK_FORM_UPLOAD, '_blank');
-                    }
-                };
-            }
-
-            // TOMBOL DOWNLOAD SERTIFIKAT - FIX TOMBOL IJO
-            const btnDownload = document.getElementById('download-btn');
-            const statusSertif = (user.status_kta || '').toString().toLowerCase().trim();
-            const linkSertif = (user.link_sertifikat || '').toString().trim();
-
-            if (statusSertif === 'valid' && linkSertif !== '' && linkSertif.startsWith('https://')) {
-                btnDownload.innerHTML = '<i class="fas fa-download"></i> Download E-Sertifikat';
-                btnDownload.style.background = '#16a34a';
-                btnDownload.style.border = '2px solid #16a34a';
-                btnDownload.disabled = false;
-                btnDownload.style.cursor = 'pointer';
-                btnDownload.onclick = () => window.open(linkSertif, '_blank');
-            } else if (statusSertif === 'pending') {
-                btnDownload.innerHTML = '<i class="fas fa-clock"></i> Menunggu Validasi';
-                btnDownload.style.background = '#f59e0b';
-                btnDownload.style.border = '2px solid #f59e0b';
-                btnDownload.disabled = true;
-                btnDownload.style.cursor = 'not-allowed';
-                btnDownload.onclick = null;
-            } else if (statusSertif === 'rejected') {
-                btnDownload.innerHTML = '<i class="fas fa-times-circle"></i> Ditolak';
-                btnDownload.style.background = '#ef4444';
-                btnDownload.style.border = '2px solid #ef4444';
-                btnDownload.disabled = true;
-                btnDownload.style.cursor = 'not-allowed';
-                btnDownload.onclick = null;
-            } else {
-                btnDownload.innerHTML = '<i class="fas fa-download"></i> Belum Tersedia';
-                btnDownload.style.background = '#94a3b8';
-                btnDownload.style.border = '2px solid #94a3b8';
-                btnDownload.disabled = true;
-                btnDownload.style.cursor = 'not-allowed';
-                btnDownload.onclick = null;
-            }
-
-            // UPDATE STATUS BUTTON
-            const statusBtn = document.getElementById('status-btn');
-            if (statusSertif === 'valid') {
-                statusBtn.textContent = 'Sudah Valid';
-                statusBtn.style.background = '#dcfce7';
-                statusBtn.style.color = '#166534';
-            } else if (statusSertif === 'pending') {
-                statusBtn.textContent = 'Menunggu Validasi';
-                statusBtn.style.background = '#fef3c7';
-                statusBtn.style.color = '#92400e';
-            } else {
-                statusBtn.textContent = 'Belum Valid';
-                statusBtn.style.background = '#e2e8f0';
-                statusBtn.style.color = '#64748b';
+    // SPLASH SCREEN + CEK LOGIN
+    document.addEventListener('DOMContentLoaded', function() {
+        const splash = document.getElementById('splash');
+        const loginPage = document.getElementById('login-page');
+        const dashboard = document.getElementById('dashboard');
+        
+        const userData = localStorage.getItem('pgm_user');
+        let isLoggedIn = false;
+        
+        if (userData && userData!== 'null' && userData!== 'undefined') {
+            try {
+                const user = JSON.parse(userData);
+                if (user.status === 'success') isLoggedIn = true;
+            } catch(e) {
+                localStorage.removeItem('pgm_user');
             }
         }
 
-        // TOMBOL KELUAR - FIX
-        document.getElementById('logout-btn').addEventListener('click', function() {
-            if (confirm('Yakin mau keluar?')) {
-                localStorage.removeItem('pgm_user');
-                sessionStorage.clear();
-                location.reload();
+        setTimeout(() => {
+            splash.classList.add('hidden');
+            if (isLoggedIn) {
+                showDashboard(JSON.parse(localStorage.getItem('pgm_user')));
+                history.pushState(null, null, location.href);
+            } else {
+                loginPage.classList.remove('hidden');
+                dashboard.classList.add('hidden');
             }
-        });
+        }, 1500);
+    });
 
-        // TOMBOL DUKUNGAN - FIX WA 404
-        document.getElementById('donasi-btn').addEventListener('click', function() {
-            const user = JSON.parse(localStorage.getItem('pgm_user'));
-            const nama = user.nama || 'Anggota PGM';
-            const pesan = 'Assalamualaikum, saya ' + nama + ' mau salurkan dukungan untuk Tim Media PGM KBB';
-            window.open('https://wa.me/' + NO_ADMIN_DANA + '?text=' + encodeURIComponent(pesan), '_blank');
+    // TOGGLE PASSWORD
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const password = document.getElementById('password');
+        const type = password.getAttribute('type') === 'password'? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+    });
+
+    // LUPA PASSWORD
+    document.getElementById('forgot-pass-link').addEventListener('click', function(e) {
+        e.preventDefault();
+        let toast = document.getElementById('toast-alert');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'toast-alert';
+            toast.className = 'toast-alert';
+            document.body.appendChild(toast);
+        }
+        toast.innerHTML = '<i class="fas fa-key"></i>Password akun Anda adalah 6 digit terakhir NIK.';
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 4000);
+    });
+
+    // PROSES LOGIN
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const nik = document.getElementById('nik').value;
+        const password = document.getElementById('password').value;
+        const errorMsg = document.getElementById('error-message');
+        const loginBtn = document.getElementById('login-btn');
+        
+        errorMsg.textContent = '';
+        loginBtn.textContent = 'Memproses...';
+        loginBtn.disabled = true;
+
+        fetch(API_URL, {
+            method: 'POST',
+            body: new URLSearchParams({ action: 'login', nik: nik, password: password })
+        })
+       .then(res => res.json())
+       .then(data => {
+            if (data.status === 'success') {
+                localStorage.setItem('pgm_user', JSON.stringify(data));
+                showDashboard(data);
+                history.pushState(null, null, location.href);
+            } else {
+                errorMsg.textContent = data.message;
+            }
+        })
+       .catch(err => {
+            errorMsg.textContent = 'Gagal konek ke server. Cek Deploy Apps Script!';
+            console.error(err);
+        })
+       .finally(() => {
+            loginBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Masuk';
+            loginBtn.disabled = false;
         });
-    </script>
+    });
+
+    // TAMPILKAN DASHBOARD - UDAH SINKRON SAMA HEADER BARU
+    function showDashboard(user) {
+        document.getElementById('login-page').classList.add('hidden');
+        document.getElementById('dashboard').classList.remove('hidden');
+
+        document.getElementById('member-name').textContent = user.nama || '-';
+        document.getElementById('profile-name').textContent = user.nama || '-';
+        document.getElementById('profile-no-kta').textContent = user.no_kta || '-';
+        document.getElementById('profile-tahun').textContent = user.tahun_gabung || '-';
+        document.getElementById('profile-wilayah').textContent = user.wilayah_pc || '-';
+
+        const statusEl = document.getElementById('profile-status');
+        const statusAktif = user.status_aktif || '';
+        if(statusAktif.toUpperCase().includes('AKTIF')) {
+            statusEl.innerHTML = '<span class="badge green">' + statusAktif + '</span>';
+        } else {
+            statusEl.innerHTML = '<span class="badge red">' + (statusAktif || '-') + '</span>';
+        }
+
+        if(user.foto && user.foto.startsWith('http')) {
+            document.getElementById('profile-photo').src = user.foto;
+            document.getElementById('header-photo').src = user.foto;
+        }
+
+        // TOMBOL UPLOAD BUKTI
+        const btnUpload = document.getElementById('upload-btn');
+        if (user.bayar === 'Sudah') {
+            btnUpload.innerHTML = '<i class="fas fa-check-circle"></i> Sudah Upload Bukti';
+            btnUpload.style.background = '#22c55e';
+            btnUpload.disabled = true;
+            btnUpload.onclick = null;
+        } else {
+            btnUpload.innerHTML = '<i class="fas fa-upload"></i> Upload Bukti Transfer';
+            btnUpload.style.background = '#3b82f6';
+            btnUpload.disabled = false;
+            btnUpload.onclick = () => {
+                const konfirmasi = confirm('SILAKAN TRANSFER KE:\n\nBank BJB\nNo. Rek: 0082949143100\na.n PERKUMPULAN GURU MADRASAH KBB\n\nNominal: Rp 5.000\n\nKlik OK untuk upload bukti.');
+                if (konfirmasi) window.open(LINK_FORM_UPLOAD, '_blank');
+            };
+        }
+
+        // TOMBOL DOWNLOAD SERTIFIKAT - INI YANG BENERIN
+        const btnDownload = document.getElementById('download-btn');
+        const statusSertif = (user.status_kta || '').toLowerCase().trim();
+        const linkSertif = (user.link_sertifikat || '').trim();
+
+        if (statusSertif === 'valid' && linkSertif.startsWith('https://')) {
+            btnDownload.innerHTML = '<i class="fas fa-download"></i> Download E-Sertifikat';
+            btnDownload.style.background = '#16a34a';
+            btnDownload.disabled = false;
+            btnDownload.onclick = () => window.open(linkSertif, '_blank');
+        } else if (statusSertif === 'pending') {
+            btnDownload.innerHTML = '<i class="fas fa-clock"></i> Menunggu Validasi';
+            btnDownload.style.background = '#f59e0b';
+            btnDownload.disabled = true;
+            btnDownload.onclick = null;
+        } else if (statusSertif === 'rejected') {
+            btnDownload.innerHTML = '<i class="fas fa-times-circle"></i> Ditolak';
+            btnDownload.style.background = '#ef4444';
+            btnDownload.disabled = true;
+            btnDownload.onclick = null;
+        } else {
+            btnDownload.innerHTML = '<i class="fas fa-download"></i> Belum Tersedia';
+            btnDownload.style.background = '#94a3b8';
+            btnDownload.disabled = true;
+            btnDownload.onclick = null;
+        }
+
+        // UPDATE STATUS BUTTON
+        const statusBtn = document.getElementById('status-btn');
+        if (statusSertif === 'valid') {
+            statusBtn.textContent = 'Sudah Valid';
+            statusBtn.style.background = '#dcfce7';
+            statusBtn.style.color = '#166534';
+        } else if (statusSertif === 'pending') {
+            statusBtn.textContent = 'Menunggu Validasi';
+            statusBtn.style.background = '#fef3c7';
+            statusBtn.style.color = '#92400e';
+        } else {
+            statusBtn.textContent = 'Belum Valid';
+            statusBtn.style.background = '#e2e8f0';
+            statusBtn.style.color = '#64748b';
+        }
+    }
+
+    // TOMBOL KELUAR
+    document.getElementById('logout-btn').addEventListener('click', function() {
+        if (confirm('Yakin mau keluar?')) {
+            localStorage.removeItem('pgm_user');
+            location.reload();
+        }
+    });
+
+    // TOMBOL DUKUNGAN
+    document.getElementById('donasi-btn').addEventListener('click', function() {
+        const user = JSON.parse(localStorage.getItem('pgm_user'));
+        const nama = user.nama || 'Anggota PGM';
+        const pesan = 'Assalamualaikum, saya ' + nama + ' mau salurkan dukungan untuk Tim Media PGM KBB';
+        window.open('https://wa.me/' + NO_ADMIN_DANA + '?text=' + encodeURIComponent(pesan), '_blank');
+    });
+</script>
 </body>
 </html>
