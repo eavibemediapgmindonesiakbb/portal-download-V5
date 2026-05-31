@@ -374,7 +374,7 @@
         <div class="action-buttons">
             <button class="btn-secondary" disabled>Menunggu validasi</button>
             <button class="btn-primary" id="upload-btn"><i class="fas fa-upload"></i> Upload Bukti Transfer</button>
-            <button class="btn-primary"><i class="fas fa-download"></i> Download Sertifikat</button>
+            <button class="btn-primary" id="download-btn"><i class="fas fa-download"></i> Download Sertifikat</button>
         </div>
 
         <div class="donation-card">
@@ -388,11 +388,10 @@
                     <p>No. Rek: 0852155473xx</p>
                     <p>a.n Tim Media PGM Indonesia KBB</p>
                 </div>
-            </div>
-            <button class="btn-outline">Salurkan Dukungan</button>
+            <button class="btn-outline" onclick="donasi()">Salurkan Dukungan</button>
         </div>
 
-        <button class="btn-logout" id="logout-btn">
+        <button class="btn-logout" id="logout-btn" onclick="keluar()">
             <i class="fas fa-right-from-bracket"></i> Keluar
         </button>
 
@@ -403,7 +402,8 @@
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbwF7J-RQ-YMucOQR5GCs9MhwjA4a_o0qYfSH77HsKtZMqQAGitx7VK6-zggunGrfBDI/exec'; 
-        const LINK_FORM_UPLOAD = 'https://forms.gle/xS2c4tDXsQtKJtLP9'; // GANTI LINK FORM UPLOAD KAMU
+        const LINK_FORM_UPLOAD = 'https://forms.gle/KQUf56eLmWJzL8ZV8'; // GANTI LINK FORM UPLOAD KAMU
+        const NO_ADMIN_DONASI = '62852155473xx'; // GANTI NOMOR ADMIN DANA/WA
         window.addEventListener('popstate', function(event) {
             const user = localStorage.getItem('pgm_user');
             if (user) {
@@ -532,8 +532,7 @@
 
     // ==== INI YANG BARU: LOGIKA TOMBOL UPLOAD + DOWNLOAD ====
     const btnUpload = document.getElementById('upload-btn');
-    const actionButtons = document.querySelectorAll('.action-buttons.btn-primary');
-    const btnDownload = actionButtons[1]; // tombol download = tombol kedua
+    const btnDownload = document.getElementById('download-btn');
 
     // 1. TOMBOL UPLOAD BUKTI
     if (user.bayar === 'Sudah') {
@@ -593,6 +592,26 @@
     }
     // ==== SELESAI TAMBAHAN ====
 }
+
+        // === FUNGSI BARU: TOMBOL KELUAR ===
+        function keluar() {
+          if (confirm('Yakin mau keluar dari aplikasi?')) {
+            google.script.run
+              .withSuccessHandler(function() {
+                localStorage.removeItem('pgm_user');
+                window.top.location.href = '<?= ScriptApp.getService().getUrl(); ?>';
+              })
+              .logoutUser();
+          }
+        }
+
+        // === FUNGSI BARU: TOMBOL SALURKAN DUKUNGAN ===
+        function donasi() {
+          const nama = document.getElementById('member-name').textContent;
+          const pesan = `Assalamualaikum, saya ${nama} mau salurkan dukungan untuk Tim Media PGM KBB`;
+          const linkWA = `https://wa.me/${62852155473xx}?text=${encodeURIComponent(pesan)}`;
+          window.open(linkWA, '_blank');
+        }
     </script>
 </body>
 </html>
