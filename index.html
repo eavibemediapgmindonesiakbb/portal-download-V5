@@ -220,7 +220,7 @@
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbwF7J-RQ-YMucOQR5GCs9MhwjA4a_o0qYfSH77HsKtZMqQAGitx7VK6-zggunGrfBDI/exec'; 
         const LINK_FORM_UPLOAD = 'https://forms.gle/xS2c4tDXsQtKJtLP9';
-        const NO_ADMIN_DANA = '62852155473xx'; // GANTI NOMOR ADMIN
+        const NO_ADMIN_DANA = '62852155473xx'; // UDAH BENER PAKE 62, JANGAN PAKE +
 
         // CEGAH BACK BUTTON
         window.addEventListener('popstate', function(event) {
@@ -370,34 +370,38 @@
                 };
             }
 
-            // TOMBOL DOWNLOAD SERTIFIKAT
+            // TOMBOL DOWNLOAD SERTIFIKAT - FIX UTAMA DISINI
             const btnDownload = document.getElementById('download-btn');
             const statusSertif = (user.status || '').toString().toLowerCase().trim();
             const linkSertif = (user.link_sertifikat || '').toString().trim();
 
-            if (statusSertif === 'valid' && linkSertif !== '') {
-                btnDownload.innerHTML = '<i class="fas fa-download"></i> Download Sertifikat';
-                btnDownload.style.background = '#16a34a';
+            if (statusSertif === 'valid' && linkSertif !== '' && linkSertif.startsWith('https://')) {
+                btnDownload.innerHTML = '<i class="fas fa-download"></i> Download E-Sertifikat';
+                btnDownload.style.background = '#16a34a'; // HIJAU
                 btnDownload.style.border = '2px solid #16a34a';
                 btnDownload.disabled = false;
+                btnDownload.style.cursor = 'pointer';
                 btnDownload.onclick = () => window.open(linkSertif, '_blank');
             } else if (statusSertif === 'pending') {
                 btnDownload.innerHTML = '<i class="fas fa-clock"></i> Menunggu Validasi';
                 btnDownload.style.background = '#f59e0b';
                 btnDownload.style.border = '2px solid #f59e0b';
                 btnDownload.disabled = true;
+                btnDownload.style.cursor = 'not-allowed';
                 btnDownload.onclick = null;
             } else if (statusSertif === 'rejected') {
                 btnDownload.innerHTML = '<i class="fas fa-times-circle"></i> Ditolak';
                 btnDownload.style.background = '#ef4444';
                 btnDownload.style.border = '2px solid #ef4444';
                 btnDownload.disabled = true;
+                btnDownload.style.cursor = 'not-allowed';
                 btnDownload.onclick = null;
             } else {
                 btnDownload.innerHTML = '<i class="fas fa-download"></i> Belum Tersedia';
                 btnDownload.style.background = '#94a3b8';
                 btnDownload.style.border = '2px solid #94a3b8';
                 btnDownload.disabled = true;
+                btnDownload.style.cursor = 'not-allowed';
                 btnDownload.onclick = null;
             }
 
@@ -409,26 +413,31 @@
                 statusBtn.style.color = '#166534';
             } else if (statusSertif === 'pending') {
                 statusBtn.textContent = 'Menunggu Validasi';
+                statusBtn.style.background = '#fef3c7';
+                statusBtn.style.color = '#92400e';
             } else {
                 statusBtn.textContent = 'Belum Valid';
+                statusBtn.style.background = '#e2e8f0';
+                statusBtn.style.color = '#64748b';
             }
         }
 
-        // TOMBOL SALURKAN DUKUNGAN - UDAH AKTIF
+        // TOMBOL SALURKAN DUKUNGAN - FIX: PASTIKAN NO_ADMIN_DANA BENER
         document.getElementById('donasi-btn').addEventListener('click', function() {
             const user = JSON.parse(localStorage.getItem('pgm_user'));
             const nama = user.nama || 'Anggota PGM';
             const pesan = 'Assalamualaikum, saya ' + nama + ' mau salurkan dukungan untuk Tim Media PGM KBB';
+            // PASTIKAN NO_ADMIN_DANA = 62852155473xx tanpa + dan spasi
             window.open('https://wa.me/' + NO_ADMIN_DANA + '?text=' + encodeURIComponent(pesan), '_blank');
         });
 
-        // TOMBOL KELUAR - UDAH AKTIF
+        // TOMBOL KELUAR - FIX: LANGSUNG LOGOUT TANPA GOOGLE.SCRIPT.RUN
         document.getElementById('logout-btn').addEventListener('click', function() {
             if (confirm('Yakin mau keluar?')) {
-                google.script.run.withSuccessHandler(function() {
-                    localStorage.removeItem('pgm_user');
-                    window.top.location.href = '<?= ScriptApp.getService().getUrl(); ?>';
-                }).logoutUser();
+                localStorage.removeItem('pgm_user');
+                sessionStorage.clear();
+                // Reload halaman, otomatis balik ke login
+                location.reload();
             }
         });
     </script>
