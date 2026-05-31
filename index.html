@@ -327,49 +327,117 @@
 
         // TAMPILKAN DASHBOARD
         function showDashboard(user) {
-            document.getElementById('login-page').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
+    document.getElementById('login-page').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
 
-            document.getElementById('member-name').textContent = user.nama || '-';
-            document.getElementById('profile-name').textContent = user.nama || '-';
-            document.getElementById('profile-no-kta').textContent = user.no_kta || '-';
-            document.getElementById('profile-tahun').textContent = user.tahun_gabung || '-';
-            document.getElementById('profile-wilayah').textContent = user.wilayah_pc || '-';
+    document.getElementById('member-name').textContent = user.nama || '-';
+    document.getElementById('profile-name').textContent = user.nama || '-';
+    document.getElementById('profile-no-kta').textContent = user.no_kta || '-';
+    document.getElementById('profile-tahun').textContent = user.tahun_gabung || '-';
+    document.getElementById('profile-wilayah').textContent = user.wilayah_pc || '-';
 
-            const statusEl = document.getElementById('profile-status');
-            const statusAktif = user.status_aktif || '';
-            if(statusAktif.toUpperCase().includes('AKTIF')) {
-                statusEl.innerHTML = '<span class="badge green">' + statusAktif + '</span>';
-            } else {
-                statusEl.innerHTML = '<span class="badge red">' + (statusAktif || '-') + '</span>';
+    const statusEl = document.getElementById('profile-status');
+    const statusAktif = user.status_aktif || '';
+    if(statusAktif.toUpperCase().includes('AKTIF')) {
+        statusEl.innerHTML = '<span class="badge green">' + statusAktif + '</span>';
+    } else {
+        statusEl.innerHTML = '<span class="badge red">' + (statusAktif || '-') + '</span>';
+    }
+
+    if(user.foto && user.foto.startsWith('http')) {
+        document.getElementById('profile-photo').src = user.foto;
+        document.getElementById('header-photo').src = user.foto;
+    }
+
+    // TOMBOL UPLOAD BUKTI
+    const btnUpload = document.getElementById('upload-btn');
+    if (user.bayar === 'Sudah') {
+        btnUpload.innerHTML = '<i class="fas fa-check-circle"></i> Sudah Upload Bukti';
+        btnUpload.style.background = '#22c55e';
+        btnUpload.style.border = '2px solid #22c55e';
+        btnUpload.disabled = true;
+        btnUpload.onclick = null;
+    } else {
+        btnUpload.innerHTML = '<i class="fas fa-upload"></i> Upload Bukti Transfer';
+        btnUpload.style.background = '#3b82f6';
+        btnUpload.style.border = '2px solid #3b82f6';
+        btnUpload.disabled = false;
+        btnUpload.onclick = () => {
+            const konfirmasi = confirm('SILAKAN TRANSFER KE:\n\nBank BJB\nNo. Rek: 0082949143100\na.n PERKUMPULAN GURU MADRASAH KBB\n\nNominal: Rp 5.000\n\nSetelah transfer, klik OK untuk upload bukti.');
+            if (konfirmasi) {
+                window.open(LINK_FORM_UPLOAD, '_blank');
             }
+        };
+    }
 
-            if(user.foto && user.foto.startsWith('http')) {
-                document.getElementById('profile-photo').src = user.foto;
-                document.getElementById('header-photo').src = user.foto;
-            }
+    // TOMBOL DOWNLOAD SERTIFIKAT - INI YG BENERIN TOMBOL IJO
+    const btnDownload = document.getElementById('download-btn');
+    const statusSertif = (user.status_kta || '').toString().toLowerCase().trim();
+    const linkSertif = (user.link_sertifikat || '').toString().trim();
 
-            // TOMBOL UPLOAD BUKTI
-            const btnUpload = document.getElementById('upload-btn');
-            if (user.bayar === 'Sudah') {
-                btnUpload.innerHTML = '<i class="fas fa-check-circle"></i> Sudah Upload Bukti';
-                btnUpload.style.background = '#22c55e';
-                btnUpload.style.border = '2px solid #22c55e';
-                btnUpload.disabled = true;
-                btnUpload.onclick = null;
-            } else {
-                btnUpload.innerHTML = '<i class="fas fa-upload"></i> Upload Bukti Transfer';
-                btnUpload.style.background = '#3b82f6';
-                btnUpload.style.border = '2px solid #3b82f6';
-                btnUpload.disabled = false;
-                btnUpload.onclick = () => {
-                    const konfirmasi = confirm('SILAKAN TRANSFER KE:\n\nBank BJB\nNo. Rek: 0082949143100\na.n PERKUMPULAN GURU MADRASAH KBB\n\nNominal: Rp 5.000\n\nSetelah transfer, klik OK untuk upload bukti.');
-                    if (konfirmasi) {
-                        window.open(LINK_FORM_UPLOAD, '_blank');
-                    }
-                };
-            }
+    if (statusSertif === 'valid' && linkSertif!== '' && linkSertif.startsWith('https://')) {
+        btnDownload.innerHTML = '<i class="fas fa-download"></i> Download E-Sertifikat';
+        btnDownload.style.background = '#16a34a';
+        btnDownload.style.border = '2px solid #16a34a';
+        btnDownload.disabled = false;
+        btnDownload.style.cursor = 'pointer';
+        btnDownload.onclick = () => window.open(linkSertif, '_blank');
+    } else if (statusSertif === 'pending') {
+        btnDownload.innerHTML = '<i class="fas fa-clock"></i> Menunggu Validasi';
+        btnDownload.style.background = '#f59e0b';
+        btnDownload.style.border = '2px solid #f59e0b';
+        btnDownload.disabled = true;
+        btnDownload.style.cursor = 'not-allowed';
+        btnDownload.onclick = null;
+    } else if (statusSertif === 'rejected') {
+        btnDownload.innerHTML = '<i class="fas fa-times-circle"></i> Ditolak';
+        btnDownload.style.background = '#ef4444';
+        btnDownload.style.border = '2px solid #ef4444';
+        btnDownload.disabled = true;
+        btnDownload.style.cursor = 'not-allowed';
+        btnDownload.onclick = null;
+    } else {
+        btnDownload.innerHTML = '<i class="fas fa-download"></i> Belum Tersedia';
+        btnDownload.style.background = '#94a3b8';
+        btnDownload.style.border = '2px solid #94a3b8';
+        btnDownload.disabled = true;
+        btnDownload.style.cursor = 'not-allowed';
+        btnDownload.onclick = null;
+    }
 
+    // UPDATE STATUS BUTTON
+    const statusBtn = document.getElementById('status-btn');
+    if (statusSertif === 'valid') {
+        statusBtn.textContent = 'Sudah Valid';
+        statusBtn.style.background = '#dcfce7';
+        statusBtn.style.color = '#166534';
+    } else if (statusSertif === 'pending') {
+        statusBtn.textContent = 'Menunggu Validasi';
+        statusBtn.style.background = '#fef3c7';
+        statusBtn.style.color = '#92400e';
+    } else {
+        statusBtn.textContent = 'Belum Valid';
+        statusBtn.style.background = '#e2e8f0';
+        statusBtn.style.color = '#64748b';
+    }
+}
+
+// TOMBOL KELUAR - UDAH BENER
+document.getElementById('logout-btn').addEventListener('click', function() {
+    if (confirm('Yakin mau keluar?')) {
+        localStorage.removeItem('pgm_user');
+        sessionStorage.clear();
+        location.reload();
+    }
+});
+
+// TOMBOL DUKUNGAN - UDAH BENER
+document.getElementById('donasi-btn').addEventListener('click', function() {
+    const user = JSON.parse(localStorage.getItem('pgm_user'));
+    const nama = user.nama || 'Anggota PGM';
+    const pesan = 'Assalamualaikum, saya ' + nama + ' mau salurkan dukungan untuk Tim Media PGM KBB';
+    window.open('https://wa.me/' + NO_ADMIN_DANA + '?text=' + encodeURIComponent(pesan), '_blank');
+});
             // TOMBOL DOWNLOAD SERTIFIKAT - FIX UTAMA DISINI
             const btnDownload = document.getElementById('download-btn');
             const statusSertif = (user.status || '').toString().toLowerCase().trim();
